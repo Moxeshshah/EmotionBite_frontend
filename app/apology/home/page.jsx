@@ -12,10 +12,6 @@ export default function LoveSpace() {
   const [receiverName, setReceiverName] = useState("");
 const params = useSearchParams();
 const code = params.get("code");
-const user_id =
-  typeof window !== "undefined"
-    ? localStorage.getItem("user_id")
-    : null;
   const suggestions = [
     "You mean the world to me 🌍",
     "I fall for you every day 💘",
@@ -39,7 +35,7 @@ const sendMessage = async () => {
     }
 
     try {
-      const res = await fetch("/api/messages/save", { // ✅ unified endpoint
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/messages/save`, { // ✅ unified endpoint
         method: "POST",
         headers: {
           "Content-Type": "application/json",
