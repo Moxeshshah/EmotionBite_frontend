@@ -13,16 +13,15 @@ export default function ClosureSpace() {
   const searchParams = useSearchParams();
   const code = searchParams.get("code");
 
-  const user_id =
-    typeof window !== "undefined"
-      ? localStorage.getItem("user_id")
-      : null;
 
   // Redirect if not logged
-  useEffect(() => {
-    if (!user_id) {
-router.push(`/closure/login?code=${code}`);    }
-  }, []);
+useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    router.push(`/closure/login?code=${code}`);
+  }
+}, []);
 
   const fill = (text) => {
     setMessage(text);
