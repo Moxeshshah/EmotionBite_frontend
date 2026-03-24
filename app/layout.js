@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "scanova Login",
+  title: "Emotion Bite",
    description: "Emotional QR App",
 };
 
