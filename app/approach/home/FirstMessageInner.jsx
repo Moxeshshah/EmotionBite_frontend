@@ -11,9 +11,9 @@ export default function FirstMessage() {
   const router = useRouter();
   const params = useSearchParams();
 const code = params.get("code");
-const user_id =
+const token =
   typeof window !== "undefined"
-    ? localStorage.getItem("user_id")
+    ? localStorage.getItem("token")
     : null;
   const moods = ["😊 Friendly", "😄 Playful", "✨ Thoughtful", "💬 Direct"];
   const suggestions = [
@@ -114,10 +114,14 @@ const sendMessage = async () => {
 
 
 useEffect(() => {
-  if (!user_id) {
+  if (!code) return;
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
     router.push(`/approach/login?code=${code}`);
   }
-}, []);
+}, [code]);
   const floatingShapes = [
     { className: "one", style: { width: "100px", height: "100px", background: "#ffffff", top: "15%", left: "10%" } },
     { className: "two", style: { width: "80px", height: "80px", background: "#ffdee9", bottom: "20%", right: "15%" } },
