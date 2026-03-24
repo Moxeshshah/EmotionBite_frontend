@@ -11,7 +11,7 @@ export default function ScanPage() {
 useEffect(() => {
   if (!code) return;
 
-  fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/qr/scan/${code}`)
+fetch(`/api/scan?code=${code}`)
     .then((res) => {
       if (!res.ok) throw new Error("QR API failed");
       return res.json();
