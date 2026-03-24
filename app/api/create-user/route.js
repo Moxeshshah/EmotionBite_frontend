@@ -3,7 +3,7 @@ export async function POST(req) {
     const body = await req.json();
 
     const res = await fetch(
-      `${process.env.API_BASE_URL}/user/create`, {
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/user/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

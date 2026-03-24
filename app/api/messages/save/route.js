@@ -4,7 +4,7 @@ export async function POST(req) {
     const authHeader = req.headers.get("authorization");
 
     const res = await fetch(
-      `${process.env.API_BASE_URL}/messages/save`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/messages/save`,
       {
         method: "POST",
         headers: {

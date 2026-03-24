@@ -56,7 +56,7 @@ export async function POST(req) {
     console.log("Verify request body:", body);
 
     const res = await fetch(
-      `${process.env.API_BASE_URL}/otp/verify` ,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/otp/verify` ,
       {
         method: "POST",
         headers: {

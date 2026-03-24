@@ -35,7 +35,7 @@ export async function POST(req) {
     const body = await req.json();
 
     const res = await fetch(
-      `${process.env.API_BASE_URL}/master/categories`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/master/categories`,
       {
         method: "POST",
         headers: {
