@@ -62,6 +62,7 @@ const token = getCookie("authToken");
       body: JSON.stringify({
         code: code,
         name: name,
+        route: name,
         description: `${name} category`,
         themeColor: "#FF5734",
         iconPath: "/icons/default.png"
