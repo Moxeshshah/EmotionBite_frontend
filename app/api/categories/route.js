@@ -7,7 +7,7 @@ export async function GET(req) {
     const size = searchParams.get("size") || "10";
 
     const res = await fetch(
-      `http://localhost:8084/api/ebs/v1/master/categories?page=${page}&size=${size}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/master/categories?page=${page}&size=${size}`,
       {
         headers: {
           Authorization: token,
