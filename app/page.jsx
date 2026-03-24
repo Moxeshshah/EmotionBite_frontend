@@ -1,25 +1,25 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function RootPage() {
   const router = useRouter();
-  const params = useSearchParams();
-  const code = params.get("code");
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+
     const timer = setTimeout(() => {
       if (code) {
         router.push(`/scan?code=${code}`);
       } else {
-        console.log("No code found, redirecting to admin login");
         router.push("/admin/login");
       }
-    }, 1500); // small delay for smooth UX
+    }, 1500);
 
     return () => clearTimeout(timer);
-  }, [code, router]);
+  }, [router]);
 
   return (
     <div className="wrapper">
@@ -36,7 +36,6 @@ export default function RootPage() {
           justify-content: center;
           align-items: center;
           background: linear-gradient(135deg, #67b26f, #4ca2cd);
-          animation: fadeIn 1s ease-in-out;
         }
 
         .card {
@@ -46,19 +45,6 @@ export default function RootPage() {
           border-radius: 20px;
           text-align: center;
           color: white;
-          box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-        }
-
-        h2 {
-          margin-top: 20px;
-          font-size: 24px;
-          font-weight: 600;
-        }
-
-        p {
-          margin-top: 10px;
-          font-size: 14px;
-          opacity: 0.8;
         }
 
         .spinner {
@@ -72,14 +58,7 @@ export default function RootPage() {
         }
 
         @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          to { transform: rotate(360deg); }
         }
       `}</style>
     </div>
