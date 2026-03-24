@@ -8,30 +8,30 @@ export default function ScanPage() {
   const params = useSearchParams();
   const code = params.get("code");
 
-  useEffect(() => {
-    if (!code) return;
+useEffect(() => {
+  if (!code) return;
 
-    fetch(`http://localhost:8084/api/ebs/v1/qr/scan/${code}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("QR API failed");
-        return res.json();
-      })
-      .then((data) => {
-        const category = data.category.toLowerCase();
+  fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/qr/scan/${code}`)
+    .then((res) => {
+      if (!res.ok) throw new Error("QR API failed");
+      return res.json();
+    })
+    .then((data) => {
+      const category = data.category.toLowerCase();
 
-        setTimeout(() => {
-          if (data.status === "UNUSED") {
-            router.push(`/${category}/login?code=${code}`);
-          } else {
-            router.push(`/${category}/receiver?code=${code}`);
-          }
-        }, 2000); // smooth UX delay
-      })
-      .catch((err) => {
-        console.error(err);
-        router.push("/error");
-      });
-  }, [code, router]);
+      setTimeout(() => {
+        if (data.status === "UNUSED") {
+          router.push(`/${category}/login?code=${code}`);
+        } else {
+          router.push(`/${category}/receiver?code=${code}`);
+        }
+      }, 2000);
+    })
+    .catch((err) => {
+      console.error(err);
+      router.push("/error");
+    });
+}, [code, router]);
 
   return (
     <div className="wrapper">
