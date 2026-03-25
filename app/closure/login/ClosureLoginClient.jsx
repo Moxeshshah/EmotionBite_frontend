@@ -30,7 +30,7 @@ const handleSendOtp = async () => {
   const res = await fetch("/api/otp/generate", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mobile }),
+    body: JSON.stringify({ mobile: "+91" +mobile }),
   });
 
   if (!res.ok) {
@@ -52,7 +52,7 @@ const handleVerifyOtp = async () => {
   const res = await fetch("/api/otp/verify", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mobile, otp }),
+    body: JSON.stringify({mobile: "+91" + mobile, otp }),
   });
 
   const data = await res.json();
