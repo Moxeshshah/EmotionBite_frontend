@@ -41,7 +41,9 @@ const handleSendOtp = async () => {
     return;
   }
 
+
   setStep("otp");
+  
   setLoading(false);
 };
 
