@@ -401,175 +401,217 @@ useEffect(() => {
       )}
 
       {/* DESIGN — unchanged */}
-      <style jsx>{`
-        .container {
-          min-height: 100vh;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: linear-gradient(180deg,#ff9a9e,#fad0c4,#fbc2eb);
-          font-family: 'Poppins', sans-serif;
-          color: white;
-          position: relative;
-          overflow: hidden;
-          padding: 20px;
-        }
+<style jsx>{`
+  * {
+    box-sizing: border-box;
+  }
 
-        .heart {
-          position: absolute;
-          font-size: 28px;
-          opacity: 0.15;
-          animation: float 10s infinite ease-in-out;
-        }
+  .container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(180deg,#ff9a9e,#fad0c4,#fbc2eb);
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
 
-        .h1 { top: 15%; left: 10%; }
-        .h2 { bottom: 20%; right: 12%; }
-        .h3 { top: 35%; right: 25%; }
+    /* 🔥 IMPORTANT */
+    text-align: center;
+  }
 
-        @keyframes float {
-          0%,100% { transform: translateY(0); }
-          50% { transform: translateY(-25px); }
-        }
+  /* Floating hearts */
+  .heart {
+    position: absolute;
+    font-size: 24px;
+    opacity: 0.15;
+    animation: float 10s infinite ease-in-out;
+  }
 
-        .invite-card {
-          background: rgba(255,255,255,0.2);
-          backdrop-filter: blur(20px);
-          border-radius: 28px;
-          padding: 40px;
-          width: 360px;
-          text-align: center;
-          box-shadow: 0 30px 70px rgba(0,0,0,0.3);
-          cursor: pointer;
-          animation: fadeIn 0.6s ease;
-        }
+  .h1 { top: 15%; left: 10%; }
+  .h2 { bottom: 20%; right: 12%; }
+  .h3 { top: 35%; right: 25%; }
 
-        .emoji {
-          font-size: 60px;
-          margin-bottom: 10px;
-          animation: pulse 2s infinite;
-        }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-25px); }
+  }
 
-        .hint {
-          margin-top: 12px;
-          font-size: 13px;
-          opacity: 0.8;
-        }
+  /* 🔥 CARD FIX */
+  .invite-card,
+  .memory-card {
+    width: 100%;
+    max-width: 380px; /* instead of fixed */
+    margin: auto;
+  }
 
-        @keyframes pulse {
-          0%,100% { transform: scale(1); }
-          50% { transform: scale(1.08); }
-        }
+  .invite-card {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: 40px 30px;
+    box-shadow: 0 30px 70px rgba(0,0,0,0.3);
+    cursor: pointer;
+    animation: fadeIn 0.6s ease;
+  }
 
-        .memory-card {
-          background: rgba(255,255,255,0.18);
-          backdrop-filter: blur(20px);
-          border-radius: 28px;
-          padding: 25px;
-          width: 360px;
-          box-shadow: 0 40px 90px rgba(0,0,0,0.35);
-          animation: fadeIn 0.5s ease;
-        }
+  .emoji {
+    font-size: 60px;
+    margin-bottom: 10px;
+    animation: pulse 2s infinite;
+  }
 
-        .title {
-          font-family: 'Playfair Display', serif;
-          font-size: 24px;
-          text-align: center;
-          margin-bottom: 14px;
-        }
+  .hint {
+    margin-top: 12px;
+    font-size: 13px;
+    opacity: 0.8;
+  }
 
-        .note {
-          background: linear-gradient(180deg,#ffffff,#fff5f7);
-          color: #444;
-          padding: 22px;
-          border-radius: 18px;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
+  @keyframes pulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
 
-        .text {
-          font-family: 'Playfair Display', serif;
-          font-size: 16px;
-          line-height: 1.8;
-        }
+  .memory-card {
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: 25px;
+    box-shadow: 0 40px 90px rgba(0,0,0,0.35);
+    animation: fadeIn 0.5s ease;
+  }
 
-        .from {
-          margin-top: 10px;
-          font-size: 13px;
-          opacity: 0.7;
-        }
+  .title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    margin-bottom: 14px;
+  }
 
-        .photo-section { margin-top: 16px; }
-        .label { font-size: 12px; opacity: 0.8; margin-bottom: 6px; }
+  .note {
+    background: linear-gradient(180deg,#ffffff,#fff5f7);
+    color: #444;
+    padding: 20px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
 
-        .photo-card {
-          height: 60px;
-          border-radius: 14px;
-          overflow: hidden;
-          cursor: pointer;
-          position: relative;
-          transition: 0.5s;
-        }
+  .text {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    line-height: 1.8;
+  }
 
-        .photo-card.show { height: 220px; }
+  .from {
+    margin-top: 10px;
+    font-size: 13px;
+    opacity: 0.7;
+  }
 
-        .photo-card img {
-          width: 100%;
-          height: 220px;
-          object-fit: cover;
-          filter: blur(12px);
-          transition: 0.6s;
-        }
+  .photo-section { margin-top: 16px; }
+  .label { font-size: 12px; opacity: 0.8; margin-bottom: 6px; }
 
-        .photo-card.show img {
-          filter: blur(0);
-          transform: scale(1.05);
-        }
+  .photo-card {
+    height: 60px;
+    border-radius: 14px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    transition: 0.5s;
+  }
 
-        .overlay {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: rgba(0,0,0,0.3);
-          font-size: 12px;
-        }
+  .photo-card.show { height: 220px; }
 
-        .song {
-          margin-top: 18px;
-          background: rgba(255,255,255,0.25);
-          padding: 12px;
-          border-radius: 16px;
-          font-size: 13px;
-          text-align: center;
-        }
+  .photo-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    filter: blur(12px);
+    transition: 0.6s;
+  }
 
-        .song-name {
-          margin-top: 4px;
-          font-weight: 600;
-        }
+  .photo-card.show img {
+    filter: blur(0);
+    transform: scale(1.05);
+  }
 
-        .reply-btn {
-          margin-top: 20px;
-          width: 100%;
-          padding: 14px;
-          border-radius: 25px;
-          border: none;
-          background: linear-gradient(90deg,#ff758c,#ff7eb3);
-          color: white;
-          font-weight: 600;
-          cursor: pointer;
-          box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        }
+  .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.3);
+    font-size: 12px;
+  }
 
-        .reply-btn:hover {
-          transform: translateY(-2px);
-        }
+  .song {
+    margin-top: 18px;
+    background: rgba(255,255,255,0.25);
+    padding: 12px;
+    border-radius: 16px;
+    font-size: 13px;
+  }
 
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
+  .song-name {
+    margin-top: 4px;
+    font-weight: 600;
+  }
+
+  .reply-btn {
+    margin-top: 20px;
+    width: 100%;
+    padding: 14px;
+    border-radius: 25px;
+    border: none;
+    background: linear-gradient(90deg,#ff758c,#ff7eb3);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  }
+
+  .reply-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  /* 🔥 MOBILE IMPROVEMENTS */
+  @media (max-width: 480px) {
+    .invite-card {
+      padding: 28px 20px;
+    }
+
+    .memory-card {
+      padding: 20px 16px;
+    }
+
+    .emoji {
+      font-size: 50px;
+    }
+
+    .title {
+      font-size: 20px;
+    }
+
+    .text {
+      font-size: 14px;
+    }
+
+    .photo-card.show {
+      height: 180px;
+    }
+
+    .photo-card img {
+      height: 180px;
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+`}</style>
     </div>
   );
 }

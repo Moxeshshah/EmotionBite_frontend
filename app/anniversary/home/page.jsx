@@ -95,166 +95,235 @@ const celebrateLove = async () => {
   ];
 
   return (
-    <div
-      style={{
-        fontFamily: "'Poppins', sans-serif",
-        background: "linear-gradient(180deg,#ff9a9e,#fad0c4,#fbc2eb)",
-        minHeight: "100vh",
-        padding: "25px 20px 40px",
-        color: "white",
-        position: "relative",
-        overflowX: "hidden",
-      }}
-    >
-      {/* Floating Hearts */}
-      {floatingHearts.map((heart, idx) => (
-        <div
-          key={idx}
-          style={{
-            position: "absolute",
-            fontSize: "18px",
-            opacity: 0.6,
-            left: heart.left,
-            animation: `float 8s infinite ease-in`,
-            animationDelay: heart.delay,
-          }}
-        >
-          {heart.emoji}
-        </div>
-      ))}
+   <div className="page">
+  <div className="container">
 
-      {/* Header */}
-      <div style={{ marginTop: "20px", marginBottom: "30px" }}>
-        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "28px" }}>
-          Our Special Day 💑
-        </h1>
-        <p style={{ fontSize: "14px", marginTop: "8px", opacity: 0.9 }}>
-          Another year of love, laughter, and unforgettable memories.
-        </p>
-      </div>
-
-      {/* Memory Upload */}
-      <div style={{ marginBottom: "25px" }}>
-        <label style={{ fontSize: "13px", display: "block", marginBottom: "8px" }}>
-          Upload a Favorite Memory 📸
-        </label>
-        <input
-          type="file"
-          accept="image/*"
-          style={{
-            width: "100%",
-            padding: "12px",
-            borderRadius: "15px",
-            border: "none",
-            background: "rgba(255,255,255,0.85)",
-          }}
-        />
-      </div>
-
-      {/* Love Note */}
-      <textarea
-        value={loveNote}
-        onChange={(e) => setLoveNote(e.target.value)}
-        placeholder="Write a heartfelt anniversary message..."
+    {/* Floating Hearts */}
+    {floatingHearts.map((heart, idx) => (
+      <div
+        key={idx}
+        className="heart"
         style={{
-          width: "100%",
-          height: "130px",
-          padding: "15px",
-          borderRadius: "18px",
-          border: "none",
-          resize: "none",
-          outline: "none",
-          fontSize: "14px",
-          color: "#333",
-        }}
-      />
-
-      {/* Timeline */}
-      <div style={{ marginTop: "30px" }}>
-        <h3 style={{ fontSize: "16px", marginBottom: "15px" }}>
-          Beautiful Moments Together ✨
-        </h3>
-        {moments.map((moment, idx) => (
-          <div
-            key={idx}
-            style={{
-              background: "rgba(255,255,255,0.2)",
-              padding: "15px",
-              borderRadius: "18px",
-              marginBottom: "12px",
-              fontSize: "13px",
-            }}
-          >
-            {moment}
-          </div>
-        ))}
-      </div>
-
-      {/* Dedication */}
-      <div style={{ marginTop: "25px" }}>
-        <label style={{ fontSize: "13px" }}>Dedicate a Song 🎵</label>
-        <select
-          style={{
-            width: "100%",
-            padding: "12px",
-            borderRadius: "15px",
-            border: "none",
-            background: "rgba(255,255,255,0.85)",
-          }}
-        >
-          {songs.map((song, idx) => (
-            <option key={idx}>{song}</option>
-          ))}
-        </select>
-      </div>
-
-      {/* Celebrate Button */}
-      <button
-        onClick={celebrateLove}
-        style={{
-          width: "100%",
-          marginTop: "30px",
-          padding: "15px",
-          border: "none",
-          borderRadius: "30px",
-          background: "linear-gradient(to right,#ff758c,#ff7eb3)",
-          color: "white",
-          fontWeight: 500,
-          fontSize: "15px",
-          cursor: "pointer",
-          boxShadow: "0 8px 25px rgba(255,118,136,0.4)",
+          left: heart.left,
+          animationDelay: heart.delay,
         }}
       >
-        Celebrate Love 🎊
-      </button>
+        {heart.emoji}
+      </div>
+    ))}
 
-      {/* Toast */}
-      {toastVisible && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "20px",
-            left: "50%",
-            transform: "translateX(-50%)",
-            background: "white",
-            color: "#ff4d6d",
-            padding: "12px 22px",
-            borderRadius: "30px",
-            fontSize: "13px",
-            boxShadow: "0 8px 25px rgba(0,0,0,0.3)",
-          }}
-        >
-          💖 Your anniversary celebration has been saved!
+    {/* Header */}
+    <div className="section">
+      <h1>Our Special Day 💑</h1>
+      <p>
+        Another year of love, laughter, and unforgettable memories.
+      </p>
+    </div>
+
+    {/* Upload */}
+    <div className="section">
+      <label>Upload a Favorite Memory 📸</label>
+      <input type="file" accept="image/*" />
+    </div>
+
+    {/* Love Note */}
+    <textarea
+      value={loveNote}
+      onChange={(e) => setLoveNote(e.target.value)}
+      placeholder="Write a heartfelt anniversary message..."
+    />
+
+    {/* Timeline */}
+    <div className="section">
+      <h3>Beautiful Moments Together ✨</h3>
+      {moments.map((moment, idx) => (
+        <div key={idx} className="moment">
+          {moment}
         </div>
-      )}
+      ))}
+    </div>
 
-      <style jsx>{`
-        @keyframes float {
-          0% { transform: translateY(100vh) scale(0.6); opacity: 0; }
-          50% { opacity: 1; }
-          100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
-        }
-      `}</style>
+    {/* Song */}
+    <div className="section">
+      <label>Dedicate a Song 🎵</label>
+      <select>
+        {songs.map((song, idx) => (
+          <option key={idx}>{song}</option>
+        ))}
+      </select>
+    </div>
+
+    {/* Button */}
+    <button onClick={celebrateLove}>
+      Celebrate Love 🎊
+    </button>
+
+    {/* Toast */}
+    {toastVisible && (
+      <div className="toast">
+        💖 Your anniversary celebration has been saved!
+      </div>
+    )}
+
+</div>
+<style jsx>{`
+  * {
+    box-sizing: border-box;
+  }
+
+  .page {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(180deg,#ff9a9e,#fad0c4,#fbc2eb);
+    min-height: 100vh;
+    padding: 25px 16px 40px;
+    color: white;
+    position: relative;
+    overflow-x: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* 🔥 better for scroll */
+  }
+
+  /* 🔥 MAIN CONTAINER FIX */
+  .container {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    line-height: 1.3;
+  }
+
+  p {
+    font-size: 14px;
+    margin-top: 8px;
+    opacity: 0.9;
+  }
+
+  .section {
+    margin-bottom: 24px;
+  }
+
+  label {
+    font-size: 13px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* 🔥 INPUT FIX */
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 15px;
+    border: none;
+    background: rgba(255,255,255,0.85);
+    font-size: 14px;
+    outline: none;
+  }
+
+  textarea {
+    height: 130px;
+    resize: none;
+    color: #333;
+  }
+
+  .moment {
+    background: rgba(255,255,255,0.2);
+    padding: 14px;
+    border-radius: 16px;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 28px;
+    padding: 15px;
+    border: none;
+    border-radius: 30px;
+    background: linear-gradient(to right,#ff758c,#ff7eb3);
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(255,118,136,0.4);
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: #ff4d6d;
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-size: 13px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  }
+
+  /* 🔥 HEART FIX (prevents overflow issues) */
+  .page > div[style] {
+    pointer-events: none;
+  }
+
+  /* 🔥 MOBILE */
+  @media (max-width: 480px) {
+    .page {
+      padding: 20px 12px 30px;
+    }
+
+    h1 {
+      font-size: 22px;
+    }
+
+    p {
+      font-size: 13px;
+    }
+
+    textarea {
+      height: 110px;
+      padding: 10px;
+    }
+
+    input, select {
+      padding: 10px;
+    }
+
+    button {
+      padding: 13px;
+      font-size: 14px;
+    }
+
+    .moment {
+      padding: 12px;
+      font-size: 12px;
+    }
+  }
+
+  /* 🔥 LARGE SCREEN (important upgrade) */
+  @media (min-width: 768px) {
+    .page {
+      align-items: center; /* center vertically on desktop */
+    }
+
+    .container {
+      max-width: 520px;
+    }
+  }
+
+  @keyframes float {
+    0% { transform: translateY(100vh) scale(0.6); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+  }
+`}</style>
     </div>
   );
 }
