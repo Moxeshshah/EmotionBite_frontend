@@ -29,7 +29,7 @@ const handleSendOtp = async () => {
 
   setLoading(true);
 
-const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/otp/generate`, {
+  const res = await fetch("/api/otp/generate", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ mobile: "+91" + mobile }),
@@ -51,7 +51,7 @@ const handleVerifyOtp = async () => {
 
   setLoading(true);
 
-const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/otp/verify`, {
+  const res = await fetch("/api/otp/verify", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ mobile: "+91" + mobile, otp }),
@@ -87,7 +87,7 @@ const handleCompleteProfile = async () => {
 
   setLoading(true);
 
-const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/complete-profile`, {
+  const res = await fetch("/api/complete-profile", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
