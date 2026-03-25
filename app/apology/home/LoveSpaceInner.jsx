@@ -43,7 +43,7 @@ const sendMessage = async () => {
     }
 
     try {
-const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/messages/save`, {
+const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/messages/save`, {
           method: "POST",
         headers: {
           "Content-Type": "application/json",
