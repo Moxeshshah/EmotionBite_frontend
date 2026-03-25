@@ -79,6 +79,35 @@ const handleVerifyOtp = async () => {
 
   setLoading(false);
 };
+// const handleCompleteProfile = async () => {
+//   if (!firstName || !lastName) {
+//     alert("Enter full name");
+//     return;
+//   }
+
+//   setLoading(true);
+
+//   const res = await fetch("/api/complete-profile", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${token}`,
+//     },
+//     body: JSON.stringify({
+//       firstName,
+//       lastName,
+//     }),
+//   });
+
+//   if (!res.ok) {
+//     alert("Profile update failed");
+//     setLoading(false);
+//     return;
+//   }
+
+//   router.push(`/propose/home?code=${code}`);
+// };
+
 const handleCompleteProfile = async () => {
   if (!firstName || !lastName) {
     alert("Enter full name");
@@ -104,6 +133,9 @@ const handleCompleteProfile = async () => {
     setLoading(false);
     return;
   }
+
+  // ✅ IMPORTANT
+  localStorage.setItem("sender_name", firstName + " " + lastName);
 
   router.push(`/propose/home?code=${code}`);
 };

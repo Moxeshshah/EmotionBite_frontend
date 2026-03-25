@@ -10,10 +10,9 @@ export default function LoveMessage() {
   const [toastVisible, setToastVisible] = useState(false);
   const params = useSearchParams();
 const code = params.get("code");
-const user_id =
-  typeof window !== "undefined"
-    ? localStorage.getItem("user_id")
-    : null;const router = useRouter();
+    
+    const router = useRouter();
+
   const styles = ["😍 Romantic", "🥰 Cute", "🔥 Passionate", "💌 Deep"];
   const suggestions = [
     "Every moment with you feels like my favorite memory.",
@@ -21,7 +20,9 @@ const user_id =
     "Loving you is the easiest and best decision of my life.",
   ];
 useEffect(() => {
-  if (!user_id) {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
     router.push(`/love/login?code=${code}`);
   }
 }, []);

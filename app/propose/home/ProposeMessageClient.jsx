@@ -12,16 +12,11 @@ export default function ProposalPlanner() {
   const params = useSearchParams();
   const code = params.get("code");
 
-  const user_id =
-    typeof window !== "undefined"
-      ? localStorage.getItem("user_id")
-      : null;
-
   // Redirect if not logged
 useEffect(() => {
-  const user_id = localStorage.getItem("user_id");
+  const token = localStorage.getItem("token");
 
-  if (!user_id) {
+  if (!token) {
     router.push(`/propose/login?code=${code}`);
   }
 }, []);

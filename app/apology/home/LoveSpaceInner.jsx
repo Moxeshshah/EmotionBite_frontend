@@ -22,7 +22,15 @@ const code = params.get("code");
   const fill = (text) => {
     setMessage(text);
   };
+useEffect(() => {
+  if (!code) return;
 
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    router.replace(`/love/login?code=${code}`);
+  }
+}, [code]);
 const sendMessage = async () => {
     if (message.trim() === "") {
       alert("Please write a message 💕");

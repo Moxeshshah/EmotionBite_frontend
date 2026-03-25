@@ -13,17 +13,24 @@ export default function CongratsConnect() {
   const params = useSearchParams();
   const code = params.get("code");
 
-  const user_id =
-    typeof window !== "undefined"
-      ? localStorage.getItem("user_id")
-      : null;
+  // const user_id =
+  //   typeof window !== "undefined"
+  //     ? localStorage.getItem("user_id")
+  //     : null;
 
   // Redirect if not logged
+  // useEffect(() => {
+  //   if (!user_id) {
+  //     router.push(`/congrats/login?code=${code}`);
+  //   }
+  // }, []);
   useEffect(() => {
-    if (!user_id) {
-      router.push(`/congrats/login?code=${code}`);
-    }
-  }, []);
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    router.push(`/congrats/login?code=${code}`);
+  }
+}, []);
 
   const suggestions = [
     "So proud of you! 🎊",
