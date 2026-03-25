@@ -45,6 +45,7 @@
 //   width: "100%",
 //   background: "white"
 // };
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -54,100 +55,142 @@ export default function QrPage() {
 
   useEffect(() => {
     fetch("http://localhost:8080/api/qr/all")
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setQrs);
   }, []);
 
   return (
-    <div className="container">
-      <h1 className="title">QR Codes Management</h1>
+    <div className="page">
+      {/* Header */}
+      <div className="header">
+        <h1>QR Codes</h1>
+        <p>Manage and download QR codes</p>
+      </div>
 
       <div className="card">
-
+        {/* Top Bar */}
         <div className="topBar">
           <h3>All QR Codes</h3>
 
           <button
-            className="downloadAll"
+            className="primaryBtn"
             onClick={() =>
               window.open("http://localhost:8080/api/qr/download-all")
             }
           >
-            Download All (ZIP)
+            Download All
           </button>
         </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Code</th>
-              <th>Status</th>
-              <th>Download</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {qrs.map(q => (
-              <tr key={q.id}>
-                <td>
-                  <span className="codeBadge">{q.code}</span>
-                </td>
-
-                <td>
-                  <span
-                    className={
-                      q.status === "USED"
-                        ? "status used"
-                        : "status active"
-                    }
-                  >
-                    {q.status}
-                  </span>
-                </td>
-
-                <td>
-                  <button
-                    className="downloadBtn"
-                    onClick={() =>
-                      window.open(
-                        `http://localhost:8080/api/qr/download/${q.code}`
-                      )
-                    }
-                  >
-                    Download
-                  </button>
-                </td>
+        {/* DESKTOP TABLE */}
+        <div className="tableWrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Status</th>
+                <th>Download</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
 
+            <tbody>
+              {qrs.map((q) => (
+                <tr key={q.id}>
+                  <td>
+                    <span className="badge code">{q.code}</span>
+                  </td>
+
+                  <td>
+                    <span
+                      className={`badge ${
+                        q.status === "USED" ? "used" : "active"
+                      }`}
+                    >
+                      {q.status}
+                    </span>
+                  </td>
+
+                  <td>
+                    <button
+                      className="secondaryBtn"
+                      onClick={() =>
+                        window.open(
+                          `http://localhost:8080/api/qr/download/${q.code}`
+                        )
+                      }
+                    >
+                      Download
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* MOBILE CARDS */}
+        <div className="mobileList">
+          {qrs.map((q) => (
+            <div key={q.id} className="mobileCard">
+              <div className="topRow">
+                <span className="badge code">{q.code}</span>
+              </div>
+
+              <div className="row">
+                <span>Status</span>
+                <span
+                  className={`badge ${
+                    q.status === "USED" ? "used" : "active"
+                  }`}
+                >
+                  {q.status}
+                </span>
+              </div>
+
+              <button
+                className="secondaryBtn full"
+                onClick={() =>
+                  window.open(
+                    `http://localhost:8080/api/qr/download/${q.code}`
+                  )
+                }
+              >
+                Download QR
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {/* EMPTY */}
         {qrs.length === 0 && (
-          <div className="emptyState">
-            No QR codes available
-          </div>
+          <div className="emptyState">No QR codes available</div>
         )}
       </div>
 
       <style jsx>{`
-        .container {
-          padding: 30px;
-          color: white;
+        .page {
+          font-family: Inter, sans-serif;
         }
 
-        .title {
-          font-size: 28px;
-          margin-bottom: 20px;
-          font-weight: 600;
+        .header {
+          margin-bottom: 24px;
+        }
+
+        h1 {
+          font-size: 26px;
+          font-weight: 700;
+        }
+
+        .header p {
+          color: #64748b;
+          font-size: 14px;
         }
 
         .card {
-          background: rgba(255, 255, 255, 0.15);
-          backdrop-filter: blur(25px);
-          border-radius: 18px;
-          padding: 25px;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-          overflow-x: auto;
+          background: white;
+          border-radius: 14px;
+          padding: 20px;
+          box-shadow: 0 8px 25px rgba(0,0,0,0.05);
         }
 
         .topBar {
@@ -158,7 +201,13 @@ export default function QrPage() {
         }
 
         h3 {
-          font-weight: 500;
+          font-size: 16px;
+          font-weight: 600;
+        }
+
+        /* TABLE */
+        .tableWrapper {
+          overflow-x: auto;
         }
 
         table {
@@ -168,82 +217,124 @@ export default function QrPage() {
         }
 
         th, td {
-          padding: 14px;
-          text-align: left;
+          padding: 12px;
           font-size: 14px;
         }
 
         th {
-          border-bottom: 1px solid rgba(255,255,255,0.3);
-        }
-
-        tr {
-          transition: 0.2s;
+          color: #64748b;
+          border-bottom: 1px solid #e2e8f0;
         }
 
         tr:hover {
-          background: rgba(255,255,255,0.1);
+          background: #f8fafc;
         }
 
-        .codeBadge {
-          background: linear-gradient(135deg, #6dd5fa, #2980b9);
-          padding: 6px 14px;
-          border-radius: 20px;
-          font-size: 13px;
-        }
-
-        .status {
-          padding: 6px 14px;
+        /* BADGES */
+        .badge {
+          padding: 6px 10px;
           border-radius: 20px;
           font-size: 12px;
           font-weight: 500;
         }
 
+        .code {
+          background: #e0f2fe;
+          color: #0369a1;
+        }
+
         .active {
-          background: linear-gradient(135deg, #a1ffce, #faffd1);
-          color: #333;
+          background: #dcfce7;
+          color: #166534;
         }
 
         .used {
-          background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-          color: #333;
+          background: #fee2e2;
+          color: #991b1b;
         }
 
-        .downloadBtn {
-          padding: 8px 16px;
-          border-radius: 12px;
+        /* BUTTONS */
+        .primaryBtn {
+          padding: 10px 16px;
+          border-radius: 8px;
           border: none;
-          cursor: pointer;
-          font-weight: 600;
-          background: linear-gradient(135deg, #ffffff, #e0e0ff);
-          transition: 0.3s;
-        }
-
-        .downloadBtn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .downloadAll {
-          padding: 10px 20px;
-          border-radius: 14px;
-          border: none;
-          font-weight: 600;
-          cursor: pointer;
-          background: linear-gradient(135deg, #00c6ff, #0072ff);
+          background: #6366f1;
           color: white;
-          transition: 0.3s;
+          cursor: pointer;
+          font-weight: 600;
         }
 
-        .downloadAll:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        .primaryBtn:hover {
+          background: #4f46e5;
+        }
+
+        .secondaryBtn {
+          padding: 8px 14px;
+          border-radius: 8px;
+          border: none;
+          background: #e2e8f0;
+          cursor: pointer;
+          font-weight: 500;
+        }
+
+        .secondaryBtn:hover {
+          background: #cbd5f5;
+        }
+
+        .full {
+          width: 100%;
+          margin-top: 10px;
+        }
+
+        /* MOBILE */
+        .mobileList {
+          display: none;
+        }
+
+        .mobileCard {
+          background: #ffffff;
+          border-radius: 14px;
+          padding: 14px;
+          margin-bottom: 12px;
+          box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        }
+
+        .topRow {
+          margin-bottom: 10px;
+        }
+
+        .row {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 8px;
+          font-size: 14px;
         }
 
         .emptyState {
           text-align: center;
-          margin-top: 20px;
-          opacity: 0.7;
+          padding: 20px;
+          color: #64748b;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+          .tableWrapper {
+            display: none;
+          }
+
+          .mobileList {
+            display: block;
+          }
+
+          .topBar {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+          }
+
+          h1 {
+            font-size: 22px;
+          }
         }
       `}</style>
     </div>

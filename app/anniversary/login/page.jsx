@@ -136,6 +136,8 @@
 //     </div>
 //   );
 // }
+
+
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
@@ -167,7 +169,7 @@ const handleSendOtp = async () => {
   const res = await fetch("/api/otp/generate", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mobile }),
+body: JSON.stringify({ mobile: "+91" + mobile }),
   });
 
   if (!res.ok) {
