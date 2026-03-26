@@ -24,6 +24,15 @@ export default function FirstMessage() {
     "Hey 😊 I don’t usually do this, but you seem worth a conversation.",
   ];
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      router.push(`/approach/login?code=${code}`);
+    }
+  }, [router, code]);
+
+
   const fillText = (text) => {
     setMessage(text);
   };
@@ -39,7 +48,7 @@ export default function FirstMessage() {
     }
 
     try {
-      const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
       const instagramUrl = instagramUsername.trim()
         ? `https://www.instagram.com/${instagramUsername.trim()}`
         : "";
@@ -86,16 +95,14 @@ export default function FirstMessage() {
     document.body.style.padding = "0";
     document.body.style.overflowX = "hidden";
 
-    if (!user_id) {
-      router.push(`/approach/login?code=${code}`);
-    }
+    
 
     return () => {
       document.body.style.margin = "";
       document.body.style.padding = "";
       document.body.style.overflowX = "";
     };
-  }, [code, router, user_id]);
+  }, [code, router]);
 
   if (!mounted) {
     return (
