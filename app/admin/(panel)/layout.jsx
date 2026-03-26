@@ -110,6 +110,225 @@
 //     </div>
 //   );
 // }
+
+
+// "use client";
+
+// import { useRouter, usePathname } from "next/navigation";
+// import { useEffect, useState } from "react";
+// import { getCookie, deleteCookie } from "cookies-next";
+
+// export default function AdminLayout({ children }) {
+//   const router = useRouter();
+//   const pathname = usePathname();
+//   const [loading, setLoading] = useState(true);
+//   const [open, setOpen] = useState(false); // 👈 sidebar toggle
+
+//   useEffect(() => {
+//     const token = getCookie("authToken");
+
+//     if (!token) {
+//       router.push("/admin/login");
+//     } else {
+//       setLoading(false);
+//     }
+//   }, []);
+
+//   if (loading) return null;
+
+//   const menu = [
+//     { name: "Dashboard", path: "/admin/dashboard" },
+//     { name: "Categories", path: "/admin/categories" },
+//     { name: "QR Codes", path: "/admin/qrcodes" },
+//     { name: "Messages", path: "/admin/messages" },
+//     { name: "Users", path: "/admin/users" },
+//   ];
+
+//   const logout = () => {
+//     deleteCookie("authToken");
+//     router.push("/admin/login");
+//   };
+
+//   return (
+//     <div className="layout">
+//       {/* Overlay (mobile) */}
+//       {open && <div className="overlay" onClick={() => setOpen(false)} />}
+
+//       {/* Sidebar */}
+//       <aside className={`sidebar ${open ? "show" : ""}`}>
+//         <div className="logo">Scanova</div>
+
+//         <div className="menuList">
+//           {menu.map((item) => (
+//             <div
+//               key={item.path}
+//               className={`menuItem ${
+//                 pathname === item.path ? "active" : ""
+//               }`}
+//               onClick={() => {
+//                 router.push(item.path);
+//                 setOpen(false); // close on click
+//               }}
+//             >
+//               {item.name}
+//             </div>
+//           ))}
+//         </div>
+
+//         <div className="logout" onClick={logout}>
+//           Logout
+//         </div>
+//       </aside>
+
+//       {/* Main */}
+//       <main className="main">
+//         {/* Topbar */}
+//         <div className="topbar">
+//           <div className="left">
+//             {/* Hamburger */}
+//             <div className="menuBtn" onClick={() => setOpen(true)}>
+//               ☰
+//             </div>
+
+//             <div className="title">Admin Panel</div>
+//           </div>
+
+//           <div className="right">Admin</div>
+//         </div>
+
+//         {/* Page Content */}
+//         <div className="content">{children}</div>
+//       </main>
+
+//       <style jsx>{`
+//         .layout {
+//           display: flex;
+//           min-height: 100vh;
+//           background: #f8fafc;
+//           font-family: Inter, sans-serif;
+//         }
+
+//         /* Overlay */
+//         .overlay {
+//           position: fixed;
+//           inset: 0;
+//           background: rgba(0, 0, 0, 0.3);
+//           z-index: 9;
+//         }
+
+//         /* Sidebar */
+//         .sidebar {
+//           width: 240px;
+//           background: #0f172a;
+//           color: white;
+//           padding: 24px;
+//           display: flex;
+//           flex-direction: column;
+//           transition: transform 0.3s ease;
+//         }
+
+//         .logo {
+//           font-size: 20px;
+//           font-weight: 700;
+//           margin-bottom: 30px;
+//         }
+
+//         .menuList {
+//           flex: 1;
+//         }
+
+//         .menuItem {
+//           padding: 12px;
+//           border-radius: 8px;
+//           margin-bottom: 6px;
+//           cursor: pointer;
+//           color: #cbd5f5;
+//         }
+
+//         .menuItem:hover {
+//           background: #1e293b;
+//           color: white;
+//         }
+
+//         .active {
+//           background: #6366f1;
+//           color: white;
+//           font-weight: 600;
+//         }
+
+//         .logout {
+//           padding: 12px;
+//           background: #ef4444;
+//           border-radius: 8px;
+//           cursor: pointer;
+//           text-align: center;
+//         }
+
+//         /* Main */
+//         .main {
+//           flex: 1;
+//           display: flex;
+//           flex-direction: column;
+//         }
+
+//         .topbar {
+//           height: 60px;
+//           background: white;
+//           display: flex;
+//           align-items: center;
+//           justify-content: space-between;
+//           padding: 0 20px;
+//           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+//         }
+
+//         .left {
+//           display: flex;
+//           align-items: center;
+//           gap: 12px;
+//         }
+
+//         .menuBtn {
+//           font-size: 22px;
+//           cursor: pointer;
+//           display: none;
+//         }
+
+//         .title {
+//           font-weight: 600;
+//         }
+
+//         .right {
+//           font-size: 14px;
+//           color: #64748b;
+//         }
+
+//         .content {
+//           padding: 24px;
+//         }
+
+//         /* MOBILE */
+//         @media (max-width: 768px) {
+//           .sidebar {
+//             position: fixed;
+//             top: 0;
+//             left: 0;
+//             height: 100%;
+//             z-index: 10;
+//             transform: translateX(-100%);
+//           }
+
+//           .sidebar.show {
+//             transform: translateX(0);
+//           }
+
+//           .menuBtn {
+//             display: block;
+//           }
+//         }
+//       `}</style>
+//     </div>
+//   );
+// }
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
@@ -120,9 +339,13 @@ export default function AdminLayout({ children }) {
   const router = useRouter();
   const pathname = usePathname();
   const [loading, setLoading] = useState(true);
-  const [open, setOpen] = useState(false); // 👈 sidebar toggle
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
+    document.body.style.margin = "0";
+    document.body.style.padding = "0";
+    document.body.style.overflowX = "hidden";
+
     const token = getCookie("authToken");
 
     if (!token) {
@@ -130,7 +353,13 @@ export default function AdminLayout({ children }) {
     } else {
       setLoading(false);
     }
-  }, []);
+
+    return () => {
+      document.body.style.margin = "";
+      document.body.style.padding = "";
+      document.body.style.overflowX = "";
+    };
+  }, [router]);
 
   if (loading) return null;
 
@@ -149,10 +378,8 @@ export default function AdminLayout({ children }) {
 
   return (
     <div className="layout">
-      {/* Overlay (mobile) */}
       {open && <div className="overlay" onClick={() => setOpen(false)} />}
 
-      {/* Sidebar */}
       <aside className={`sidebar ${open ? "show" : ""}`}>
         <div className="logo">Scanova</div>
 
@@ -160,12 +387,10 @@ export default function AdminLayout({ children }) {
           {menu.map((item) => (
             <div
               key={item.path}
-              className={`menuItem ${
-                pathname === item.path ? "active" : ""
-              }`}
+              className={`menuItem ${pathname === item.path ? "active" : ""}`}
               onClick={() => {
                 router.push(item.path);
-                setOpen(false); // close on click
+                setOpen(false);
               }}
             >
               {item.name}
@@ -178,35 +403,45 @@ export default function AdminLayout({ children }) {
         </div>
       </aside>
 
-      {/* Main */}
       <main className="main">
-        {/* Topbar */}
         <div className="topbar">
           <div className="left">
-            {/* Hamburger */}
             <div className="menuBtn" onClick={() => setOpen(true)}>
               ☰
             </div>
-
             <div className="title">Admin Panel</div>
           </div>
 
           <div className="right">Admin</div>
         </div>
 
-        {/* Page Content */}
         <div className="content">{children}</div>
       </main>
 
       <style jsx>{`
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+
+        :global(html),
+        :global(body) {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          overflow-x: hidden;
+          background: #f8fafc;
+        }
+
         .layout {
           display: flex;
           min-height: 100vh;
+          width: 100vw;
           background: #f8fafc;
           font-family: Inter, sans-serif;
         }
 
-        /* Overlay */
         .overlay {
           position: fixed;
           inset: 0;
@@ -214,7 +449,6 @@ export default function AdminLayout({ children }) {
           z-index: 9;
         }
 
-        /* Sidebar */
         .sidebar {
           width: 240px;
           background: #0f172a;
@@ -223,6 +457,7 @@ export default function AdminLayout({ children }) {
           display: flex;
           flex-direction: column;
           transition: transform 0.3s ease;
+          flex-shrink: 0;
         }
 
         .logo {
@@ -241,6 +476,7 @@ export default function AdminLayout({ children }) {
           margin-bottom: 6px;
           cursor: pointer;
           color: #cbd5f5;
+          transition: 0.2s ease;
         }
 
         .menuItem:hover {
@@ -260,13 +496,18 @@ export default function AdminLayout({ children }) {
           border-radius: 8px;
           cursor: pointer;
           text-align: center;
+          transition: 0.2s ease;
         }
 
-        /* Main */
+        .logout:hover {
+          background: #dc2626;
+        }
+
         .main {
           flex: 1;
           display: flex;
           flex-direction: column;
+          min-width: 0;
         }
 
         .topbar {
@@ -277,6 +518,9 @@ export default function AdminLayout({ children }) {
           justify-content: space-between;
           padding: 0 20px;
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+          position: sticky;
+          top: 0;
+          z-index: 8;
         }
 
         .left {
@@ -289,10 +533,12 @@ export default function AdminLayout({ children }) {
           font-size: 22px;
           cursor: pointer;
           display: none;
+          line-height: 1;
         }
 
         .title {
           font-weight: 600;
+          color: #0f172a;
         }
 
         .right {
@@ -302,9 +548,9 @@ export default function AdminLayout({ children }) {
 
         .content {
           padding: 24px;
+          width: 100%;
         }
 
-        /* MOBILE */
         @media (max-width: 768px) {
           .sidebar {
             position: fixed;
@@ -321,6 +567,37 @@ export default function AdminLayout({ children }) {
 
           .menuBtn {
             display: block;
+          }
+
+          .content {
+            padding: 18px 12px;
+          }
+
+          .topbar {
+            padding: 0 14px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .sidebar {
+            width: 220px;
+            padding: 20px;
+          }
+
+          .topbar {
+            height: 56px;
+          }
+
+          .title {
+            font-size: 14px;
+          }
+
+          .right {
+            font-size: 13px;
+          }
+
+          .content {
+            padding: 12px;
           }
         }
       `}</style>
