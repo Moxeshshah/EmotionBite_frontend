@@ -131,9 +131,9 @@ export default function FirstMessage() {
             marginBottom: "20px",
           }}
         />
-        <h2 style={{ fontSize: "20px", fontWeight: 600 }}>
+        {/* <h2 style={{ fontSize: "20px", fontWeight: 600 }}>
           Loading Emotion Bite...
-        </h2>
+        </h2> */}
       </div>
     );
   }

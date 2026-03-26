@@ -264,14 +264,14 @@ export default function FirstStepGreet() {
           You’ve taken the first step! Your message has been delivered. Sit back, relax, and let the conversation begin. ✨
         </p>
 
-        <button
+        {/* <button
           onClick={() => router.push(`/approach/home?code=${code}`)}
           className="home-btn"
           onMouseEnter={(e) => (e.currentTarget.style.background = "#e0f7ff")}
           onMouseLeave={(e) => (e.currentTarget.style.background = "#ffffff")}
         >
           Back to Home 🏡
-        </button>
+        </button> */}
       </div>
 
       <div className="toast">
