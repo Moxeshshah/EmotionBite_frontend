@@ -1,378 +1,13 @@
-// "use client";
-
-// import { useRouter, useSearchParams } from "next/navigation";
-// import { useState } from "react";
-
-// export default function FirstStepLogin() {
-//   const router = useRouter();
-//   const params = useSearchParams();
-//   const code = params.get("code");
-
-//   const [name, setName] = useState("");
-//   const [showOtp, setShowOtp] = useState(false);
-
-//   const [step, setStep] = useState("mobile");
-// const [firstName, setFirstName] = useState("");
-// const [lastName, setLastName] = useState("");
-// const [mobile, setMobile] = useState("");
-// const [otp, setOtp] = useState("");
-// const [token, setToken] = useState("");
-// const [loading, setLoading] = useState(false);
-
-//   // Step 1 → Show OTP field
-// const handleSendOtp = async () => {
-//   if (!/^[0-9]{10}$/.test(mobile)) {
-//     alert("Enter valid 10 digit mobile number");
-//     return;
-//   }
-
-//   setLoading(true);
-
-//   const res = await fetch("/api/otp/generate", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ mobile: "+91" +mobile }),
-//   });
-
-//   if (!res.ok) {
-//     alert("Failed to send OTP");
-//     setLoading(false);
-//     return;
-//   }
-
-//   setStep("otp");
-//   setLoading(false);
-// };
-
-//   // Step 2 → Verify OTP & Login
-// const handleVerifyOtp = async () => {
-//   if (!otp) return alert("Enter OTP");
-
-//   setLoading(true);
-
-//   const res = await fetch("/api/otp/verify", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ mobile: "+91" +mobile, otp }),
-//   });
-
-//   const data = await res.json();
-
-//   if (!res.ok) {
-//     alert(data.message);
-//     setLoading(false);
-//     return;
-//   }
-
-//   // ✅ Save token
-//   setToken(data.token);
-//   localStorage.setItem("token", data.token);
-//   localStorage.setItem("sender_mobile", mobile);
-
-//   // ✅ Decide next step
-//   if (data.profileComplete) {
-//     router.push(`/approach/home?code=${code}`);
-//   } else {
-//     setStep("profile");
-//   }
-
-//   setLoading(false);
-// };
-// // const handleCompleteProfile = async () => {
-// //   if (!firstName || !lastName) {
-// //     alert("Enter full name");
-// //     return;
-// //   }
-
-// //   setLoading(true);
-
-// //   const res = await fetch("/api/complete-profile", {
-// //     method: "POST",
-// //     headers: {
-// //       "Content-Type": "application/json",
-// //       Authorization: `Bearer ${token}`,
-// //     },
-// //     body: JSON.stringify({
-// //       firstName,
-// //       lastName,
-// //     }),
-// //   });
-
-// //   if (!res.ok) {
-// //     alert("Profile update failed");
-// //     setLoading(false);
-// //     return;
-// //   }
-
-// //   router.push(`/approach/home?code=${code}`);
-// // };
-// const handleCompleteProfile = async () => {
-//   if (!firstName || !lastName) {
-//     alert("Enter full name");
-//     return;
-//   }
-
-//   setLoading(true);
-
-//   const res = await fetch("/api/complete-profile", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//     body: JSON.stringify({
-//       firstName,
-//       lastName,
-//     }),
-//   });
-
-//   if (!res.ok) {
-//     alert("Profile update failed");
-//     setLoading(false);
-//     return;
-//   }
-
-//   // ✅ FIX
-//   localStorage.setItem("sender_name", firstName + " " + lastName);
-
-//   router.push(`/approach/home?code=${code}`);
-// };
-//   return (
-//     <div className="body">
-//       <div className="shape one"></div>
-//       <div className="shape two"></div>
-
-//       <div className="card">
-//         <div className="avatar">😊</div>
-
-//         <div className="title">Take Your First Step</div>
-//         <div className="subtitle">
-//           Enter your details to send your first message.
-//         </div>
-
-//         {/* Name */}
-//        {/* STEP 1 → MOBILE */}
-// {step === "mobile" && (
-//   <div className="input-group">
-//     <label>Mobile Number</label>
-//     <input
-//       type="text"
-//       placeholder="Enter mobile number"
-//       value={mobile}
-//       onChange={(e) => setMobile(e.target.value)}
-//     />
-//   </div>
-// )}
-
-// {/* STEP 2 → OTP */}
-// {step === "otp" && (
-//   <div className="input-group">
-//     <label>Enter OTP</label>
-//     <input
-//       type="text"
-//       placeholder="Enter OTP"
-//       value={otp}
-//       onChange={(e) => setOtp(e.target.value)}
-//     />
-//   </div>
-// )}
-
-// {/* STEP 3 → PROFILE */}
-// {step === "profile" && (
-//   <>
-//     <div className="input-group">
-//       <label>First Name</label>
-//       <input
-//         type="text"
-//         placeholder="Enter first name"
-//         value={firstName}
-//         onChange={(e) => setFirstName(e.target.value)}
-//       />
-//     </div>
-
-//     <div className="input-group">
-//       <label>Last Name</label>
-//       <input
-//         type="text"
-//         placeholder="Enter last name"
-//         value={lastName}
-//         onChange={(e) => setLastName(e.target.value)}
-//       />
-//     </div>
-//   </>
-// )}
-//   {step === "mobile" && (
-//   <button className="btn-login" onClick={handleSendOtp}>
-//     Send OTP
-//   </button>
-// )}
-
-// {step === "otp" && (
-//   <button className="btn-login" onClick={handleVerifyOtp}>
-//     {loading ? "Please wait..." : "Verify OTP"}
-//   </button>
-// )}
-
-// {step === "profile" && (
-//   <button className="btn-login" onClick={handleCompleteProfile}>
-//     Submit
-//   </button>
-// )}
-//       </div>
-
-//       <style jsx>{`
-//         * {
-//           margin: 0;
-//           padding: 0;
-//           box-sizing: border-box;
-//           font-family: 'Poppins', sans-serif;
-//         }
-
-//         .body {
-//           height: 100vh;
-//           display: flex;
-//           justify-content: center;
-//           align-items: center;
-//           background: linear-gradient(135deg,#89f7fe,#66a6ff,#a18cd1);
-//           overflow: hidden;
-//           position: relative;
-//         }
-
-//         .shape {
-//           position: absolute;
-//           border-radius: 50%;
-//           opacity: 0.2;
-//           animation: float 10s infinite ease-in-out;
-//         }
-
-//         .shape.one {
-//           width: 120px;
-//           height: 120px;
-//           background: #ffffff;
-//           top: 15%;
-//           left: 10%;
-//         }
-
-//         .shape.two {
-//           width: 90px;
-//           height: 90px;
-//           background: #ffdee9;
-//           bottom: 20%;
-//           right: 15%;
-//         }
-
-//         @keyframes float {
-//           0% { transform: translateY(0px); }
-//           50% { transform: translateY(-30px); }
-//           100% { transform: translateY(0px); }
-//         }
-
-//         .card {
-//           width: 420px;
-//           padding: 45px 40px;
-//           border-radius: 30px;
-//           background: rgba(255,255,255,0.2);
-//           backdrop-filter: blur(20px);
-//           box-shadow: 0 30px 80px rgba(0,0,0,0.25);
-//           color: #fff;
-//           text-align: center;
-//         }
-
-//         .avatar {
-//           width: 90px;
-//           height: 90px;
-//           border-radius: 50%;
-//           margin: 0 auto 20px;
-//           background: linear-gradient(135deg,#ff9a9e,#fad0c4);
-//           display: flex;
-//           align-items: center;
-//           justify-content: center;
-//           font-size: 38px;
-//         }
-
-//         .title {
-//           font-size: 26px;
-//           font-weight: 700;
-//           margin-bottom: 8px;
-//         }
-
-//         .subtitle {
-//           font-size: 14px;
-//           opacity: 0.9;
-//           margin-bottom: 30px;
-//         }
-
-//         .input-group {
-//           margin-bottom: 18px;
-//           text-align: left;
-//           animation: fadeDown 0.4s ease;
-//         }
-
-//         .input-group label {
-//           font-size: 13px;
-//           font-weight: 500;
-//         }
-
-//         .input-group input {
-//           width: 100%;
-//           margin-top: 6px;
-//           padding: 14px;
-//           border-radius: 14px;
-//           border: none;
-//           background: rgba(255,255,255,0.3);
-//           color: white;
-//           outline: none;
-//         }
-
-//         .input-group input::placeholder {
-//           color: rgba(255,255,255,0.8);
-//         }
-
-//         .btn-login {
-//           width: 100%;
-//           padding: 15px;
-//           border: none;
-//           border-radius: 20px;
-//           background: linear-gradient(90deg,#ff9a9e,#fad0c4);
-//           color: #333;
-//           font-weight: 600;
-//           cursor: pointer;
-//           margin-top: 10px;
-//           box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-//         }
-
-//         .footer {
-//           margin-top: 20px;
-//           font-size: 12px;
-//           opacity: 0.8;
-//         }
-
-//         @keyframes fadeDown {
-//           from {
-//             opacity: 0;
-//             transform: translateY(-10px);
-//           }
-//           to {
-//             opacity: 1;
-//             transform: translateY(0);
-//           }
-//         }
-//       `}</style>
-//     </div>
-//   );
-// }
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import BrandHeader from "../BrandHeader";
 
 export default function FirstStepLogin() {
   const router = useRouter();
   const params = useSearchParams();
   const code = params.get("code");
-
-  const [name, setName] = useState("");
-  const [showOtp, setShowOtp] = useState(false);
 
   const [step, setStep] = useState("mobile");
   const [firstName, setFirstName] = useState("");
@@ -481,25 +116,41 @@ export default function FirstStepLogin() {
 
   return (
     <div className="body">
-      <div className="shape one"></div>
-      <div className="shape two"></div>
+      <div className="bg-shape shape-one" />
+      <div className="bg-shape shape-two" />
+      <div className="bg-shape shape-three" />
+
+      <BrandHeader />
 
       <div className="card">
         <div className="avatar">😊</div>
 
-        <div className="title">Take Your First Step</div>
-        <div className="subtitle">
-          Enter your details to send your first message.
-        </div>
+        <h1 className="title">
+          {step === "mobile" && "Take Your First Step"}
+          {step === "otp" && "Enter OTP"}
+          {step === "profile" && "Complete Profile"}
+        </h1>
+
+        <p className="subtitle">
+          {step === "mobile" &&
+            "Enter your mobile number to get started."}
+          {step === "otp" &&
+            "We have sent a 6 digit OTP to your mobile."}
+          {step === "profile" &&
+            "Add your name to continue."}
+        </p>
 
         {step === "mobile" && (
           <div className="input-group">
             <label>Mobile Number</label>
             <input
-              type="text"
-              placeholder="Enter mobile number"
+              type="tel"
+              placeholder="Enter 10 digit mobile number"
               value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
+              onChange={(e) =>
+                setMobile(e.target.value.replace(/\D/g, ""))
+              }
+              maxLength={10}
             />
           </div>
         )}
@@ -511,7 +162,11 @@ export default function FirstStepLogin() {
               type="text"
               placeholder="Enter OTP"
               value={otp}
-              onChange={(e) => setOtp(e.target.value)}
+              onChange={(e) =>
+                setOtp(e.target.value.replace(/\D/g, ""))
+              }
+              maxLength={6}
+              className="otp-input"
             />
           </div>
         )}
@@ -525,6 +180,7 @@ export default function FirstStepLogin() {
                 placeholder="Enter first name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
+                className="profile-input"
               />
             </div>
 
@@ -535,36 +191,48 @@ export default function FirstStepLogin() {
                 placeholder="Enter last name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
+                className="profile-input"
               />
             </div>
           </>
         )}
 
-        {step === "mobile" && (
-          <button className="btn-login" onClick={handleSendOtp}>
-            {loading ? "Please wait..." : "Send OTP"}
-          </button>
-        )}
+        <button
+          className="btn-login"
+          onClick={
+            step === "mobile"
+              ? handleSendOtp
+              : step === "otp"
+              ? handleVerifyOtp
+              : handleCompleteProfile
+          }
+          disabled={loading}
+        >
+          {loading
+            ? step === "mobile"
+              ? "Sending..."
+              : step === "otp"
+              ? "Verifying..."
+              : "Saving..."
+            : step === "mobile"
+            ? "Send OTP"
+            : step === "otp"
+            ? "Verify OTP"
+            : "Complete Profile"}
+        </button>
 
-        {step === "otp" && (
-          <button className="btn-login" onClick={handleVerifyOtp}>
-            {loading ? "Please wait..." : "Verify OTP"}
-          </button>
-        )}
-
-        {step === "profile" && (
-          <button className="btn-login" onClick={handleCompleteProfile}>
-            {loading ? "Please wait..." : "Submit"}
-          </button>
-        )}
+        <div className="footer-note">
+          Powered by Emotion Bite
+        </div>
       </div>
 
       <style jsx>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap');
+
         * {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
-          font-family: "Poppins", sans-serif;
         }
 
         :global(html),
@@ -573,143 +241,320 @@ export default function FirstStepLogin() {
           padding: 0;
           width: 100%;
           overflow-x: hidden;
+          font-family: 'Poppins', sans-serif;
         }
 
         .body {
           min-height: 100vh;
           width: 100vw;
+          background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 50%, #a18cd1 100%);
           display: flex;
-          justify-content: center;
+          flex-direction: column;
           align-items: center;
-          background: linear-gradient(135deg, #89f7fe, #66a6ff, #a18cd1);
-          overflow: hidden;
+          justify-content: center;
           position: relative;
-          padding: 16px;
+          overflow: hidden;
+          padding: 18px 14px;
         }
 
-        .shape {
-          position: absolute;
-          border-radius: 50%;
-          opacity: 0.2;
-          animation: float 10s infinite ease-in-out;
-          pointer-events: none;
+        .brand-wrap {
+          width: 100%;
+          max-width: 410px;
+          margin: 0 auto 14px;
+          color: white;
+          z-index: 2;
+          animation: fadeDown 0.7s ease-out;
         }
 
-        .shape.one {
-          width: 120px;
-          height: 120px;
-          background: #ffffff;
-          top: 15%;
-          left: 10%;
+        .brand-top {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          justify-content: center;
         }
 
-        .shape.two {
-          width: 90px;
-          height: 90px;
-          background: #ffdee9;
-          bottom: 20%;
-          right: 15%;
+        .brand-mark {
+          width: 42px;
+          height: 42px;
+          border-radius: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+          box-shadow: 0 10px 20px rgba(255, 154, 158, 0.22);
+          animation: pulse 2.6s ease-in-out infinite;
+          flex-shrink: 0;
+          overflow: hidden;
         }
 
-        @keyframes float {
-          0% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-30px);
-          }
-          100% {
-            transform: translateY(0px);
-          }
+        .qr-logo {
+          width: 70px;
+          height: 70px;
+          object-fit: contain;
+          display: block;
+        }
+
+        .brand-text-block {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+        }
+
+        .logo {
+          font-family: 'Playfair Display', serif;
+          font-size: 24px;
+          font-weight: 600;
+          color: white;
+          line-height: 1.1;
+          letter-spacing: 0.2px;
+        }
+
+        .logo span {
+          color: #ffd6e7;
+        }
+
+        .brand-tag {
+          margin-top: 4px;
+          font-family: 'Playfair Display', serif;
+          font-size: 14px;
+          font-weight: 600;
+          letter-spacing: 0.8px;
+          background: linear-gradient(135deg, #ffd6e7, #ffffff, #ffe3ec);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+          opacity: 0.95;
+        }
+
+        .brand-line {
+          width: min(240px, 72vw);
+          height: 1px;
+          margin: 12px auto 0;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
         }
 
         .card {
-          width: min(420px, 100%);
-          padding: 45px 40px;
-          border-radius: 30px;
-          background: rgba(255, 255, 255, 0.2);
-          backdrop-filter: blur(20px);
-          box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
-          color: #fff;
-          text-align: center;
-          z-index: 2;
+          width: 100%;
+          max-width: 410px;
+          padding: 30px 24px;
+          border-radius: 24px;
+          background: rgba(255, 255, 255, 0.16);
+          backdrop-filter: blur(18px);
+          box-shadow: 0 20px 55px rgba(0, 0, 0, 0.18);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: white;
           position: relative;
+          z-index: 2;
+          animation: cardIn 0.8s ease-out;
         }
 
         .avatar {
-          width: 90px;
-          height: 90px;
+          width: 72px;
+          height: 72px;
           border-radius: 50%;
-          margin: 0 auto 20px;
-          background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+          margin: 0 auto 14px;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 38px;
+          font-size: 30px;
+          background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+          box-shadow: 0 10px 22px rgba(255, 154, 158, 0.28);
+          animation: pulse 2.6s ease-in-out infinite;
         }
 
         .title {
-          font-size: 26px;
-          font-weight: 700;
+          font-family: 'Playfair Display', serif;
+          font-size: 22px;
+          font-weight: 500;
+          text-align: center;
           margin-bottom: 8px;
+          line-height: 1.25;
+          text-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
         }
 
         .subtitle {
-          font-size: 14px;
-          opacity: 0.9;
-          margin-bottom: 30px;
+          font-size: 13px;
+          text-align: center;
+          color: rgba(255, 255, 255, 0.9);
+          margin-bottom: 20px;
           line-height: 1.6;
+          font-weight: 400;
         }
 
         .input-group {
-          margin-bottom: 18px;
-          text-align: left;
-          animation: fadeDown 0.4s ease;
+          margin-bottom: 14px;
+          animation: fadeUp 0.35s ease;
         }
 
         .input-group label {
-          font-size: 13px;
+          display: block;
+          margin-bottom: 6px;
+          font-size: 12px;
           font-weight: 500;
+          color: rgba(255, 255, 255, 0.96);
+          letter-spacing: 0.2px;
         }
 
         .input-group input {
           width: 100%;
-          margin-top: 6px;
-          padding: 14px;
-          border-radius: 14px;
+          padding: 13px 14px;
           border: none;
-          background: rgba(255, 255, 255, 0.3);
-          color: white;
           outline: none;
+          border-radius: 14px;
+          background: rgba(255, 255, 255, 0.95);
+          color: #1d1d1d;
+          font-size: 14px;
+          font-family: 'Poppins', sans-serif;
+          transition: all 0.25s ease;
         }
 
         .input-group input::placeholder {
-          color: rgba(255, 255, 255, 0.8);
+          color: #787878;
+        }
+
+        .input-group input:focus {
+          transform: translateY(-1px);
+          box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.22);
+        }
+
+        .otp-input {
+          letter-spacing: 5px;
+          font-weight: 500;
+          text-align: center;
+          background: rgba(255, 255, 255, 1) !important;
+          color: #111 !important;
+        }
+
+        .profile-input {
+          font-weight: 400;
+          background: rgba(255, 255, 255, 0.97) !important;
+          color: #111 !important;
         }
 
         .btn-login {
           width: 100%;
-          padding: 15px;
+          padding: 14px;
           border: none;
-          border-radius: 20px;
-          background: linear-gradient(90deg, #ff9a9e, #fad0c4);
-          color: #333;
-          font-weight: 600;
+          border-radius: 16px;
+          background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+          color: #2a2a2a;
+          font-size: 14px;
+          font-weight: 500;
           cursor: pointer;
-          margin-top: 10px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+          margin-top: 8px;
+          box-shadow: 0 10px 22px rgba(0, 0, 0, 0.16);
+          transition: all 0.25s ease;
+          letter-spacing: 0.2px;
         }
 
-        .footer {
-          margin-top: 20px;
-          font-size: 12px;
-          opacity: 0.8;
+        .btn-login:hover:not(:disabled) {
+          transform: translateY(-2px);
+          box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
         }
 
-        @keyframes fadeDown {
+        .btn-login:disabled {
+          opacity: 0.75;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        .footer-note {
+          margin-top: 14px;
+          text-align: center;
+          font-size: 11px;
+          color: rgba(255, 255, 255, 0.82);
+          font-weight: 400;
+        }
+
+        .bg-shape {
+          position: absolute;
+          border-radius: 50%;
+          opacity: 0.16;
+          filter: blur(2px);
+        }
+
+        .shape-one {
+          width: 110px;
+          height: 110px;
+          background: white;
+          top: 10%;
+          left: 8%;
+          animation: float 12s infinite ease-in-out;
+        }
+
+        .shape-two {
+          width: 80px;
+          height: 80px;
+          background: #ffd6e7;
+          bottom: 14%;
+          right: 10%;
+          animation: float 14s infinite ease-in-out reverse;
+        }
+
+        .shape-three {
+          width: 62px;
+          height: 62px;
+          background: #ffffff;
+          top: 65%;
+          left: 20%;
+          animation: float 10s infinite ease-in-out;
+        }
+
+        .loading-screen {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 50%, #a18cd1 100%);
+          color: white;
+        }
+
+        .loading-title {
+          font-family: 'Playfair Display', serif;
+          font-size: 20px;
+          font-weight: 500;
+          margin-top: 6px;
+        }
+
+        .loader {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          border: 4px solid rgba(255, 255, 255, 0.25);
+          border-top-color: white;
+          animation: spin 1s linear infinite;
+          margin-bottom: 16px;
+        }
+
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) scale(1); }
+          50% { transform: translateY(-20px) scale(1.03); }
+        }
+
+        @keyframes pulse {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.05); }
+        }
+
+        @keyframes cardIn {
           from {
             opacity: 0;
-            transform: translateY(-10px);
+            transform: translateY(20px) scale(0.99);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        @keyframes fadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(8px);
           }
           to {
             opacity: 1;
@@ -717,85 +562,55 @@ export default function FirstStepLogin() {
           }
         }
 
-        @media (max-width: 768px) {
-          .body {
-            padding: 14px;
+        @keyframes fadeDown {
+          from {
+            opacity: 0;
+            transform: translateY(-8px);
           }
-
-          .card {
-            padding: 36px 26px;
-            border-radius: 24px;
+          to {
+            opacity: 1;
+            transform: translateY(0);
           }
+        }
 
-          .title {
-            font-size: 24px;
-          }
-
-          .subtitle {
-            font-size: 13px;
-            margin-bottom: 24px;
-          }
-
-          .avatar {
-            width: 80px;
-            height: 80px;
-            font-size: 34px;
-          }
-
-          .shape.one {
-            width: 90px;
-            height: 90px;
-          }
-
-          .shape.two {
-            width: 70px;
-            height: 70px;
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
           }
         }
 
         @media (max-width: 480px) {
           .body {
-            padding: 12px;
+            padding: 16px 12px;
           }
 
+          .brand-wrap,
           .card {
-            padding: 28px 18px;
-            border-radius: 22px;
+            max-width: 100%;
+          }
+
+          .logo {
+            font-size: 22px;
           }
 
           .title {
-            font-size: 22px;
+            font-size: 20px;
           }
 
           .subtitle {
             font-size: 12px;
-            margin-bottom: 20px;
-          }
-
-          .avatar {
-            width: 72px;
-            height: 72px;
-            font-size: 30px;
           }
 
           .input-group input {
-            padding: 12px;
-            font-size: 13px;
-          }
-
-          .btn-login {
-            padding: 13px;
             font-size: 14px;
           }
 
-          .shape.one {
-            top: 10%;
-            left: 4%;
+          .otp-input {
+            letter-spacing: 4px;
           }
 
-          .shape.two {
-            bottom: 10%;
-            right: 6%;
+          .btn-login {
+            font-size: 13px;
           }
         }
       `}</style>

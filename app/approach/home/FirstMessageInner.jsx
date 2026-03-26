@@ -1,675 +1,27 @@
-// "use client";
-
-// import { useState } from "react";
-// import { useRouter } from "next/navigation";
-// import { useSearchParams } from "next/navigation";
-// import { useEffect } from "react";
-
-// export default function FirstMessage() {
-//   const [message, setMessage] = useState("");
-//   const [toastVisible, setToastVisible] = useState(false);
-//   const router = useRouter();
-//   const params = useSearchParams();
-// const code = params.get("code");
-// const token =
-//   typeof window !== "undefined"
-//     ? localStorage.getItem("token")
-//     : null;
-//   const moods = ["😊 Friendly", "😄 Playful", "✨ Thoughtful", "💬 Direct"];
-//   const suggestions = [
-//     "Hi! I noticed we both love traveling. What's your favorite destination?",
-//     "Hey! If you could describe your perfect weekend, what would it look like?",
-//     "Hello 😊 What's something you're really passionate about?",
-//   ];
-
-//   const fillText = (text) => {
-//     setMessage(text);
-//   };
-
-//   const setMood = (mood) => {
-//     setMessage(`Mood: ${mood}\n\n`);
-//   };
-
-// // const sendMessage = async () => {
-// //   if (message.trim() === "") {
-// //     alert("Write your message before sending 😊");
-// //     return;
-// //   }
-
-// //   try {
-// //     await fetch("http://localhost:5000/api/message/send", {
-// //   method: "POST",
-// //   headers: {
-// //     "Content-Type": "application/json"
-// //   },
-// //   body: JSON.stringify({
-// //     code,
-// //     user_id,
-// //     receiver_name,
-// //     message_text: message
-// //   })
-// // });
-
-// //     const data = await res.json();
-
-// //     if (!res.ok) {
-// //       alert(data.error || "Failed to send message");
-// //       return;
-// //     }
-
-// //     setToastVisible(true);
-// //     setTimeout(() => setToastVisible(false), 2500);
-
-// //     router.push(`/approach/greet?code=${code}`);
-// //   } catch (err) {
-// //     console.error(err);
-// //     alert("Server error");
-// //   }
-// // };
-
-// const sendMessage = async () => {
-//   if (message.trim() === "") {
-//     alert("Write your message");
-//     return;
-//   }
-
-//   try {
-//     const token = localStorage.getItem("token"); // ✅ IMPORTANT
-
-//     const res = await fetch("/api/messages/save", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         Authorization: `Bearer ${token}`, // ✅ TOKEN BASED
-//       },
-//       body: JSON.stringify({
-//         qrCode: code,
-//         receiverName: "Receiver",
-//         receiverMobile: "1234567890",
-//         senderName: localStorage.getItem("sender_name"),
-//         senderMobile: localStorage.getItem("sender_mobile"),
-//         messageText: message,
-//         imageUrl: "",
-//         videoUrl: "",
-//         audioUrl: "https://www.instagram.com/beingsalmankhan?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==",
-//       }),
-//     });
-
-//     const data = await res.json();
-
-//     if (!res.ok) {
-//       alert(data.message || "Failed to send message");
-//       return;
-//     }
-
-//     setToastVisible(true);
-//     setTimeout(() => setToastVisible(false), 2000);
-
-//     router.push(`/approach/greet?code=${code}`);
-//   } catch (err) {
-//     console.error(err);
-//     alert("Server error");
-//   }
-// };
-
-
-// useEffect(() => {
-//   if (!code) return;
-
-//   const token = localStorage.getItem("token");
-
-//   if (!token) {
-//     router.push(`/approach/login?code=${code}`);
-//   }
-// }, [code]);
-//   const floatingShapes = [
-//     { className: "one", style: { width: "100px", height: "100px", background: "#ffffff", top: "15%", left: "10%" } },
-//     { className: "two", style: { width: "80px", height: "80px", background: "#ffdee9", bottom: "20%", right: "15%" } },
-//   ];
-
-//   return (
-//     <div
-//       style={{
-//         fontFamily: "'Poppins', sans-serif",
-//         background: "linear-gradient(180deg,#89f7fe,#66a6ff,#a18cd1)",
-//         minHeight: "100vh",
-//         padding: "25px 20px 40px",
-//         color: "white",
-//         position: "relative",
-//         overflowX: "hidden",
-//       }}
-//     >
-//       {/* Floating shapes */}
-//       {floatingShapes.map((shape, idx) => (
-//         <div
-//           key={idx}
-//           style={{
-//             position: "absolute",
-//             borderRadius: "50%",
-//             opacity: 0.15,
-//             animation: "float 12s infinite ease-in-out",
-//             ...shape.style,
-//           }}
-//         />
-//       ))}
-
-//       {/* Header */}
-//       <div style={{ marginTop: "20px", marginBottom: "30px" }}>
-//         <h1 style={{ fontSize: "26px", fontWeight: 700 }}>Say Hello 👋</h1>
-//         <p style={{ fontSize: "14px", marginTop: "8px", opacity: 0.9, lineHeight: 1.6 }}>
-//           Your first message sets the tone. Make it warm, real, and memorable.
-//         </p>
-//       </div>
-
-//       {/* Mood Selector */}
-//       <div style={{ display: "flex", gap: "10px", overflowX: "auto", marginBottom: "25px" }}>
-//         {moods.map((mood, idx) => (
-//           <div
-//             key={idx}
-//             onClick={() => setMood(mood)}
-//             style={{
-//               minWidth: "120px",
-//               padding: "10px 15px",
-//               borderRadius: "25px",
-//               background: "rgba(255,255,255,0.25)",
-//               fontSize: "13px",
-//               textAlign: "center",
-//               cursor: "pointer",
-//               transition: "0.3s",
-//             }}
-//           >
-//             {mood}
-//           </div>
-//         ))}
-//       </div>
-
-//       {/* Message Box */}
-//       <textarea
-//         value={message}
-//         onChange={(e) => setMessage(e.target.value)}
-//         placeholder="Write your first message here..."
-//         style={{
-//           width: "100%",
-//           height: "130px",
-//           padding: "15px",
-//           borderRadius: "18px",
-//           border: "none",
-//           resize: "none",
-//           outline: "none",
-//           fontSize: "14px",
-//           color: "#333",
-//         }}
-//       />
-
-//       {/* Suggestions */}
-//       <div style={{ marginTop: "20px" }}>
-//         {suggestions.map((sugg, idx) => (
-//           <div
-//             key={idx}
-//             onClick={() => fillText(sugg)}
-//             style={{
-//               background: "rgba(255,255,255,0.2)",
-//               padding: "12px",
-//               borderRadius: "18px",
-//               fontSize: "13px",
-//               marginBottom: "10px",
-//               cursor: "pointer",
-//               transition: "0.3s",
-//             }}
-//           >
-//             {sugg}
-//           </div>
-//         ))}
-//       </div>
-
-//       {/* Extras */}
-//       {/* <div style={{ marginTop: "25px" }}>
-//         <label style={{ fontSize: "13px" }}>Add a Voice Intro 🎙</label>
-//         <input
-//           type="file"
-//           accept="audio/*"
-//           style={{
-//             width: "100%",
-//             padding: "12px",
-//             borderRadius: "15px",
-//             border: "none",
-//             background: "rgba(255,255,255,0.85)",
-//             marginTop: "5px",
-//           }}
-//         />
-//       </div> */}
-
-//       {/* Send Button */}
-//       <button
-//         onClick={sendMessage}
-//         style={{
-//           width: "100%",
-//           marginTop: "30px",
-//           padding: "16px",
-//           border: "none",
-//           borderRadius: "25px",
-//           background: "linear-gradient(90deg,#ff9a9e,#fad0c4)",
-//           color: "#333",
-//           fontWeight: 600,
-//           fontSize: "15px",
-//           cursor: "pointer",
-//           boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
-//           transition: "0.3s",
-//         }}
-//       >
-//         Send First Step 🚀
-//       </button>
-
-//       {/* Toast */}
-//       {toastVisible && (
-//         <div
-//           style={{
-//             position: "fixed",
-//             bottom: "20px",
-//             left: "50%",
-//             transform: "translateX(-50%)",
-//             background: "white",
-//             color: "#66a6ff",
-//             padding: "12px 22px",
-//             borderRadius: "30px",
-//             fontSize: "13px",
-//             boxShadow: "0 8px 25px rgba(0,0,0,0.3)",
-//           }}
-//         >
-//           🎉 Your first message has been sent!
-//         </div>
-//       )}
-
-//       <style jsx>{`
-//         @keyframes float {
-//           0% {
-//             transform: translateY(0px);
-//           }
-//           50% {
-//             transform: translateY(-25px);
-//           }
-//           100% {
-//             transform: translateY(0px);
-//           }
-//         }
-//       `}</style>
-//     </div>
-//   );
-// }
-
-
-
-// "use client";
-
-// import { useState, useEffect } from "react";
-// import { useRouter, useSearchParams } from "next/navigation";
-
-// export default function FirstMessage() {
-//   const [message, setMessage] = useState("");
-//   const [toastVisible, setToastVisible] = useState(false);
-//   const router = useRouter();
-//   const params = useSearchParams();
-//   const code = params.get("code");
-
-//   const token =
-//     typeof window !== "undefined" ? localStorage.getItem("token") : null;
-
-//   const moods = ["😊 Friendly", "😄 Playful", "✨ Thoughtful", "💬 Direct"];
-//   const suggestions = [
-//     "Hi! I noticed we both love traveling. What's your favorite destination?",
-//     "Hey! If you could describe your perfect weekend, what would it look like?",
-//     "Hello 😊 What's something you're really passionate about?",
-//   ];
-
-//   const fillText = (text) => {
-//     setMessage(text);
-//   };
-
-//   const setMood = (mood) => {
-//     setMessage(`Mood: ${mood}\n\n`);
-//   };
-
-//   const sendMessage = async () => {
-//     if (message.trim() === "") {
-//       alert("Write your message");
-//       return;
-//     }
-
-//     try {
-//       const token = localStorage.getItem("token");
-
-//       const res = await fetch("/api/messages/save", {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `Bearer ${token}`,
-//         },
-//         body: JSON.stringify({
-//           qrCode: code,
-//           receiverName: "Receiver",
-//           receiverMobile: "1234567890",
-//           senderName: localStorage.getItem("sender_name"),
-//           senderMobile: localStorage.getItem("sender_mobile"),
-//           messageText: message,
-//           imageUrl: "",
-//           videoUrl: "",
-//           audioUrl:"",
-//         }),
-//       });
-
-//       const data = await res.json();
-
-//       if (!res.ok) {
-//         alert(data.message || "Failed to send message");
-//         return;
-//       }
-
-//       setToastVisible(true);
-//       setTimeout(() => setToastVisible(false), 2000);
-
-//       router.push(`/approach/greet?code=${code}`);
-//     } catch (err) {
-//       console.error(err);
-//       alert("Server error");
-//     }
-//   };
-
-//   useEffect(() => {
-//     if (!code) return;
-
-//     const token = localStorage.getItem("token");
-
-//     if (!token) {
-//       router.push(`/approach/login?code=${code}`);
-//     }
-//   }, [code, router]);
-
-//   const floatingShapes = [
-//     {
-//       className: "one",
-//       style: {
-//         width: "100px",
-//         height: "100px",
-//         background: "#ffffff",
-//         top: "15%",
-//         left: "10%",
-//       },
-//     },
-//     {
-//       className: "two",
-//       style: {
-//         width: "80px",
-//         height: "80px",
-//         background: "#ffdee9",
-//         bottom: "20%",
-//         right: "15%",
-//       },
-//     },
-//   ];
-
-//   return (
-//     <div className="body">
-//       <div className="page-wrap">
-//         {floatingShapes.map((shape, idx) => (
-//           <div
-//             key={idx}
-//             style={{
-//               position: "absolute",
-//               borderRadius: "50%",
-//               opacity: 0.15,
-//               animation: "float 12s infinite ease-in-out",
-//               pointerEvents: "none",
-//               ...shape.style,
-//             }}
-//           />
-//         ))}
-
-//         <div className="content">
-//           <div style={{ marginTop: "20px", marginBottom: "30px" }}>
-//             <h1 style={{ fontSize: "26px", fontWeight: 700 }}>Say Hello 👋</h1>
-//             <p style={{ fontSize: "14px", marginTop: "8px", opacity: 0.9, lineHeight: 1.6 }}>
-//               Your first message sets the tone. Make it warm, real, and memorable.
-//             </p>
-//           </div>
-
-//           <div className="mood-row">
-//             {moods.map((mood, idx) => (
-//               <div
-//                 key={idx}
-//                 onClick={() => setMood(mood)}
-//                 className="mood-pill"
-//               >
-//                 {mood}
-//               </div>
-//             ))}
-//           </div>
-
-//           <textarea
-//             value={message}
-//             onChange={(e) => setMessage(e.target.value)}
-//             placeholder="Write your first message here..."
-//             style={{
-//               width: "100%",
-//               height: "130px",
-//               padding: "15px",
-//               borderRadius: "18px",
-//               border: "none",
-//               resize: "none",
-//               outline: "none",
-//               fontSize: "14px",
-//               color: "#333",
-//               boxSizing: "border-box",
-//             }}
-//           />
-
-//           <div style={{ marginTop: "20px" }}>
-//             {suggestions.map((sugg, idx) => (
-//               <div
-//                 key={idx}
-//                 onClick={() => fillText(sugg)}
-//                 className="suggestion-box"
-//               >
-//                 {sugg}
-//               </div>
-//             ))}
-//           </div>
-
-//           <button
-//             onClick={sendMessage}
-//             className="send-btn"
-//           >
-//             Send First Step 🚀
-//           </button>
-
-//           {toastVisible && (
-//             <div className="toast">
-//               🎉 Your first message has been sent!
-//             </div>
-//           )}
-//         </div>
-//       </div>
-
-//       <style jsx>{`
-//         * {
-//           margin: 0;
-//           padding: 0;
-//           box-sizing: border-box;
-//           font-family: "Poppins", sans-serif;
-//         }
-
-//         :global(html),
-//         :global(body) {
-//           margin: 0;
-//           padding: 0;
-//           width: 100%;
-//           overflow-x: hidden;
-//         }
-
-//         .body {
-//           min-height: 100vh;
-//           width: 100vw;
-//           padding: 25px 20px 40px;
-//           color: white;
-//           position: relative;
-//           overflow-x: hidden;
-//           background: linear-gradient(180deg, #89f7fe, #66a6ff, #a18cd1);
-//           box-sizing: border-box;
-//         }
-
-//         .page-wrap {
-//           width: 100%;
-//           max-width: 620px;
-//           margin: 0 auto;
-//           position: relative;
-//           min-height: calc(100vh - 65px);
-//         }
-
-//         .content {
-//           position: relative;
-//           z-index: 2;
-//         }
-
-//         .mood-row {
-//           display: flex;
-//           gap: 10px;
-//           overflow-x: auto;
-//           margin-bottom: 25px;
-//           padding-bottom: 5px;
-//           -webkit-overflow-scrolling: touch;
-//         }
-
-//         .mood-pill {
-//           min-width: 120px;
-//           padding: 10px 15px;
-//           border-radius: 25px;
-//           background: rgba(255, 255, 255, 0.25);
-//           font-size: 13px;
-//           text-align: center;
-//           cursor: pointer;
-//           transition: 0.3s;
-//           flex-shrink: 0;
-//         }
-
-//         .suggestion-box {
-//           background: rgba(255, 255, 255, 0.2);
-//           padding: 12px;
-//           border-radius: 18px;
-//           font-size: 13px;
-//           margin-bottom: 10px;
-//           cursor: pointer;
-//           transition: 0.3s;
-//         }
-
-//         .send-btn {
-//           width: 100%;
-//           margin-top: 30px;
-//           padding: 16px;
-//           border: none;
-//           border-radius: 25px;
-//           background: linear-gradient(90deg, #ff9a9e, #fad0c4);
-//           color: #333;
-//           font-weight: 600;
-//           font-size: 15px;
-//           cursor: pointer;
-//           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-//           transition: 0.3s;
-//         }
-
-//         .toast {
-//           position: fixed;
-//           bottom: 20px;
-//           left: 50%;
-//           transform: translateX(-50%);
-//           background: white;
-//           color: #66a6ff;
-//           padding: 12px 22px;
-//           border-radius: 30px;
-//           font-size: 13px;
-//           box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-//           max-width: calc(100vw - 32px);
-//           text-align: center;
-//           z-index: 50;
-//         }
-
-//         @keyframes float {
-//           0% {
-//             transform: translateY(0px);
-//           }
-//           50% {
-//             transform: translateY(-25px);
-//           }
-//           100% {
-//             transform: translateY(0px);
-//           }
-//         }
-
-//         @media (max-width: 768px) {
-//           .body {
-//             padding: 18px 14px 30px;
-//           }
-
-//           .page-wrap {
-//             min-height: calc(100vh - 48px);
-//           }
-
-//           .mood-pill {
-//             min-width: 110px;
-//           }
-
-//           .suggestion-box {
-//             font-size: 12.5px;
-//           }
-//         }
-
-//         @media (max-width: 480px) {
-//           .body {
-//             padding: 14px 12px 24px;
-//           }
-
-//           h1 {
-//             font-size: 24px !important;
-//           }
-
-//           .mood-pill {
-//             min-width: 105px;
-//             padding: 9px 12px;
-//             font-size: 12px;
-//           }
-
-//           .suggestion-box {
-//             padding: 11px;
-//             font-size: 12px;
-//           }
-
-//           textarea {
-//             height: 120px !important;
-//           }
-//         }
-//       `}</style>
-//     </div>
-//   );
-// }
 "use client";
 
+import BrandHeader from "../BrandHeader";
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export default function FirstMessage() {
   const [message, setMessage] = useState("");
-  const [instagramUsername, setInstagramUsername] = useState(""); // ✅ New state
+  const [instagramUsername, setInstagramUsername] = useState("");
   const [toastVisible, setToastVisible] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const params = useSearchParams();
   const code = params.get("code");
-
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const user_id =
+    typeof window !== "undefined" ? localStorage.getItem("user_id") : null;
 
   const moods = ["😊 Friendly", "😄 Playful", "✨ Thoughtful", "💬 Direct"];
   const suggestions = [
-    "Hi! I noticed we both love traveling. What's your favorite destination?",
-    "Hey! If you could describe your perfect weekend, what would it look like?",
-    "Hello 😊 What's something you're really passionate about?",
+    "Hey 😊 I saw your profile and felt like saying hi. How’s your day going?",
+    "Hi! You seem interesting… what’s something that always makes you smile?",
+    "Hey 👋 If we met randomly, what would be the first thing you’d say to me?",
+    "Hello! What’s one thing you absolutely love doing in your free time?",
+    "Hey 😊 I don’t usually do this, but you seem worth a conversation.",
   ];
 
   const fillText = (text) => {
@@ -688,8 +40,6 @@ export default function FirstMessage() {
 
     try {
       const token = localStorage.getItem("token");
-
-      // ✅ Format Instagram URL automatically
       const instagramUrl = instagramUsername.trim()
         ? `https://www.instagram.com/${instagramUsername.trim()}`
         : "";
@@ -710,7 +60,7 @@ export default function FirstMessage() {
           imageUrl: "",
           videoUrl: "",
           audioUrl: "",
-          instagramUrl: instagramUrl, // ✅ Send formatted URL to backend
+          instagramUrl: instagramUrl,
         }),
       });
 
@@ -723,7 +73,6 @@ export default function FirstMessage() {
 
       setToastVisible(true);
       setTimeout(() => setToastVisible(false), 2000);
-
       router.push(`/approach/greet?code=${code}`);
     } catch (err) {
       console.error(err);
@@ -732,60 +81,71 @@ export default function FirstMessage() {
   };
 
   useEffect(() => {
-    if (!code) return;
+    setMounted(true);
+    document.body.style.margin = "0";
+    document.body.style.padding = "0";
+    document.body.style.overflowX = "hidden";
 
-    const token = localStorage.getItem("token");
-
-    if (!token) {
+    if (!user_id) {
       router.push(`/approach/login?code=${code}`);
     }
-  }, [code, router]);
 
-  const floatingShapes = [
-    {
-      className: "one",
-      style: {
-        width: "100px",
-        height: "100px",
-        background: "#ffffff",
-        top: "15%",
-        left: "10%",
-      },
-    },
-    {
-      className: "two",
-      style: {
-        width: "80px",
-        height: "80px",
-        background: "#ffdee9",
-        bottom: "20%",
-        right: "15%",
-      },
-    },
-  ];
+    return () => {
+      document.body.style.margin = "";
+      document.body.style.padding = "";
+      document.body.style.overflowX = "";
+    };
+  }, [code, router, user_id]);
+
+  if (!mounted) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          width: "100vw",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          background: "linear-gradient(180deg, #89f7fe, #66a6ff, #a18cd1)",
+          padding: "20px",
+          fontFamily: "'Poppins', sans-serif",
+          color: "white",
+        }}
+      >
+        <div
+          style={{
+            width: "50px",
+            height: "50px",
+            border: "3px solid rgba(255,255,255,0.3)",
+            borderTop: "3px solid white",
+            borderRadius: "50%",
+            animation: "spin 1s linear infinite",
+            marginBottom: "20px",
+          }}
+        />
+        <h2 style={{ fontSize: "20px", fontWeight: 600 }}>
+          Loading Emotion Bite...
+        </h2>
+      </div>
+    );
+  }
 
   return (
     <div className="body">
-      <div className="page-wrap">
-        {floatingShapes.map((shape, idx) => (
-          <div
-            key={idx}
-            style={{
-              position: "absolute",
-              borderRadius: "50%",
-              opacity: 0.15,
-              animation: "float 12s infinite ease-in-out",
-              pointerEvents: "none",
-              ...shape.style,
-            }}
-          />
-        ))}
+      <div className="bg-shape shape-one" />
+      <div className="bg-shape shape-two" />
+      <div className="bg-shape shape-three" />
 
+      <BrandHeader />
+
+      <div className="card">
         <div className="content">
-          <div style={{ marginTop: "20px", marginBottom: "30px" }}>
-            <h1 style={{ fontSize: "26px", fontWeight: 700 }}>Say Hello 👋</h1>
-            <p style={{ fontSize: "14px", marginTop: "8px", opacity: 0.9, lineHeight: 1.6 }}>
-              Your first message sets the tone. Make it warm, real, and memorable.
+          <div className="hero-section">
+            <h1>Say Hello 👋</h1>
+            <p>
+              Your first message sets the tone. Make it warm, real, and
+              memorable.
             </p>
           </div>
 
@@ -793,8 +153,8 @@ export default function FirstMessage() {
             {moods.map((mood, idx) => (
               <div
                 key={idx}
-                onClick={() => setMood(mood)}
                 className="mood-pill"
+                onClick={() => setMood(mood)}
               >
                 {mood}
               </div>
@@ -805,51 +165,51 @@ export default function FirstMessage() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Write your first message here..."
-            style={{
-              width: "100%",
-              height: "130px",
-              padding: "15px",
-              borderRadius: "18px",
-              border: "none",
-              resize: "none",
-              outline: "none",
-              fontSize: "14px",
-              color: "#333",
-              boxSizing: "border-box",
-            }}
+            className="message-input"
           />
 
-          {/* ✅ NEW INSTAGRAM FIELD */}
           <div className="instagram-section">
-            <label className="field-label">📸 Instagram (optional)</label>
-            <div className="input-wrapper">
-              <span className="prefix">instagram.com/</span>
+            <div className="insta-header">
+              <div className="insta-icon">
+                <img src="/image1.png" alt="Instagram" />
+              </div>
+              <div>
+                <h3>Stay Connected</h3>
+                <p>Let them find you beyond this moment</p>
+              </div>
+            </div>
+
+            <div className="insta-input-box">
+              <span>@</span>
               <input
                 type="text"
                 value={instagramUsername}
                 onChange={(e) => setInstagramUsername(e.target.value)}
-                placeholder="yourusername"
-                className="instagram-input"
+                placeholder="your_username"
               />
             </div>
+
+            {instagramUsername && (
+              <div className="insta-preview">
+                🔗 instagram.com/{instagramUsername}
+              </div>
+            )}
           </div>
 
-          <div style={{ marginTop: "20px" }}>
+          <div className="suggestions-title">Need ideas? ✨</div>
+          <div className="suggestions">
             {suggestions.map((sugg, idx) => (
               <div
                 key={idx}
-                onClick={() => fillText(sugg)}
                 className="suggestion-box"
+                onClick={() => fillText(sugg)}
               >
                 {sugg}
               </div>
             ))}
           </div>
 
-          <button
-            onClick={sendMessage}
-            className="send-btn"
-          >
+          <button onClick={sendMessage} className="send-btn">
             Send First Step 🚀
           </button>
 
@@ -862,6 +222,8 @@ export default function FirstMessage() {
       </div>
 
       <style jsx>{`
+        @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap");
+
         * {
           margin: 0;
           padding: 0;
@@ -880,20 +242,35 @@ export default function FirstMessage() {
         .body {
           min-height: 100vh;
           width: 100vw;
-          padding: 25px 20px 40px;
+          background: linear-gradient(
+            135deg,
+            #89f7fe 0%,
+            #66a6ff 50%,
+            #a18cd1 100%
+          );
           color: white;
           position: relative;
           overflow-x: hidden;
-          background: linear-gradient(180deg, #89f7fe, #66a6ff, #a18cd1);
-          box-sizing: border-box;
+          padding: 18px 14px 32px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
         }
 
-        .page-wrap {
+        .card {
           width: 100%;
-          max-width: 620px;
-          margin: 0 auto;
+          max-width: 600px;
+          padding: 26px 20px 28px;
+          border-radius: 24px;
+          background: rgba(255, 255, 255, 0.16);
+          backdrop-filter: blur(18px);
+          box-shadow: 0 20px 55px rgba(0, 0, 0, 0.18);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: white;
           position: relative;
-          min-height: calc(100vh - 65px);
+          z-index: 2;
+          animation: cardIn 0.8s ease-out;
         }
 
         .content {
@@ -901,146 +278,287 @@ export default function FirstMessage() {
           z-index: 2;
         }
 
-        .mood-row {
-          display: flex;
-          gap: 10px;
-          overflow-x: auto;
-          margin-bottom: 25px;
-          padding-bottom: 5px;
-          -webkit-overflow-scrolling: touch;
-        }
-
-        .mood-pill {
-          min-width: 120px;
-          padding: 10px 15px;
-          border-radius: 25px;
-          background: rgba(255, 255, 255, 0.25);
-          font-size: 13px;
-          text-align: center;
-          cursor: pointer;
-          transition: 0.3s;
-          flex-shrink: 0;
-        }
-
-        .mood-pill:hover {
-          background: rgba(255, 255, 255, 0.35);
-          transform: translateY(-2px);
-        }
-
-        /* ✅ NEW INSTAGRAM STYLES */
-        .instagram-section {
-          margin-top: 25px;
-          margin-bottom: 20px;
-        }
-
-        .field-label {
-          display: block;
-          font-size: 13px;
-          margin-bottom: 8px;
+        .suggestions-title {
+          font-size: 14px;
+          margin: 18px 0 10px;
           opacity: 0.9;
           font-weight: 500;
         }
 
-        .input-wrapper {
-          position: relative;
+        .suggestion-box {
+          cursor: pointer;
+          transition: all 0.25s ease;
+        }
+
+        .suggestion-box:active {
+          transform: scale(0.97);
+        }
+
+        .hero-section {
+          text-align: center;
+          margin-bottom: 24px;
+        }
+
+        .hero-section h1 {
+          font-size: 24px;
+          font-weight: 700;
+          margin-bottom: 10px;
+          line-height: 1.2;
+        }
+
+        .hero-section p {
+          font-size: 14px;
+          opacity: 0.9;
+          line-height: 1.6;
+        }
+
+        .mood-row {
+          display: flex;
+          gap: 12px;
+          overflow-x: auto;
+          margin-bottom: 24px;
+          padding-bottom: 8px;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+
+        .mood-row::-webkit-scrollbar {
+          display: none;
+        }
+
+        .mood-pill {
+          min-width: 120px;
+          padding: 12px 16px;
+          border-radius: 25px;
+          background: rgba(255, 255, 255, 0.25);
+          font-size: 13px;
+          text-align: center;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          flex-shrink: 0;
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .mood-pill:hover {
+          background: rgba(255, 255, 255, 0.35);
+          transform: translateY(-3px);
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .message-input {
+          width: 100%;
+          height: 140px;
+          padding: 18px;
+          border-radius: 20px;
+          border: none;
+          resize: none;
+          outline: none;
+          font-size: 15px;
+          color: #333;
+          background: rgba(255, 255, 255, 0.25);
+          backdrop-filter: blur(15px);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          line-height: 1.5;
+          font-family: inherit;
+        }
+
+        .message-input::placeholder {
+          color: rgba(51, 51, 51, 0.6);
+        }
+
+        .message-input:focus {
+          background: rgba(255, 255, 255, 0.35);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .instagram-section {
+          margin: 28px 0;
+          padding: 18px;
+          border-radius: 22px;
+          background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.25),
+            rgba(255, 255, 255, 0.1)
+          );
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          backdrop-filter: blur(16px);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .insta-header {
           display: flex;
           align-items: center;
-          background: rgba(255, 255, 255, 0.25);
-          border-radius: 18px;
+          gap: 12px;
+          margin-bottom: 14px;
+        }
+
+        .insta-icon {
+          width: 42px;
+          height: 42px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: white;
+          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
           overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .prefix {
-          padding: 0 15px;
-          background: rgba(255, 255, 255, 0.15);
-          font-size: 13px;
-          color: rgba(255, 255, 255, 0.9);
-          white-space: nowrap;
+        .insta-icon img {
+          width: 26px;
+          height: 26px;
+          object-fit: contain;
         }
 
-        .instagram-input {
-          flex: 1;
-          padding: 15px;
+        .insta-header h3 {
+          font-size: 15px;
+          font-weight: 600;
+        }
+
+        .insta-header p {
+          font-size: 12px;
+          opacity: 0.85;
+        }
+
+        .insta-input-box {
+          display: flex;
+          align-items: center;
+          background: white;
+          border-radius: 14px;
+          padding: 10px 14px;
+          gap: 8px;
+        }
+
+        .insta-input-box span {
+          color: #888;
+          font-weight: 600;
+        }
+
+        .insta-input-box input {
           border: none;
           outline: none;
-          background: transparent;
-          color: #333;
+          flex: 1;
           font-size: 14px;
-          width: 100%;
         }
 
-        .instagram-input::placeholder {
-          color: rgba(51, 51, 51, 0.6);
+        .insta-preview {
+          margin-top: 10px;
+          font-size: 12px;
+          opacity: 0.9;
+        }
+
+        .suggestions {
+          margin-top: 16px;
         }
 
         .suggestion-box {
           background: rgba(255, 255, 255, 0.2);
-          padding: 12px;
-          border-radius: 18px;
-          font-size: 13px;
-          margin-bottom: 10px;
+          padding: 14px;
+          border-radius: 20px;
+          font-size: 14px;
+          margin-bottom: 12px;
           cursor: pointer;
-          transition: 0.3s;
+          transition: all 0.3s ease;
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          line-height: 1.5;
         }
 
         .suggestion-box:hover {
           background: rgba(255, 255, 255, 0.3);
-          transform: translateX(5px);
+          transform: translateX(8px);
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         .send-btn {
           width: 100%;
-          margin-top: 30px;
+          margin-top: 24px;
           padding: 16px;
           border: none;
-          border-radius: 25px;
-          background: linear-gradient(90deg, #ff9a9e, #fad0c4);
+          border-radius: 28px;
+          background: linear-gradient(135deg, #ff9a9e, #fad0c4);
           color: #333;
-          font-weight: 600;
-          font-size: 15px;
+          font-weight: 700;
+          font-size: 16px;
           cursor: pointer;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-          transition: 0.3s;
+          box-shadow: 0 12px 35px rgba(255, 154, 158, 0.4);
+          transition: all 0.3s ease;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
         .send-btn:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+          transform: translateY(-4px);
+          box-shadow: 0 20px 45px rgba(255, 154, 158, 0.5);
         }
 
         .toast {
           position: fixed;
-          bottom: 20px;
+          bottom: 25px;
           left: 50%;
           transform: translateX(-50%);
           background: white;
           color: #66a6ff;
-          padding: 12px 22px;
-          border-radius: 30px;
-          font-size: 13px;
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-          max-width: calc(100vw - 32px);
+          padding: 14px 24px;
+          border-radius: 35px;
+          font-size: 14px;
+          font-weight: 600;
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+          max-width: calc(100vw - 40px);
           text-align: center;
-          z-index: 50;
-          animation: slideUp 0.3s ease;
+          z-index: 100;
+          animation: slideUp 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .bg-shape {
+          position: absolute;
+          border-radius: 50%;
+          opacity: 0.16;
+          filter: blur(2px);
+        }
+
+        .shape-one {
+          width: 110px;
+          height: 110px;
+          background: white;
+          top: 10%;
+          left: 8%;
+          animation: float 12s infinite ease-in-out;
+        }
+
+        .shape-two {
+          width: 80px;
+          height: 80px;
+          background: #ffd6e7;
+          bottom: 14%;
+          right: 10%;
+          animation: float 14s infinite ease-in-out reverse;
+        }
+
+        .shape-three {
+          width: 62px;
+          height: 62px;
+          background: #ffffff;
+          top: 65%;
+          left: 20%;
+          animation: float 10s infinite ease-in-out;
         }
 
         @keyframes float {
-          0% {
-            transform: translateY(0px);
+          0%,
+          100% {
+            transform: translateY(0px) scale(1);
           }
           50% {
-            transform: translateY(-25px);
-          }
-          100% {
-            transform: translateY(0px);
+            transform: translateY(-20px) scale(1.03);
           }
         }
 
         @keyframes slideUp {
           from {
-            transform: translateX(-50%) translateY(20px);
+            transform: translateX(-50%) translateY(30px);
             opacity: 0;
           }
           to {
@@ -1049,56 +567,45 @@ export default function FirstMessage() {
           }
         }
 
+        @keyframes cardIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.99);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
         @media (max-width: 768px) {
           .body {
-            padding: 18px 14px 30px;
+            padding: 18px 14px 28px;
           }
-
-          .page-wrap {
-            min-height: calc(100vh - 48px);
-          }
-
-          .mood-pill {
-            min-width: 110px;
-          }
-
-          .instagram-input {
-            font-size: 13.5px;
+          .hero-section h1 {
+            font-size: 22px;
           }
         }
 
         @media (max-width: 480px) {
           .body {
-            padding: 14px 12px 24px;
+            padding: 16px 12px 24px;
           }
-
-          h1 {
-            font-size: 24px !important;
+          .hero-section h1 {
+            font-size: 22px;
           }
-
           .mood-pill {
-            min-width: 105px;
-            padding: 9px 12px;
-            font-size: 12px;
-          }
-
-          .suggestion-box {
-            padding: 11px;
-            font-size: 12px;
-          }
-
-          textarea {
-            height: 120px !important;
-          }
-
-          .instagram-section {
-            margin-top: 22px;
-            margin-bottom: 18px;
-          }
-
-          .prefix {
-            padding: 0 12px;
+            min-width: 100px;
+            padding: 10px 12px;
             font-size: 12.5px;
+          }
+          .message-input {
+            height: 130px;
+            padding: 16px;
+          }
+          .instagram-input {
+            font-size: 14px;
+            padding: 14px 16px;
           }
         }
       `}</style>
