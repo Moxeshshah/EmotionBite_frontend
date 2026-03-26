@@ -4,9 +4,10 @@ export async function GET(req) {
     const code = searchParams.get("code");
 
     const res = await fetch(
-      `https://emotionbite-app.onrender.com/api/ebs/v1/qr/scan/${code}`,
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/qr/scan/${code}`,
       {
         method: "GET",
+        cache: "no-store", // 🔥 VERY IMPORTANT (fixes your issue)
       }
     );
 
@@ -18,7 +19,11 @@ export async function GET(req) {
 
     const data = await res.json();
 
-    return Response.json(data);
+    return Response.json(data, {
+      headers: {
+        "Cache-Control": "no-store", // 🔥 prevent caching on Vercel
+      },
+    });
   } catch (err) {
     return new Response(JSON.stringify({ error: "Server error" }), {
       status: 500,
