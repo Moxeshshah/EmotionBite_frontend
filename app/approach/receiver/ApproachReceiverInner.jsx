@@ -481,7 +481,7 @@ export default function ApproachReceiver() {
           image: apiData.imageUrl,
           video: apiData.videoUrl,
           audio: apiData.audioUrl,
-          instagram: apiData.audioUrl,
+          instagram: apiData.instagramUrl,
         });
       })
       .catch(console.error);
