@@ -13,6 +13,7 @@ export default function FirstMessage() {
   const router = useRouter();
   const params = useSearchParams();
   const code = params.get("code");
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const moods = ["😊 Friendly", "😄 Playful", "✨ Thoughtful", "💬 Direct"];
   const suggestions = [
@@ -112,9 +113,8 @@ export default function FirstMessage() {
       <div className="bg-shape shape-two" />
       <div className="bg-shape shape-three" />
 
-      <BrandHeader />
-
       <div className="card">
+        <BrandHeader />
         <div className="content">
           <div className="hero-section">
             <h1>Say Hello 👋</h1>
@@ -133,23 +133,6 @@ export default function FirstMessage() {
               placeholder="👤 Enter your name"
               className="name-input"
             />
-            {/* {senderName && (
-              <div className="name-preview-compact">
-                Hi, I'm {senderName} ✨
-              </div>
-            )} */}
-          </div>
-
-          <div className="mood-row">
-            {moods.map((mood, idx) => (
-              <div
-                key={idx}
-                className="mood-pill"
-                onClick={() => setMood(mood)}
-              >
-                {mood}
-              </div>
-            ))}
           </div>
 
           <textarea
@@ -159,6 +142,36 @@ export default function FirstMessage() {
             className="message-input"
           />
 
+<div
+  className="suggestions-title toggle"
+  onClick={() => setShowSuggestions(!showSuggestions)}
+>
+  <span>Need ideas? ✨</span>
+  <span className={`dropdown-icon ${showSuggestions ? "open" : ""}`}>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+    <path
+      d="M6 9l6 6 6-6"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+</span>
+</div>         
+ <div className={`suggestions-wrapper ${showSuggestions ? "open" : ""}`}>
+  <div className="suggestions">
+    {suggestions.map((sugg, idx) => (
+      <div
+        key={idx}
+        className="suggestion-box"
+        onClick={() => fillText(sugg)}
+      >
+        {sugg}
+      </div>
+    ))}
+  </div>
+</div>
           <div className="instagram-section">
             <div className="insta-header">
               <div className="insta-icon">
@@ -180,24 +193,11 @@ export default function FirstMessage() {
               />
             </div>
 
-            {instagramUsername && (
+            {/* {instagramUsername && (
               <div className="insta-preview">
                 🔗 instagram.com/{instagramUsername}
               </div>
-            )}
-          </div>
-
-          <div className="suggestions-title">Need ideas? ✨</div>
-          <div className="suggestions">
-            {suggestions.map((sugg, idx) => (
-              <div
-                key={idx}
-                className="suggestion-box"
-                onClick={() => fillText(sugg)}
-              >
-                {sugg}
-              </div>
-            ))}
+            )} */}
           </div>
 
           <button onClick={sendMessage} className="send-btn">
@@ -263,10 +263,9 @@ export default function FirstMessage() {
         }
 
         /* Compact Name Input Styles */
-        .name-input-compact {
-          margin: 20px 0 24px 0;
-          position: relative;
-        }
+       .name-input-compact {
+  margin: 14px 0 12px 0;
+}
 
         .name-input {
           width: 100%;
@@ -301,7 +300,7 @@ export default function FirstMessage() {
 
         .suggestions-title {
           font-size: 14px;
-          margin: 18px 0 10px;
+          margin: 8px 0 10px; /* Reduced from 18px 0 10px */
           opacity: 0.9;
           font-weight: 500;
         }
@@ -332,7 +331,37 @@ export default function FirstMessage() {
           opacity: 0.9;
           line-height: 1.6;
         }
+/* Toggle Header */
+.suggestions-title.toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
 
+/* Dropdown icon animation */
+.dropdown-icon {
+  transition: transform 0.3s ease;
+  font-size: 14px;
+}
+
+.dropdown-icon.open {
+  transform: rotate(180deg);
+}
+
+/* Wrapper animation */
+.suggestions-wrapper {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+  .suggestions-wrapper {
+  margin-bottom: 4px;
+}
+
+.suggestions-wrapper.open {
+  max-height: 500px; /* enough to fit content */
+}
         .mood-row {
           display: flex;
           gap: 12px;
@@ -370,7 +399,7 @@ export default function FirstMessage() {
 
         .message-input {
           width: 100%;
-          height: 140px;
+          height: 100px;
           padding: 18px;
           border-radius: 20px;
           border: none;
@@ -383,7 +412,7 @@ export default function FirstMessage() {
           border: 1px solid rgba(255, 255, 255, 0.3);
           line-height: 1.5;
           font-family: inherit;
-          margin-bottom: 24px;
+          margin-bottom: 0; /* Reduced from 24px */
         }
 
         .message-input::placeholder {
@@ -396,8 +425,8 @@ export default function FirstMessage() {
         }
 
         .instagram-section {
-          margin: 28px 0;
-          padding: 18px;
+          margin: 10px 0;
+          padding: 12px;
           border-radius: 22px;
           background: linear-gradient(
             135deg,
@@ -449,7 +478,7 @@ export default function FirstMessage() {
           align-items: center;
           background: white;
           border-radius: 14px;
-          padding: 10px 14px;
+          padding: 6px 14px;
           gap: 8px;
         }
 
@@ -472,7 +501,7 @@ export default function FirstMessage() {
         }
 
         .suggestions {
-          margin-top: 16px;
+          margin-top: 8px;
         }
 
         .suggestion-box {
@@ -496,13 +525,13 @@ export default function FirstMessage() {
 
         .send-btn {
           width: 100%;
-          margin-top: 24px;
-          padding: 16px;
+          margin-top: 2px;
+          padding: 10px;
           border: none;
           border-radius: 28px;
           background: linear-gradient(135deg, #ff9a9e, #fad0c4);
           color: #333;
-          font-weight: 700;
+          font-weight: 500;
           font-size: 16px;
           cursor: pointer;
           box-shadow: 0 12px 35px rgba(255, 154, 158, 0.4);
@@ -656,7 +685,7 @@ export default function FirstMessage() {
             font-size: 12.5px;
           }
           .message-input {
-            height: 130px;
+            height: 90px;
             padding: 16px;
           }
           .name-input {

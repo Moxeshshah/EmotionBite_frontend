@@ -74,7 +74,7 @@ export default function ApproachReceiver() {
 
   return (
     <div className="container">
-      <BrandHeader />
+      
 
       <div className="bg-shape shape-one" />
       <div className="bg-shape shape-two" />
@@ -84,13 +84,14 @@ export default function ApproachReceiver() {
 
       {!opened ? (
         <div className="invite-card" onClick={() => setOpened(true)}>
-          <div className="preview">
+          <BrandHeader />
+          {/* <div className="preview">
             <div className="preview-avatar">😊</div>
             <div>
               <div className="preview-name">{data.sender || "New Connection"}</div>
               <div className="preview-sub">sent you a message</div>
             </div>
-          </div>
+          </div> */}
 
           <div className="big-emoji">✉️</div>
 
@@ -101,6 +102,7 @@ export default function ApproachReceiver() {
         </div>
       ) : (
         <div className="chat-card">
+          <BrandHeader />
           <div className="chat-header">
             <div className="avatar">😊</div>
             <div>
@@ -147,401 +149,435 @@ export default function ApproachReceiver() {
           {/* <button className="reply-btn">Reply & Start Chat 💬</button> */}
         </div>
       )}
+<style jsx global>{`
+  @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Comic+Neue:ital,wght@0,400;0,700&display=swap");
 
-      <style jsx global>{`
-        @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap");
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+  }
 
-        html,
-        body {
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          height: 100%;
-          overflow-x: hidden;
-        }
+  body {
+    font-family: "Comic Neue", cursive;
+  }
 
-        body {
-          font-family: "Poppins", sans-serif;
-        }
+  .container {
+    min-height: 100vh;
+    width: 100%;
+    max-width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 50%, #a18cd1 100%);
+    color: #333;
+    position: relative;
+    overflow: hidden;
+    padding: 80px 20px 60px;
+    margin: 0;
+  }
 
+  .bg-shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.16;
+    filter: blur(2px);
+  }
 
-        .container {
-          min-height: 100vh;
-          width: 100%;
-          max-width: 100vw;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 50%, #a18cd1 100%);
-          color: white;
-          position: relative;
-          overflow: hidden;
-          padding: 80px 20px 60px;
-          margin: 0;
-        }
+  .shape-one {
+    width: 110px;
+    height: 110px;
+    background: white;
+    top: 10%;
+    left: 8%;
+    animation: float 12s infinite ease-in-out;
+  }
 
-        .bg-shape {
-          position: absolute;
-          border-radius: 50%;
-          opacity: 0.16;
-          filter: blur(2px);
-        }
+  .shape-two {
+    width: 80px;
+    height: 80px;
+    background: #ffd6e7;
+    bottom: 14%;
+    right: 10%;
+    animation: float 14s infinite ease-in-out reverse;
+  }
 
-        .shape-one {
-          width: 110px;
-          height: 110px;
-          background: white;
-          top: 10%;
-          left: 8%;
-          animation: float 12s infinite ease-in-out;
-        }
+  .shape-three {
+    width: 62px;
+    height: 62px;
+    background: #ffffff;
+    top: 65%;
+    left: 20%;
+    animation: float 10s infinite ease-in-out;
+  }
 
-        .shape-two {
-          width: 80px;
-          height: 80px;
-          background: #ffd6e7;
-          bottom: 14%;
-          right: 10%;
-          animation: float 14s infinite ease-in-out reverse;
-        }
+  .invite-card,
+  .chat-card {
+    width: 100%;
+    max-width: 600px;
+    padding: 36px 30px;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    animation: bounceIn 0.7s ease-out;
+    position: relative;
+    z-index: 2;
+  }
 
-        .shape-three {
-          width: 62px;
-          height: 62px;
-          background: #ffffff;
-          top: 65%;
-          left: 20%;
-          animation: float 10s infinite ease-in-out;
-        }
+  .preview,
+  .chat-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
 
-        .invite-card,
-        .chat-card {
-          width: 100%;
-          max-width: 600px;
-          padding: 32px 28px;
-          border-radius: 28px;
-          background: rgba(255, 255, 255, 0.18);
-          backdrop-filter: blur(20px);
-          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
-          border: 1px solid rgba(255, 255, 255, 0.25);
-          animation: fadeIn 0.7s ease-out;
-          position: relative;
-          z-index: 2;
-        }
+  .preview-avatar,
+  .avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff6b9d, #c44569);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    box-shadow: 0 10px 25px rgba(255, 107, 157, 0.4);
+  }
 
-        .preview {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 20px;
-        }
+  .preview-name,
+  .name {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: "Dancing Script", cursive;
+    color: #33125b;
+  }
 
-        .preview-avatar,
-        .avatar {
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, #ff9a9e, #fecfef, #fad0c4);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 20px;
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
+  .preview-sub,
+  .status {
+    font-size: 13px;
+    opacity: 0.7;
+    font-weight: 600;
+    font-style: italic;
+  }
 
-        .preview-name,
-        .name {
-          font-size: 18px;
-          font-weight: 700;
-          font-family: 'Playfair Display', serif;
-        }
+  .big-emoji {
+    font-size: 80px;
+    text-align: center;
+    margin: 24px 0 16px;
+    animation: jello 1.5s infinite ease-in-out;
+  }
 
-        .preview-sub,
-        .status {
-          font-size: 13px;
-          opacity: 0.9;
-          font-weight: 500;
-        }
+  .invite-card h2 {
+    font-size: 32px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 12px;
+    font-family: "Dancing Script", cursive;
+    color: #f4d9ee;
+    letter-spacing: -0.5px;
+  }
 
-        .big-emoji {
-          font-size: 64px;
-          text-align: center;
-          margin: 24px 0;
-        }
+  .invite-card p {
+    font-size: 16px;
+    opacity: 0.85;
+    text-align: center;
+    line-height: 1.7;
+    max-width: 340px;
+    margin: 0 auto;
+    font-style: italic;
+  }
 
-        .invite-card h2 {
-          font-size: 28px;
-          font-weight: 800;
-          text-align: center;
-          margin-bottom: 12px;
-          font-family: 'Playfair Display', serif;
-          letter-spacing: -0.5px;
-        }
+  .tap-hint {
+    margin-top: 24px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: #f9c2f7;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    animation: pulse 1.5s infinite ease-in-out;
+  }
 
-        .invite-card p {
-          font-size: 16px;
-          opacity: 0.95;
-          text-align: center;
-          line-height: 1.7;
-          max-width: 320px;
-          margin: 0 auto;
-        }
+  .message-label,
+  .memory-label,
+  .insta-label {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+    font-family: "Dancing Script", cursive;
+    color: #522b38;
+  }
 
-        .tap-hint {
-          margin-top: 24px;
-          text-align: center;
-          font-size: 15px;
-          opacity: 1;
-          font-weight: 600;
-          letter-spacing: 0.5px;
-        }
+  .bubble {
+    background: rgba(255, 255, 255, 0.95);
+    color: #1a1a2e;
+    padding: 26px;
+    border-radius: 24px 24px 24px 12px;
+    margin-top: 12px;
+    line-height: 1.7;
+    min-height: 80px;
+    white-space: pre-wrap;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.18);
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid rgba(255, 107, 157, 0.2);
+    animation: wiggle 0.5s ease-out 0.3s both;
+  }
 
-        .chat-header {
-          display: flex;
-          align-items: center;
-          gap: 14px;
-          margin-bottom: 20px;
-        }
+  .memory-card {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(16px);
+    margin-top: 14px;
+    transition: all 0.3s ease;
+  }
 
-        .message-label,
-        .memory-label,
-        .insta-label {
-          font-size: 15px;
-          font-weight: 700;
-          margin-bottom: 12px;
-          letter-spacing: 0.3px;
-        }
+  .memory-card:hover {
+    transform: scale(1.02);
+  }
 
-        .bubble {
-          background: rgba(255, 255, 255, 0.95);
-          color: #1a1a2e;
-          padding: 24px;
-          border-radius: 24px 24px 24px 12px;
-          margin-top: 12px;
-          line-height: 1.7;
-          min-height: 80px;
-          white-space: pre-wrap;
-          box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-          font-size: 16px;
-          font-weight: 500;
-        }
+  .memory-card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    display: block;
+  }
 
-        .memory-card {
-          position: relative;
-          border-radius: 20px;
-          overflow: hidden;
-          cursor: pointer;
-          background: rgba(255, 255, 255, 0.25);
-          backdrop-filter: blur(16px);
-          margin-top: 12px;
-          transition: all 0.3s ease;
-        }
+  .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    backdrop-filter: blur(4px);
+  }
 
-        .memory-card:hover {
-          transform: scale(1.02);
-        }
+  .insta-section {
+    margin-top: 26px;
+  }
 
-        .memory-card img {
-          width: 100%;
-          height: 280px;
-          object-fit: cover;
-          display: block;
-        }
+  .insta-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.22);
+    backdrop-filter: blur(16px);
+    margin-top: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
 
-        .overlay {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: rgba(0, 0, 0, 0.4);
-          color: white;
-          font-size: 15px;
-          font-weight: 700;
-          backdrop-filter: blur(4px);
-        }
+  .insta-card:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
 
-        .insta-section {
-          margin-top: 24px;
-        }
+  .insta-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
 
-        .insta-card {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          padding: 18px;
-          border-radius: 20px;
-          cursor: pointer;
-          background: rgba(255, 255, 255, 0.22);
-          backdrop-filter: blur(16px);
-          margin-top: 12px;
-          transition: all 0.3s ease;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+  .insta-text {
+    font-size: 15px;
+    line-height: 1.5\;
+    font-weight: 500;
+  }
 
-        .insta-card:hover {
-          background: rgba(255, 255, 255, 0.3);
-          transform: translateY(-2px);
-        }
+  .insta-text span {
+    display: block;
+    font-size: 13px;
+    opacity: 0.9;
+    margin-top: 4px;
+    font-weight: 600;
+  }
 
-        .insta-icon {
-          width: 48px;
-          height: 48px;
-          border-radius: 14px;
-          object-fit: contain;
-          flex-shrink: 0;
-        }
+  .reply-btn {
+    margin-top: 28px;
+    width: 100%;
+    padding: 18px 24px;
+    border-radius: 32px;
+    border: none;
+    background: linear-gradient(135deg, #ff6b9d, #c44569);
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: "Comic Neue", cursive;
+    box-shadow: 0 12px 35px rgba(255, 107, 157, 0.4);
+    transition: all 0.3s ease;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    animation: btnPulse 2s infinite ease-in-out;
+  }
 
-        .insta-text {
-          font-size: 15px;
-          line-height: 1.5;
-          font-weight: 500;
-        }
+  .reply-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 45px rgba(255, 107, 157, 0.5);
+  }
 
-        .insta-text span {
-          display: block;
-          font-size: 13px;
-          opacity: 0.9;
-          margin-top: 4px;
-          font-weight: 600;
-        }
+  .loading-screen {
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 50%, #a18cd1 100%);
+    color: #333;
+    padding: 20px;
+  }
 
-        .reply-btn {
-          margin-top: 28px;
-          width: 100%;
-          padding: 18px 24px;
-          border-radius: 32px;
-          border: none;
-          background: linear-gradient(135deg, #ff6b9d, #c44569);
-          color: white;
-          font-weight: 700;
-          cursor: pointer;
-          font-size: 16px;
-          font-family: 'Poppins', sans-serif;
-          box-shadow: 0 12px 35px rgba(255, 107, 157, 0.4);
-          transition: all 0.3s ease;
-          letter-spacing: 0.5px;
-          text-transform: uppercase;
-        }
+  .loader {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 24px;
+  }
 
-        .reply-btn:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 18px 45px rgba(255, 107, 157, 0.5);
-        }
+  .loading-title {
+    font-size: 22px;
+    font-weight: 700;
+    font-family: "Dancing Script", cursive;
+    color: #333;
+  }
 
-        .loading-screen {
-          min-height: 100vh;
-          width: 100vw;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 50%, #a18cd1 100%);
-          color: white;
-          padding: 20px;
-        }
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-25px) rotate(180deg);
+    }
+  }
 
-        .loader {
-          width: 60px;
-          height: 60px;
-          border: 4px solid rgba(255, 255, 255, 0.3);
-          border-top: 4px solid white;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-          margin-bottom: 24px;
-        }
+  @keyframes jello {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(0.9) rotate(-2deg); }
+    75% { transform: scale(1.05) rotate(2deg); }
+  }
 
-        .loading-title {
-          font-size: 22px;
-          font-weight: 700;
-          font-family: 'Playfair Display', serif;
-        }
+  @keyframes pulse {
+    0% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+    100% { opacity: 0.8; transform: scale(1); }
+  }
 
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-25px) rotate(180deg);
-          }
-        }
+  @keyframes bounceIn {
+    0% {
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
+    }
+    60% {
+      opacity: 1;
+      transform: translateY(-10px) scale(1.05);
+    }
+    100% {
+      transform: translateY(0) scale(1);
+    }
+  }
 
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(30px) scale(0.95);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
+  @keyframes wiggle {
+    0% { transform: rotate(0); }
+    20% { transform: rotate(1deg); }
+    40% { transform: rotate(-1deg); }
+    60% { transform: rotate(1deg); }
+    80% { transform: rotate(-1deg); }
+    100% { transform: rotate(0); }
+  }
 
-        @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
+  @keyframes btnPulse {
+    0%, 100% { box-shadow: 0 12px 35px rgba(255, 107, 157, 0.4); }
+    50% { box-shadow: 0 16px 45px rgba(255, 107, 157, 0.5); }
+  }
 
-        /* Responsive for mobile and web */
-        @media (max-width: 768px) {
-          .container {
-            padding: 70px 14px 50px;
-            gap: 20px;
-          }
-          .invite-card,
-          .chat-card {
-            width: 100%;
-            max-width: none;
-            padding: 28px 20px;
-            border-radius: 20px;
-          }
-          .invite-card h2 {
-            font-size: 26px;
-          }
-          .big-emoji {
-            font-size: 56px;
-          }
-        }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
 
-        @media (max-width: 480px) {
-          .container {
-            padding: 60px 12px 40px;
-          }
-          .invite-card,
-          .chat-card {
-            padding: 24px 16px;
-            border-radius: 18px;
-          }
-          .bubble {
-            padding: 18px 16px;
-            font-size: 15px;
-          }
-          .reply-btn {
-            padding: 16px 20px;
-            font-size: 15px;
-          }
-          .preview-avatar,
-          .avatar {
-            width: 44px;
-            height: 44px;
-            font-size: 18px;
-          }
-        }
+  @media (max-width: 768px) {
+    .container {
+      padding: 70px 14px 50px;
+      gap: 20px;
+    }
+    .invite-card,
+    .chat-card {
+      width: 100%;
+      max-width: none;
+      padding: 28px 20px;
+      border-radius: 20px;
+    }
+    .invite-card h2 {
+      font-size: 26px;
+    }
+    .big-emoji {
+      font-size: 56px;
+    }
+  }
 
-        @media (max-width: 360px) {
-          .container {
-            padding: 55px 8px 30px;
-          }
-        }`}</style>
+  @media (max-width: 480px) {
+    .container {
+      padding: 60px 12px 40px;
+    }
+    .invite-card,
+    .chat-card {
+      padding: 24px 16px;
+      border-radius: 18px;
+    }
+    .bubble {
+      padding: 18px 16px;
+      font-size: 15px;
+    }
+    .reply-btn {
+      padding: 16px 20px;
+      font-size: 15px;
+    }
+    .preview-avatar,
+    .avatar {
+      width: 44px;
+      height: 44px;
+      font-size: 18px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .container {
+      padding: 55px 8px 30px;
+    }
+  }
+`}</style>
     </div>
   );
 }

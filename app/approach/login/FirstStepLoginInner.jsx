@@ -739,9 +739,10 @@ export default function FirstStepLogin() {
       <div className="bg-shape shape-two" />
       <div className="bg-shape shape-three" />
 
-      <BrandHeader />
+      
 
       <div className="card">
+        <BrandHeader />
         <div className="avatar">😊</div>
 
         <h1 className="title">
