@@ -633,8 +633,7 @@ export default function FirstMessage() {
   const router = useRouter();
   const params = useSearchParams();
   const code = params.get("code");
-  const user_id =
-    typeof window !== "undefined" ? localStorage.getItem("user_id") : null;
+
 
   const moods = ["😊 Friendly", "😄 Playful", "✨ Thoughtful", "💬 Direct"];
   const suggestions = [
@@ -707,16 +706,13 @@ export default function FirstMessage() {
     document.body.style.padding = "0";
     document.body.style.overflowX = "hidden";
 
-    if (!user_id) {
-      router.push(`/approach/login?code=${code}`);
-    }
 
     return () => {
       document.body.style.margin = "";
       document.body.style.padding = "";
       document.body.style.overflowX = "";
     };
-  }, [code, router, user_id]);
+  }, [code, router]);
 
   if (!mounted) {
     return (
