@@ -1240,21 +1240,25 @@
 
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import BrandHeader from "../BrandHeader";
 
 export default function ApproachReceiver() {
-  const params = useSearchParams();
-  const code = params.get("code");
-
+  const searchParams = useSearchParams();
+  const code = searchParams?.get("code");
   const [data, setData] = useState(null);
   const [opened, setOpened] = useState(false);
   const [revealImage, setRevealImage] = useState(false);
   const [typedMessage, setTypedMessage] = useState("");
+  const [mounted, setMounted] = useState(false); // ✅ Client-only safety
 
   useEffect(() => {
-    if (!code) return;
+    setMounted(true); // ✅ Mark as client-mounted
+  }, []);
+
+  useEffect(() => {
+    if (!code || !mounted) return; // ✅ Skip if no code or not mounted
 
     fetch(`/api/messages?code=${code}`)
       .then((res) => res.json())
@@ -1270,7 +1274,7 @@ export default function ApproachReceiver() {
         });
       })
       .catch(console.error);
-  }, [code]);
+  }, [code, mounted]);
 
   useEffect(() => {
     if (!opened || !data?.message) return;
@@ -1290,7 +1294,7 @@ export default function ApproachReceiver() {
     return () => clearInterval(interval);
   }, [opened, data]);
 
-  if (!data) {
+  if (!mounted) {
     return (
       <div className="loading-screen">
         <div className="loader" />
@@ -1299,6 +1303,16 @@ export default function ApproachReceiver() {
     );
   }
 
+  if (!data) {
+    return (
+      <div className="loading-screen">
+        <div className="loader" />
+        <h2 className="loading-title">Loading message...</h2>
+      </div>
+    );
+  }
+
+  // Rest of your JSX remains identical...
   return (
     <div className="container">
       <BrandHeader />
@@ -1321,7 +1335,7 @@ export default function ApproachReceiver() {
 
           <div className="big-emoji">✉️</div>
 
-          <h2>You’ve got a new message</h2>
+          <h2>You've got a new message</h2>
           <p>Someone reached out to start a conversation.</p>
 
           <div className="tap-hint">Tap to open ✨</div>
@@ -1374,7 +1388,6 @@ export default function ApproachReceiver() {
           <button className="reply-btn">Reply & Start Chat 💬</button>
         </div>
       )}
-
       <style jsx>{`
         @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap");
 
