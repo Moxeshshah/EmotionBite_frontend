@@ -1,255 +1,8 @@
-
-// "use client";
-
-// import { useState, useEffect } from "react";
-// import { useSearchParams } from "next/navigation";
-
-// export default function ReceiverLetter() {
-//   const [opened, setOpened] = useState(false);
-//   const [revealImage, setRevealImage] = useState(false);
-//   const [data, setData] = useState(null);
-//   const [error, setError] = useState("");
-
-//   const params = useSearchParams();
-//   const code = params.get("code");   // same pattern as other categories
-
-//   // Fetch message
-// useEffect(() => {
-//   if (!code) {
-//     setError("Message code not found");
-//     return;
-//   }
-
-//   fetch(`/api/messages?code=${code}`)
-//     .then(res => res.json())
-//     .then(apiData => {
-//       if (!apiData) {
-//         setError("No message found");
-//         return;
-//       }
-
-//       setData({
-//         receiverName: apiData.receiverName || "For You",
-//         sender: apiData.senderName || "Someone who cared",
-//         message: apiData.messageText,
-//         image: apiData.imageUrl,   // ✅ fixed key
-//       });
-//     })
-//     .catch(() => setError("Server error"));
-// }, [code]);
-
-//   // Loading
-//   if (!data && !error) {
-//     return (
-//       <div style={{
-//         height: "100vh",
-//         display: "flex",
-//         justifyContent: "center",
-//         alignItems: "center",
-//         background: "#3a1c71",
-//         color: "white",
-//         fontSize: "18px"
-//       }}>
-//         Loading your message...
-//       </div>
-//     );
-//   }
-
-//   // Error
-//   if (error) {
-//     return (
-//       <div style={{
-//         height: "100vh",
-//         display: "flex",
-//         justifyContent: "center",
-//         alignItems: "center",
-//         background: "#3a1c71",
-//         color: "white",
-//         fontSize: "18px"
-//       }}>
-//         {error}
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className={opened ? "container open" : "container"}>
-//       {/* Floating particles */}
-//       <div className="particle" style={{ left: "20%" }} />
-//       <div className="particle" style={{ left: "45%", animationDelay: "3s" }} />
-//       <div className="particle" style={{ left: "70%", animationDelay: "6s" }} />
-//       <div className="particle" style={{ left: "85%", animationDelay: "2s" }} />
-
-//       {!opened ? (
-//         /* Closed */
-//         <div className="closed" onClick={() => setOpened(true)}>
-//           <div className="emoji">📩</div>
-//           <div className="title">A message awaits ✨</div>
-//           <div className="hint">Tap to open 💫</div>
-//         </div>
-//       ) : (
-//         /* Opened */
-//         <div className="letter-wrapper">
-//           <div className="moon">🌙</div>
-
-//           <h2 className="receiver">{data.receiverName}</h2>
-
-//           <div className="letter-paper">
-//             <p className="message">“{data.message}”</p>
-
-//             {data.image && (
-//               <div className="memory-section">
-//                 <div className="memory-label">✨ A memory was shared</div>
-
-//                 <div
-//                   className={`memory-card ${revealImage ? "revealed" : ""}`}
-//                   onClick={() => setRevealImage(true)}
-//                 >
-//                   <img src={data.image} alt="memory" />
-
-//                   {!revealImage && (
-//                     <div className="memory-overlay">
-//                       <span className="memory-text">Tap to reveal</span>
-//                     </div>
-//                   )}
-//                 </div>
-//               </div>
-//             )}
-//           </div>
-
-//           <div className="sender">— {data.sender}</div>
-//           <div className="note">
-//             🌿 Some messages are meant to bring peace, not replies.
-//           </div>
-//         </div>
-//       )}
-
-//       {/* DESIGN (unchanged) */}
-//       <style jsx>{`
-//         .container {
-//           min-height: 100vh;
-//           display: flex;
-//           justify-content: center;
-//           align-items: center;
-//           text-align: center;
-//           color: white;
-//           position: relative;
-//           overflow: hidden;
-//           background: radial-gradient(circle at top, #6a11cb, #3a1c71);
-//           transition: background 0.6s ease;
-//           padding: 20px;
-//         }
-
-//         .container.open {
-//           background: radial-gradient(circle at top, #141e30, #000010);
-//         }
-
-//         .particle {
-//           position: absolute;
-//           width: 5px;
-//           height: 5px;
-//           background: rgba(255,255,255,0.5);
-//           border-radius: 50%;
-//           animation: float 10s infinite linear;
-//         }
-
-//         @keyframes float {
-//           0% { transform: translateY(100vh); opacity: 0; }
-//           30% { opacity: 0.7; }
-//           100% { transform: translateY(-10vh); opacity: 0; }
-//         }
-
-//         .closed { cursor: pointer; }
-
-//         .emoji {
-//           font-size: 72px;
-//           animation: bounce 2s infinite;
-//         }
-
-//         @keyframes bounce {
-//           0%,100% { transform: translateY(0); }
-//           50% { transform: translateY(-10px); }
-//         }
-
-//         .title { margin-top: 16px; font-size: 20px; }
-//         .hint { margin-top: 6px; font-size: 13px; opacity: 0.75; }
-
-//         .letter-wrapper { width: 420px; max-width: 100%; }
-//         .moon { font-size: 36px; margin-bottom: 8px; }
-
-//         .receiver { font-size: 30px; margin-bottom: 18px; }
-
-//         .letter-paper {
-//           background: linear-gradient(180deg, #fff7ed, #ffe8d6);
-//           color: #3b2f2f;
-//           padding: 28px;
-//           border-radius: 22px;
-//           box-shadow: 0 25px 60px rgba(0,0,0,0.5);
-//           text-align: left;
-//         }
-
-//         .message {
-//           font-size: 18px;
-//           line-height: 1.9;
-//           font-style: italic;
-//         }
-
-//         .memory-section { margin-top: 22px; }
-//         .memory-label { font-size: 12px; opacity: 0.75; margin-bottom: 8px; }
-
-//         .memory-card {
-//           position: relative;
-//           height: 60px;
-//           border-radius: 16px;
-//           overflow: hidden;
-//           cursor: pointer;
-//           box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-//           transition: all 0.5s ease;
-//         }
-
-//         .memory-card.revealed { height: 260px; }
-
-//         .memory-card img {
-//           width: 100%;
-//           height: 260px;
-//           object-fit: cover;
-//           filter: blur(14px) brightness(0.7);
-//           transform: scale(1.1);
-//           transition: all 0.7s ease;
-//         }
-
-//         .memory-card.revealed img {
-//           filter: blur(0) brightness(1);
-//           transform: scale(1);
-//         }
-
-//         .memory-overlay {
-//           position: absolute;
-//           inset: 0;
-//           display: flex;
-//           justify-content: center;
-//           align-items: center;
-//           background: rgba(0,0,0,0.35);
-//         }
-
-//         .memory-text {
-//           background: rgba(255,255,255,0.95);
-//           color: #333;
-//           padding: 8px 18px;
-//           border-radius: 30px;
-//           font-size: 12px;
-//         }
-
-//         .sender { margin-top: 18px; font-size: 14px; opacity: 0.85; }
-//         .note { margin-top: 8px; font-size: 12px; opacity: 0.6; }
-//       `}</style>
-//     </div>
-//   );
-// }
 "use client";
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import BrandHeader from "../BrandHeader";
 
 export default function ReceiverLetter() {
   const [opened, setOpened] = useState(false);
@@ -293,53 +46,58 @@ export default function ReceiverLetter() {
   }
 
   return (
-    <div className={opened ? "container open" : "container"}>
+    <div className={opened ? "main-container open" : "main-container"}>
+      {/* Floating Particles */}
       <div className="particle" style={{ left: "20%" }} />
       <div className="particle" style={{ left: "45%", animationDelay: "3s" }} />
       <div className="particle" style={{ left: "70%", animationDelay: "6s" }} />
       <div className="particle" style={{ left: "85%", animationDelay: "2s" }} />
 
-      {!opened ? (
-        <div className="closed" onClick={() => setOpened(true)}>
-          <div className="emoji">📩</div>
-          <div className="title">A message awaits ✨</div>
-          <div className="hint">Tap to open 💫</div>
-        </div>
-      ) : (
-        <div className="letter-wrapper">
-          <div className="moon">🌙</div>
+      {/* Main Card Container */}
+      <div className={`letter-card ${opened ? "opened" : ""}`}>
+        {!opened ? (
+          <div className="closed-envelope" onClick={() => setOpened(true)}>
+            <div className="envelope-icon">📩</div>
+            <div className="envelope-title">A message awaits ✨</div>
+            <div className="envelope-hint">Tap to open 💫</div>
+          </div>
+        ) : (
+          <div className="letter-content">
+            <BrandHeader />
+            
+            <div className="header-section">
+              <div className="moon">🌙</div>
+              <h2 className="receiver-name">{data.receiverName}</h2>
+            </div>
 
-          <h2 className="receiver">{data.receiverName}</h2>
+            <div className="letter-paper">
+              <p className="message-text">"{data.message}"</p>
 
-          <div className="letter-paper">
-            <p className="message">“{data.message}”</p>
-
-            {data.image && (
-              <div className="memory-section">
-                <div className="memory-label">✨ A memory was shared</div>
-
-                <div
-                  className={`memory-card ${revealImage ? "revealed" : ""}`}
-                  onClick={() => setRevealImage(true)}
-                >
-                  <img src={data.image} alt="memory" />
-
-                  {!revealImage && (
-                    <div className="memory-overlay">
-                      <span className="memory-text">Tap to reveal</span>
-                    </div>
-                  )}
+              {data.image && (
+                <div className="memory-section">
+                  <div className="memory-label">✨ A memory was shared</div>
+                  <div
+                    className={`memory-card ${revealImage ? "revealed" : ""}`}
+                    onClick={() => setRevealImage(true)}
+                  >
+                    <img src={data.image} alt="memory" />
+                    {!revealImage && (
+                      <div className="memory-overlay">
+                        <span className="memory-text">Tap to reveal</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
 
-          <div className="sender">— {data.sender}</div>
-          <div className="note">
-            🌿 Some messages are meant to bring peace, not replies.
+            <div className="sender-name">— {data.sender}</div>
+            <div className="peace-note">
+              🌿 Some messages are meant to bring peace, not replies.
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       <style jsx>{`
         * {
@@ -369,14 +127,12 @@ export default function ReceiverLetter() {
           text-align: center;
         }
 
-        .container {
+        .main-container {
           min-height: 100vh;
           width: 100vw;
           display: flex;
           justify-content: center;
           align-items: center;
-          text-align: center;
-          color: white;
           position: relative;
           overflow: hidden;
           background: radial-gradient(circle at top, #6a11cb, #3a1c71);
@@ -384,7 +140,7 @@ export default function ReceiverLetter() {
           padding: 20px;
         }
 
-        .container.open {
+        .main-container.open {
           background: radial-gradient(circle at top, #141e30, #000010);
         }
 
@@ -396,118 +152,206 @@ export default function ReceiverLetter() {
           border-radius: 50%;
           animation: float 10s infinite linear;
           pointer-events: none;
+          top: 0;
+          z-index: 1;
         }
 
-        @keyframes float {
-          0% {
-            transform: translateY(100vh);
-            opacity: 0;
-          }
-          30% {
-            opacity: 0.7;
-          }
-          100% {
-            transform: translateY(-10vh);
-            opacity: 0;
-          }
-        }
-
-        .closed {
-          cursor: pointer;
-          position: relative;
-          z-index: 2;
-        }
-
-        .emoji {
-          font-size: 72px;
-          animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-          0%,
-          100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-
-        .title {
-          margin-top: 16px;
-          font-size: 20px;
-        }
-
-        .hint {
-          margin-top: 6px;
-          font-size: 13px;
-          opacity: 0.75;
-        }
-
-        .letter-wrapper {
-          width: min(420px, 100%);
-          position: relative;
-          z-index: 2;
+        /* RESTORED ORIGINAL HEADER */
+        .header-section {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 15px;
+          margin-bottom: 25px;
         }
 
         .moon {
-          font-size: 36px;
-          margin-bottom: 8px;
+          font-size: 40px;
+          animation: glow 3s ease-in-out infinite alternate;
         }
 
-        .receiver {
-          font-size: 30px;
-          margin-bottom: 18px;
-          line-height: 1.2;
+        /* SAME ELEGANT FONT + GLITCH FIX */
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Parisienne&display=swap');
+
+        .receiver-name {
+          font-family: 'Dancing Script', 'Great Vibes', 'Parisienne', cursive;
+          font-size: 36px;
+          line-height: 1.1;
+          font-weight: 700;
+          letter-spacing: -0.8px;
+          text-align: center;
+          margin: 0;
+          color: white;
+          text-shadow: 
+            0 4px 12px rgba(0,0,0,0.4),
+            0 0 30px rgba(255,255,255,0.2);
+          max-width: 90%;
+          word-break: break-word;
+          overflow-wrap: break-word;
+          padding: 0 10px;
+        }
+
+        .receiver-name:hover {
+          transform: scale(1.02);
+          text-shadow: 
+            0 5px 16px rgba(0,0,0,0.5),
+            0 0 40px rgba(255,255,255,0.4);
+        }
+
+        @keyframes float {
+          0% { transform: translateY(100vh); opacity: 0; }
+          30% { opacity: 0.7; }
+          100% { transform: translateY(-10vh); opacity: 0; }
+        }
+
+        /* ORIGINAL CARD LAYOUT RESTORED */
+        .letter-card {
+          width: min(450px, 95%);
+          min-height: 500px;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(20px);
+          border-radius: 30px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          box-shadow: 
+            0 25px 60px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+          position: relative;
+          overflow: hidden;
+          transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+          transform: scale(0.95);
+          animation: cardEntrance 0.8s ease-out;
+        }
+
+        .letter-card.opened {
+          transform: scale(1);
+          box-shadow: 
+            0 40px 100px rgba(0, 0, 0, 0.6),
+            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes cardEntrance {
+          0% { opacity: 0; transform: scale(0.7) rotateX(20deg); }
+          100% { opacity: 1; transform: scale(0.95) rotateX(0deg); }
+        }
+
+        .closed-envelope {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          padding: 40px;
+          transition: all 0.3s ease;
+        }
+
+        .closed-envelope:hover {
+          transform: translateY(-5px);
+        }
+
+        .envelope-icon {
+          font-size: 80px;
+          animation: bounce 2s infinite;
+          margin-bottom: 20px;
+        }
+
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-12px); }
+        }
+
+        .envelope-title {
+          font-size: 24px;
+          margin-bottom: 10px;
+          font-weight: 600;
+        }
+
+        .envelope-hint {
+          font-size: 15px;
+          opacity: 0.8;
+          letter-spacing: 0.5px;
+        }
+
+        .letter-content {
+          height: 100%;
+          padding: 40px;
+          display: flex;
+          flex-direction: column;
+          color: white;
+          overflow-y: auto;
+        }
+
+        @keyframes glow {
+          from { filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); }
+          to { filter: drop-shadow(0 0 20px rgba(255,255,255,0.8)); }
         }
 
         .letter-paper {
-          background: linear-gradient(180deg, #fff7ed, #ffe8d6);
+          background: linear-gradient(180deg, rgba(255,247,237,0.95), rgba(255,232,214,0.9));
           color: #3b2f2f;
-          padding: 28px;
-          border-radius: 22px;
-          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+          padding: 35px;
+          border-radius: 25px;
+          box-shadow: 
+            0 20px 50px rgba(0, 0, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.8);
           text-align: left;
+          backdrop-filter: blur(10px);
+          margin-bottom: 25px;
+          transform: translateY(10px);
+          transition: transform 0.4s ease;
         }
 
-        .message {
-          font-size: 18px;
-          line-height: 1.9;
+        .letter-paper:hover {
+          transform: translateY(0);
+        }
+
+        .message-text {
+          font-size: 19px;
+          line-height: 1.85;
           font-style: italic;
           word-break: break-word;
+          margin-bottom: 0;
         }
 
         .memory-section {
-          margin-top: 22px;
+          margin-top: 30px;
         }
 
         .memory-label {
-          font-size: 12px;
-          opacity: 0.75;
-          margin-bottom: 8px;
+          font-size: 13px;
+          opacity: 0.8;
+          margin-bottom: 12px;
+          font-weight: 500;
+          letter-spacing: 0.3px;
         }
 
         .memory-card {
           position: relative;
-          height: 60px;
-          border-radius: 16px;
+          height: 70px;
+          border-radius: 20px;
           overflow: hidden;
           cursor: pointer;
-          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-          transition: all 0.5s ease;
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+          transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .memory-card:hover {
+          transform: translateY(-3px);
         }
 
         .memory-card.revealed {
-          height: 260px;
+          height: 280px;
         }
 
         .memory-card img {
           width: 100%;
-          height: 260px;
+          height: 280px;
           object-fit: cover;
-          filter: blur(14px) brightness(0.7);
+          filter: blur(15px) brightness(0.65);
           transform: scale(1.1);
-          transition: all 0.7s ease;
+          transition: all 0.8s ease;
         }
 
         .memory-card.revealed img {
@@ -521,123 +365,87 @@ export default function ReceiverLetter() {
           display: flex;
           justify-content: center;
           align-items: center;
-          background: rgba(0, 0, 0, 0.35);
+          background: rgba(0, 0, 0, 0.4);
+          backdrop-filter: blur(5px);
         }
 
         .memory-text {
-          background: rgba(255, 255, 255, 0.95);
+          background: rgba(255, 255, 255, 0.98);
           color: #333;
-          padding: 8px 18px;
+          padding: 12px 24px;
           border-radius: 30px;
-          font-size: 12px;
+          font-size: 13px;
+          font-weight: 600;
+          box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .sender {
-          margin-top: 18px;
-          font-size: 14px;
-          opacity: 0.85;
+        .sender-name {
+          margin-top: 20px;
+          font-size: 16px;
+          opacity: 0.9;
+          font-style: italic;
+          letter-spacing: 0.3px;
         }
 
-        .note {
-          margin-top: 8px;
-          font-size: 12px;
-          opacity: 0.6;
+        .peace-note {
+          margin-top: 15px;
+          font-size: 13px;
+          opacity: 0.75;
+          font-style: italic;
+          text-align: center;
+          padding-top: 15px;
+          border-top: 1px solid rgba(255, 255, 255, 0.2);
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
-          .container {
-            padding: 16px;
+          .letter-card {
+            width: 95%;
+            min-height: 450px;
+            border-radius: 25px;
           }
-
-          .emoji {
-            font-size: 64px;
+          
+          .letter-content {
+            padding: 30px 25px;
           }
-
-          .title {
-            font-size: 18px;
-          }
-
-          .letter-wrapper {
-            width: 100%;
-          }
-
-          .receiver {
-            font-size: 26px;
-          }
-
+          
           .letter-paper {
-            padding: 24px;
-            border-radius: 20px;
+            padding: 28px;
           }
-
-          .message {
-            font-size: 16px;
-            line-height: 1.8;
+          
+          .envelope-icon {
+            font-size: 70px;
           }
-
-          .memory-card.revealed {
-            height: 220px;
-          }
-
-          .memory-card img {
-            height: 220px;
+          
+          .receiver-name {
+            font-size: 32px;
           }
         }
 
         @media (max-width: 480px) {
-          .container {
-            padding: 12px;
+          .main-container {
+            padding: 15px;
           }
-
-          .emoji {
-            font-size: 58px;
+          
+          .letter-card {
+            min-height: 420px;
+            border-radius: 20px;
           }
-
-          .title {
-            font-size: 17px;
+          
+          .letter-content {
+            padding: 25px 20px;
           }
-
-          .hint {
-            font-size: 12px;
-          }
-
-          .moon {
-            font-size: 32px;
-          }
-
-          .receiver {
-            font-size: 22px;
-            margin-bottom: 14px;
-          }
-
+          
           .letter-paper {
-            padding: 18px;
-            border-radius: 18px;
+            padding: 22px;
           }
-
-          .message {
-            font-size: 15px;
-            line-height: 1.7;
+          
+          .envelope-icon {
+            font-size: 65px;
           }
-
-          .memory-section {
-            margin-top: 18px;
-          }
-
-          .memory-card.revealed {
-            height: 190px;
-          }
-
-          .memory-card img {
-            height: 190px;
-          }
-
-          .sender {
-            font-size: 13px;
-          }
-
-          .note {
-            font-size: 11px;
+          
+          .receiver-name {
+            font-size: 28px;
           }
         }
       `}</style>

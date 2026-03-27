@@ -153,6 +153,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import BrandHeader from "../BrandHeader";
 
 export default function MessageSent() {
   const router = useRouter();
@@ -165,12 +166,15 @@ export default function MessageSent() {
 
   return (
     <div className="body">
+      
       <div className="particle" style={{ left: "20%", animationDelay: "0s" }} />
       <div className="particle" style={{ left: "40%", animationDelay: "3s" }} />
       <div className="particle" style={{ left: "65%", animationDelay: "5s" }} />
       <div className="particle" style={{ left: "80%", animationDelay: "2s" }} />
 
       <div className="card">
+                <BrandHeader />
+
         <div style={{ fontSize: "55px", marginBottom: "20px" }}>🌙</div>
 
         <h2>Message Sent!</h2>
@@ -180,11 +184,11 @@ export default function MessageSent() {
           You can now give the chocolate to the receiver and let the message do its magic.
         </p>
 
-        <div style={{ fontSize: "50px", marginBottom: "20px" }}>🍫</div>
+        {/* <div style={{ fontSize: "50px", marginBottom: "20px" }}>🍫</div> */}
 
-        <button onClick={goBackHome} className="back-btn">
+        {/* <button onClick={goBackHome} className="back-btn">
           Back to Home
-        </button>
+        </button> */}
       </div>
 
       <div className="toast">
