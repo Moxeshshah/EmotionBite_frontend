@@ -381,7 +381,7 @@ export default function AdminLayout({ children }) {
       {open && <div className="overlay" onClick={() => setOpen(false)} />}
 
       <aside className={`sidebar ${open ? "show" : ""}`}>
-        <div className="logo">Scanova</div>
+        <div className="logo">Emotion Bite</div>
 
         <div className="menuList">
           {menu.map((item) => (
