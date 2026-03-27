@@ -80,7 +80,7 @@ export default function ApproachReceiver() {
       <div className="bg-shape shape-two" />
       <div className="bg-shape shape-three" />
 
-      {opened && <div className="sparkle">✨</div>}
+      {/* {opened && <div className="sparkle">✨</div>} */}
 
       {!opened ? (
         <div className="invite-card" onClick={() => setOpened(true)}>
@@ -94,7 +94,7 @@ export default function ApproachReceiver() {
 
           <div className="big-emoji">✉️</div>
 
-          <h2>You've got a new message</h2>
+          <h2>You've got a message</h2>
           <p>Someone reached out to start a conversation.</p>
 
           <div className="tap-hint">Tap to open ✨</div>
@@ -105,11 +105,11 @@ export default function ApproachReceiver() {
             <div className="avatar">😊</div>
             <div>
               <div className="name">{data.sender || "New Connection"}</div>
-              <div className="status">Active now</div>
+              {/* <div className="status">Active now</div> */}
             </div>
           </div>
 
-          <div className="message-label">First message</div>
+          <div className="message-label">A stranger just reach out to you...</div>
 
           <div className="bubble">{typedMessage}</div>
 
@@ -144,7 +144,7 @@ export default function ApproachReceiver() {
             </div>
           )}
 
-          <button className="reply-btn">Reply & Start Chat 💬</button>
+          {/* <button className="reply-btn">Reply & Start Chat 💬</button> */}
         </div>
       )}
 
