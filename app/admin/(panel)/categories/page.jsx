@@ -840,7 +840,7 @@ export default function CategoriesPage() {
     }
   };
 
-  const generateQr = async () => {
+const generateQr = async () => {
     if (!qrCategory) {
       alert("Select category");
       return;
@@ -871,8 +871,20 @@ export default function CategoriesPage() {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
 
+      // Find selected category to get name
+      const selectedCategory = categories.find(cat => cat.code === qrCategory);
+      const categoryName = selectedCategory ? selectedCategory.name : "qr-codes";
+      
+      // Sanitize filename (remove invalid characters, limit length)
+      const sanitizedName = categoryName
+        .replace(/[^a-zA-Z0-9\s-]/g, '')
+        .trim()
+        .substring(0, 50)
+        .replace(/\s+/g, '-')
+        .toLowerCase();
+
       a.href = url;
-      a.download = "qr-codes.zip";
+      a.download = `${sanitizedName}-qr-codes.zip`;
       document.body.appendChild(a);
       a.click();
 

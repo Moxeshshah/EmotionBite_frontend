@@ -1,358 +1,8 @@
-
-// "use client";
-
-// import { useState, useEffect } from "react";
-// import { useSearchParams } from "next/navigation";
-
-// export default function AnniversaryReceiver() {
-//   const [opened, setOpened] = useState(false);
-//   const [revealImage, setRevealImage] = useState(false);
-//   const [data, setData] = useState(null);
-//   const [error, setError] = useState("");
-
-//   const params = useSearchParams();
-//   const code = params.get("code");
-
-//   // Fetch message
-// useEffect(() => {
-//   if (!code) {
-//     setError("Message code not found");
-//     return;
-//   }
-
-//   fetch(`/api/messages?code=${code}`)
-//     .then(res => res.json())
-//     .then(apiData => {
-//       console.log("API DATA:", apiData); // debug
-
-//       if (!apiData) {
-//         setError("No message found");
-//         return;
-//       }
-
-//       setData({
-//         sender: apiData.senderName || "Your Partner",
-//         message: apiData.messageText,
-//         image: apiData.image_url,
-//         song: apiData.song || null,
-//       });
-//     })
-//     .catch((err) => {
-//       console.error(err);
-//       setError("Server error");
-//     });
-// }, [code]);
-
-//   // Loading state
-//   if (!data && !error) {
-//     return (
-//       <div style={{
-//         height: "100vh",
-//         display: "flex",
-//         justifyContent: "center",
-//         alignItems: "center",
-//         background: "#ff9a9e",
-//         color: "white",
-//         fontSize: "18px"
-//       }}>
-//         Loading your memory...
-//       </div>
-//     );
-//   }
-
-//   // Error state
-//   if (error) {
-//     return (
-//       <div style={{
-//         height: "100vh",
-//         display: "flex",
-//         justifyContent: "center",
-//         alignItems: "center",
-//         background: "#ff9a9e",
-//         color: "white",
-//         fontSize: "18px"
-//       }}>
-//         {error}
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="container">
-//       {/* Floating hearts */}
-//       <div className="heart h1">💖</div>
-//       <div className="heart h2">💕</div>
-//       <div className="heart h3">💞</div>
-
-//       {!opened ? (
-//         /* Closed Invitation */
-//         <div className="invite-card" onClick={() => setOpened(true)}>
-//           <div className="emoji">📖</div>
-//           <h2>A memory from your journey</h2>
-//           <p>{data.sender} shared a special anniversary message with you</p>
-//           <div className="hint">Tap to open ✨</div>
-//         </div>
-//       ) : (
-//         /* Opened View */
-//         <div className="memory-card">
-//           <div className="title">Our Beautiful Story</div>
-
-//           {/* Message */}
-//           <div className="note">
-//             <p className="text">“{data.message}”</p>
-//             <div className="from">— {data.sender}</div>
-//           </div>
-
-//           {/* Image */}
-//           {data.image && (
-//             <div className="photo-section">
-//               <div className="label">A memory was shared</div>
-
-//               <div
-//                 className={`photo-card ${revealImage ? "show" : ""}`}
-//                 onClick={() => setRevealImage(true)}
-//               >
-//                 <img src={data.image} alt="memory" />
-//                 {!revealImage && (
-//                   <div className="overlay">Tap to reveal</div>
-//                 )}
-//               </div>
-//             </div>
-//           )}
-
-//           {/* Song (optional) */}
-//           {data.song && (
-//             <div className="song">
-//               🎵 Dedicated Song
-//               <div className="song-name">{data.song}</div>
-//             </div>
-//           )}
-
-//           <button className="reply-btn">
-//             Send Love Back 💌
-//           </button>
-//         </div>
-//       )}
-
-//       {/* DESIGN — unchanged */}
-// <style jsx>{`
-//   * {
-//     box-sizing: border-box;
-//   }
-
-//   .container {
-//     min-height: 100vh;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     background: linear-gradient(180deg,#ff9a9e,#fad0c4,#fbc2eb);
-//     font-family: 'Poppins', sans-serif;
-//     color: white;
-//     position: relative;
-//     overflow: hidden;
-//     padding: 20px;
-
-//     /* 🔥 IMPORTANT */
-//     text-align: center;
-//   }
-
-//   /* Floating hearts */
-//   .heart {
-//     position: absolute;
-//     font-size: 24px;
-//     opacity: 0.15;
-//     animation: float 10s infinite ease-in-out;
-//   }
-
-//   .h1 { top: 15%; left: 10%; }
-//   .h2 { bottom: 20%; right: 12%; }
-//   .h3 { top: 35%; right: 25%; }
-
-//   @keyframes float {
-//     0%,100% { transform: translateY(0); }
-//     50% { transform: translateY(-25px); }
-//   }
-
-//   /* 🔥 CARD FIX */
-//   .invite-card,
-//   .memory-card {
-//     width: 100%;
-//     max-width: 380px; /* instead of fixed */
-//     margin: auto;
-//   }
-
-//   .invite-card {
-//     background: rgba(255,255,255,0.2);
-//     backdrop-filter: blur(20px);
-//     border-radius: 28px;
-//     padding: 40px 30px;
-//     box-shadow: 0 30px 70px rgba(0,0,0,0.3);
-//     cursor: pointer;
-//     animation: fadeIn 0.6s ease;
-//   }
-
-//   .emoji {
-//     font-size: 60px;
-//     margin-bottom: 10px;
-//     animation: pulse 2s infinite;
-//   }
-
-//   .hint {
-//     margin-top: 12px;
-//     font-size: 13px;
-//     opacity: 0.8;
-//   }
-
-//   @keyframes pulse {
-//     0%,100% { transform: scale(1); }
-//     50% { transform: scale(1.08); }
-//   }
-
-//   .memory-card {
-//     background: rgba(255,255,255,0.18);
-//     backdrop-filter: blur(20px);
-//     border-radius: 28px;
-//     padding: 25px;
-//     box-shadow: 0 40px 90px rgba(0,0,0,0.35);
-//     animation: fadeIn 0.5s ease;
-//   }
-
-//   .title {
-//     font-family: 'Playfair Display', serif;
-//     font-size: 24px;
-//     margin-bottom: 14px;
-//   }
-
-//   .note {
-//     background: linear-gradient(180deg,#ffffff,#fff5f7);
-//     color: #444;
-//     padding: 20px;
-//     border-radius: 18px;
-//     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-//   }
-
-//   .text {
-//     font-family: 'Playfair Display', serif;
-//     font-size: 16px;
-//     line-height: 1.8;
-//   }
-
-//   .from {
-//     margin-top: 10px;
-//     font-size: 13px;
-//     opacity: 0.7;
-//   }
-
-//   .photo-section { margin-top: 16px; }
-//   .label { font-size: 12px; opacity: 0.8; margin-bottom: 6px; }
-
-//   .photo-card {
-//     height: 60px;
-//     border-radius: 14px;
-//     overflow: hidden;
-//     cursor: pointer;
-//     position: relative;
-//     transition: 0.5s;
-//   }
-
-//   .photo-card.show { height: 220px; }
-
-//   .photo-card img {
-//     width: 100%;
-//     height: 220px;
-//     object-fit: cover;
-//     filter: blur(12px);
-//     transition: 0.6s;
-//   }
-
-//   .photo-card.show img {
-//     filter: blur(0);
-//     transform: scale(1.05);
-//   }
-
-//   .overlay {
-//     position: absolute;
-//     inset: 0;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     background: rgba(0,0,0,0.3);
-//     font-size: 12px;
-//   }
-
-//   .song {
-//     margin-top: 18px;
-//     background: rgba(255,255,255,0.25);
-//     padding: 12px;
-//     border-radius: 16px;
-//     font-size: 13px;
-//   }
-
-//   .song-name {
-//     margin-top: 4px;
-//     font-weight: 600;
-//   }
-
-//   .reply-btn {
-//     margin-top: 20px;
-//     width: 100%;
-//     padding: 14px;
-//     border-radius: 25px;
-//     border: none;
-//     background: linear-gradient(90deg,#ff758c,#ff7eb3);
-//     color: white;
-//     font-weight: 600;
-//     cursor: pointer;
-//     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-//   }
-
-//   .reply-btn:hover {
-//     transform: translateY(-2px);
-//   }
-
-//   /* 🔥 MOBILE IMPROVEMENTS */
-//   @media (max-width: 480px) {
-//     .invite-card {
-//       padding: 28px 20px;
-//     }
-
-//     .memory-card {
-//       padding: 20px 16px;
-//     }
-
-//     .emoji {
-//       font-size: 50px;
-//     }
-
-//     .title {
-//       font-size: 20px;
-//     }
-
-//     .text {
-//       font-size: 14px;
-//     }
-
-//     .photo-card.show {
-//       height: 180px;
-//     }
-
-//     .photo-card img {
-//       height: 180px;
-//     }
-//   }
-
-//   @keyframes fadeIn {
-//     from { opacity: 0; transform: translateY(20px); }
-//     to { opacity: 1; transform: translateY(0); }
-//   }
-// `}</style>
-//     </div>
-//   );
-// }
 "use client";
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import BrandHeader from "../BrandHeader";
 
 export default function AnniversaryReceiver() {
   const [opened, setOpened] = useState(false);
@@ -392,6 +42,7 @@ export default function AnniversaryReceiver() {
         setData({
           sender: apiData.senderName || "Your Partner",
           message: apiData.messageText,
+          receiver: apiData.receiverName,
           image: apiData.image_url || apiData.imageUrl,
           song: apiData.song || null,
         });
@@ -402,355 +53,431 @@ export default function AnniversaryReceiver() {
       });
   }, [code]);
 
-  if (!data && !error) {
-    return (
-      <div className="state-screen">Loading your memory...</div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="state-screen">{error}</div>
-    );
-  }
-
+  // Always render the main container - shows gift or content based on state
   return (
-    <div className="container">
-      <div className="heart h1">💖</div>
-      <div className="heart h2">💕</div>
-      <div className="heart h3">💞</div>
+    <div className={opened ? "main-container open" : "main-container"}>
+      {/* Floating Hearts */}
+      <div className="heart-particle" style={{ left: "20%" }} />
+      <div className="heart-particle" style={{ left: "45%", animationDelay: "3s" }} />
+      <div className="heart-particle" style={{ left: "70%", animationDelay: "6s" }} />
+      <div className="heart-particle" style={{ left: "85%", animationDelay: "2s" }} />
 
-      {!opened ? (
-        <div className="invite-card" onClick={() => setOpened(true)}>
-          <div className="emoji">📖</div>
-          <h2>A memory from your journey</h2>
-          <p>{data.sender} shared a special anniversary message with you</p>
-          <div className="hint">Tap to open ✨</div>
-        </div>
-      ) : (
-        <div className="memory-card">
-          <div className="title">Our Beautiful Story</div>
-
-          <div className="note">
-            <p className="text">“{data.message}”</p>
-            <div className="from">— {data.sender}</div>
+      {/* Main Card Container */}
+      <div className={`anniversary-card ${opened ? "opened" : ""}`}>
+        {error ? (
+          // Show error inside the gift card
+          <div className="closed-gift error-state">
+            <BrandHeader />
+            <div className="gift-icon">❌</div>
+            <div className="gift-title">Oops!</div>
+            <div className="gift-hint">{error}</div>
           </div>
-
-          {data.image && (
-            <div className="photo-section">
-              <div className="label">A memory was shared</div>
-
-              <div
-                className={`photo-card ${revealImage ? "show" : ""}`}
-                onClick={() => setRevealImage(true)}
-              >
-                <img src={data.image} alt="memory" />
-                {!revealImage && <div className="overlay">Tap to reveal</div>}
-              </div>
+        ) : !opened ? (
+          // Show loading gift (no separate loading screen)
+          <div className="closed-gift" onClick={() => setOpened(true)}>
+            <BrandHeader />
+            <div className="gift-icon">🎁</div>
+            <div className="gift-title">Anniversary Surprise ✨</div>
+            <div className="gift-hint">Tap to unwrap 💖</div>
+          </div>
+        ) : (
+          // Show opened content
+          <div className="anniversary-content">
+            <BrandHeader />
+            
+            <div className="header-section">
+              <div className="heart-emoji">💝</div>
+              <h2 className="anniversary-title">A Love Worth Celebrating..!!💖</h2>
             </div>
-          )}
 
-          {data.song && (
-            <div className="song">
-              🎵 Dedicated Song
-              <div className="song-name">{data.song}</div>
+            <div className="love-note">
+              <p className="message-text">"Dear {data.receiver}, {data.message}"</p>
+              
+              {data.image && (
+                <div className="memory-section">
+                  <div className="memory-label">💕 Shared Memory</div>
+                  <div
+                    className={`memory-card ${revealImage ? "revealed" : ""}`}
+                    onClick={() => setRevealImage(true)}
+                  >
+                    <img src={data.image} alt="memory" />
+                    {!revealImage && (
+                      <div className="memory-overlay">
+                        <span className="memory-text">Tap to reveal</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {data.song && (
+                <div className="song-section">
+                  <div className="song-label">🎵 Our Song</div>
+                  <div className="song-name">{data.song}</div>
+                </div>
+              )}
             </div>
-          )}
 
-          <button className="reply-btn">Send Love Back 💌</button>
-        </div>
-      )}
+            <div className="sender-name">— {data.sender}</div>
+            <div className="anniversary-note">
+              💍 Forever starts today, every year.
+            </div>
+          </div>
+        )}
+      </div>
 
-      <style jsx>{`
-        * {
-          box-sizing: border-box;
-          margin: 0;
-          padding: 0;
-        }
+<style jsx>{`
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-        :global(html),
-        :global(body) {
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          overflow-x: hidden;
-        }
+  :global(html),
+  :global(body) {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+  }
 
-        .state-screen {
-          min-height: 100vh;
-          width: 100vw;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: linear-gradient(180deg, #ff9a9e, #fad0c4, #fbc2eb);
-          color: white;
-          font-size: 18px;
-          padding: 20px;
-          text-align: center;
-        }
+  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Parisienne&family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500&display=swap');
 
-        .container {
-          min-height: 100vh;
-          width: 100vw;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: linear-gradient(180deg, #ff9a9e, #fad0c4, #fbc2eb);
-          font-family: "Poppins", sans-serif;
-          color: white;
-          position: relative;
-          overflow: hidden;
-          padding: 20px;
-          text-align: center;
-          box-sizing: border-box;
-        }
+  .main-container {
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(circle at top, #ff9a9e, #fecfef, #fecfef);
+    transition: background 0.6s ease;
+    padding: 60px 20px 80px 20px; /* ✅ Increased spacing */
+    font-family: 'Poppins', sans-serif;
+  }
 
-        .heart {
-          position: absolute;
-          font-size: 24px;
-          opacity: 0.15;
-          animation: float 10s infinite ease-in-out;
-          pointer-events: none;
-        }
+  .main-container.open {
+    background: radial-gradient(circle at top, #ff6b9d, #c44569);
+  }
 
-        .h1 {
-          top: 15%;
-          left: 10%;
-        }
+  .heart-particle {
+    position: absolute;
+    font-size: 18px;
+    animation: heartFloat 12s infinite linear;
+    pointer-events: none;
+    top: 0;
+    z-index: 1;
+    opacity: 0.6;
+  }
 
-        .h2 {
-          bottom: 20%;
-          right: 12%;
-        }
+  @keyframes heartFloat {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    20% { opacity: 0.8; }
+    80% { opacity: 0.4; }
+    100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+  }
 
-        .h3 {
-          top: 35%;
-          right: 25%;
-        }
+  .header-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
 
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-25px);
-          }
-        }
+  .heart-emoji {
+    font-size: 45px;
+    animation: glow 3s ease-in-out infinite alternate;
+  }
 
-        .invite-card,
-        .memory-card {
-          width: 100%;
-          max-width: 380px;
-          margin: auto;
-          z-index: 2;
-          position: relative;
-        }
+  .anniversary-title {
+    font-family: 'Dancing Script', 'Great Vibes', 'Parisienne', cursive;
+    font-size: 30px;
+    line-height: 1.2;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+    text-align: center;
+    margin: 0 auto;
+    color: white;
+    text-shadow: 
+      0 4px 12px rgba(0,0,0,0.4),
+      0 0 30px rgba(255,192,203,0.6);
+    max-width: 100%;
+    padding: 0;
+    word-break: break-word;
+  }
 
-        .invite-card {
-          background: rgba(255, 255, 255, 0.2);
-          backdrop-filter: blur(20px);
-          border-radius: 28px;
-          padding: 40px 30px;
-          box-shadow: 0 30px 70px rgba(0, 0, 0, 0.3);
-          cursor: pointer;
-          animation: fadeIn 0.6s ease;
-        }
+  .anniversary-title:hover {
+    transform: scale(1.02);
+    text-shadow: 
+      0 5px 16px rgba(0,0,0,0.5),
+      0 0 40px rgba(255,192,203,0.8);
+  }
 
-        .emoji {
-          font-size: 60px;
-          margin-bottom: 10px;
-          animation: pulse 2s infinite;
-        }
+  @keyframes glow {
+    from { 
+      filter: drop-shadow(0 0 10px rgba(255,182,193,0.7)); 
+      transform: scale(1);
+    }
+    to { 
+      filter: drop-shadow(0 0 25px rgba(255,182,193,1)); 
+      transform: scale(1.05);
+    }
+  }
 
-        .hint {
-          margin-top: 12px;
-          font-size: 13px;
-          opacity: 0.8;
-        }
+  .anniversary-card {
+    width: min(450px, 95%);
+    min-height: 550px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(16px);
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: scale(0.93);
+    animation: cardEntrance 1s ease-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 20px auto; /* ✅ Extra spacing top/bottom */
+    max-width: 450px;
+  }
 
-        @keyframes pulse {
-          0%,
-          100% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.08);
-          }
-        }
+  .anniversary-card.opened {
+    transform: scale(1);
+    box-shadow: 0 50px 120px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
 
-        .memory-card {
-          background: rgba(255, 255, 255, 0.18);
-          backdrop-filter: blur(20px);
-          border-radius: 28px;
-          padding: 25px;
-          box-shadow: 0 40px 90px rgba(0, 0, 0, 0.35);
-          animation: fadeIn 0.5s ease;
-        }
+  @keyframes cardEntrance {
+    0% { 
+      opacity: 0; 
+      transform: scale(0.6) rotateX(25deg) translateY(30px); 
+    }
+    100% { 
+      opacity: 1; 
+      transform: scale(0.93) rotateX(0deg) translateY(0); 
+    }
+  }
 
-        .title {
-          font-family: "Playfair Display", serif;
-          font-size: 24px;
-          margin-bottom: 14px;
-          line-height: 1.2;
-        }
+  .closed-gift {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 45px;
+    transition: all 0.4s ease;
+    background: transparent;
+    text-align: center;
+    gap: 10px;
+  }
 
-        .note {
-          background: linear-gradient(180deg, #ffffff, #fff5f7);
-          color: #444;
-          padding: 20px;
-          border-radius: 18px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-          text-align: left;
-        }
+  .closed-gift.error-state {
+    cursor: default;
+  }
 
-        .text {
-          font-family: "Playfair Display", serif;
-          font-size: 16px;
-          line-height: 1.8;
-          word-break: break-word;
-        }
+  .closed-gift:hover:not(.error-state) {
+    transform: translateY(-8px) scale(1.02);
+  }
 
-        .from {
-          margin-top: 10px;
-          font-size: 13px;
-          opacity: 0.7;
-        }
+  .gift-icon {
+    font-size: 85px;
+    animation: giftBounce 2.2s infinite;
+    margin-bottom: 25px;
+  }
 
-        .photo-section {
-          margin-top: 16px;
-          text-align: left;
-        }
+  @keyframes giftBounce {
+    0%, 100% { transform: translateY(0) rotate(2deg); }
+    33% { transform: translateY(-15px) rotate(-1deg); }
+    66% { transform: translateY(-8px) rotate(1deg); }
+  }
 
-        .label {
-          font-size: 12px;
-          opacity: 0.8;
-          margin-bottom: 6px;
-        }
+  .gift-title {
+    font-size: 26px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
 
-        .photo-card {
-          height: 60px;
-          border-radius: 14px;
-          overflow: hidden;
-          cursor: pointer;
-          position: relative;
-          transition: 0.5s;
-        }
+  .gift-hint {
+    font-size: 16px;
+    opacity: 0.85;
+    letter-spacing: 0.5px;
+    color: white;
+  }
 
-        .photo-card.show {
-          height: 220px;
-        }
+  .anniversary-content {
+    height: 100%;
+    padding: 40px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    overflow-y: auto;
+    background: transparent;
+  }
 
-        .photo-card img {
-          width: 100%;
-          height: 220px;
-          object-fit: cover;
-          filter: blur(12px);
-          transition: 0.6s;
-        }
+  .love-note {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(16px);
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    text-align: left;
+    color: white;
+    padding: 38px;
+    margin-bottom: 25px;
+    transform: translateY(12px);
+    transition: all 0.5s ease;
+    position: relative;
+    overflow: hidden;
+  }
 
-        .photo-card.show img {
-          filter: blur(0);
-          transform: scale(1.05);
-        }
+  .message-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: 20px;
+    line-height: 1.85;
+    font-weight: 500;
+    font-style: italic;
+    word-break: break-word;
+    color: white;
+  }
 
-        .overlay {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: rgba(0, 0, 0, 0.3);
-          font-size: 12px;
-        }
+  .sender-name {
+    margin-top: 2px;
+    font-size: 17px;
+    opacity: 0.92;
+    font-family: 'Great Vibes', cursive;
+    font-style: italic;
+    letter-spacing: 0.4px;
+    text-align: center;
+  }
 
-        .song {
-          margin-top: 18px;
-          background: rgba(255, 255, 255, 0.25);
-          padding: 12px;
-          border-radius: 16px;
-          font-size: 13px;
-        }
+  .anniversary-note {
+    margin-top: 6px;
+    font-size: 14px;
+    margin-bottom: 0; 
+    opacity: 0.8;
+    font-style: italic;
+    text-align: center;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.25);
+    font-family: 'Poppins', sans-serif;
+  }
 
-        .song-name {
-          margin-top: 4px;
-          font-weight: 600;
-        }
+  /* ✅ NEW: Memory & Song Styles */
+  .memory-section {
+    margin-top: 25px;
+  }
+  
+  .memory-label,
+  .song-label {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color: rgba(255,255,255,0.95);
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .memory-card {
+    position: relative;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .memory-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .memory-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .memory-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+  
+  .memory-card.revealed .memory-overlay {
+    opacity: 0;
+  }
+  
+  .memory-text {
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+  }
+  
+  .song-section {
+    margin-top: 20px;
+  }
+  
+  .song-name {
+    font-size: 18px;
+    font-style: italic;
+    color: rgba(255,255,255,0.95);
+    font-family: 'Great Vibes', cursive;
+    font-weight: 500;
+  }
 
-        .reply-btn {
-          margin-top: 20px;
-          width: 100%;
-          padding: 14px;
-          border-radius: 25px;
-          border: none;
-          background: linear-gradient(90deg, #ff758c, #ff7eb3);
-          color: white;
-          font-weight: 600;
-          cursor: pointer;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-          transition: 0.3s;
-        }
+  /* ✅ Enhanced Responsive */
+  @media (max-width: 480px) {
+    .main-container {
+      padding: 40px 15px 60px 15px; /* ✅ Mobile spacing */
+    }
+    
+    .anniversary-card {
+      margin: 15px auto;
+      width: 95%;
+      border-radius: 24px;
+    }
+    
+    .anniversary-content {
+      padding: 30px 20px;
+    }
+    
+    .love-note {
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+    
+    .anniversary-title {
+      font-size: 25px;
+    }
 
-        .reply-btn:hover {
-          transform: translateY(-2px);
-        }
-
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @media (max-width: 480px) {
-          .container {
-            padding: 12px;
-          }
-
-          .invite-card {
-            padding: 28px 20px;
-            border-radius: 22px;
-          }
-
-          .memory-card {
-            padding: 20px 16px;
-            border-radius: 22px;
-          }
-
-          .emoji {
-            font-size: 50px;
-          }
-
-          .title {
-            font-size: 20px;
-          }
-
-          .text {
-            font-size: 14px;
-          }
-
-          .photo-card.show {
-            height: 180px;
-          }
-
-          .photo-card img {
-            height: 180px;
-          }
-
-          .reply-btn {
-            padding: 12px;
-            font-size: 13px;
-          }
-
-          .heart {
-            font-size: 20px;
-          }
-        }
-      `}</style>
+    .message-text {
+      font-size: 18px;
+      line-height: 1.7;
+    }
+    
+    .gift-icon {
+      font-size: 75px;
+    }
+  }
+`}</style>
     </div>
   );
 }

@@ -235,7 +235,7 @@ export default function FirstMessage() {
           color: white;
           position: relative;
           overflow-x: hidden;
-          padding: 18px 14px 32px;
+          padding: 8px 14px 16px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -245,7 +245,7 @@ export default function FirstMessage() {
         .card {
           width: 100%;
           max-width: 600px;
-          padding: 26px 20px 28px;
+          padding: 16px 20px 16px;
           border-radius: 24px;
           background: rgba(255, 255, 255, 0.16);
           backdrop-filter: blur(18px);
