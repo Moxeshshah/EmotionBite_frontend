@@ -1,295 +1,89 @@
-
-// "use client";
-
-// import { useState, useEffect } from "react";
-// import { useSearchParams } from "next/navigation";
-
-// export default function ProposalReceiver() {
-//   const params = useSearchParams();
-//   const code = params.get("code");
-
-//   const [opened, setOpened] = useState(false);
-//   const [revealMedia, setRevealMedia] = useState(false);
-//   const [response, setResponse] = useState(null);
-//   const [data, setData] = useState(null);
-
-//   // Fetch message from API (same as approach)
-// useEffect(() => {
-//   if (!code) return;
-
-//   fetch(`/api/messages?code=${code}`)
-//     .then(res => res.json())
-//     .then(apiData => {
-//       setData({
-//         sender: apiData.senderName,
-//         message: apiData.messageText,
-//         image: apiData.imageUrl,
-//         video: apiData.videoUrl,
-//         audio: apiData.audioUrl,
-//       });
-//     })
-//     .catch(console.error);
-// }, [code]);
-
-//   // Loading state
-//   if (!data) {
-//     return <div style={{ padding: 40 }}>Loading proposal...</div>;
-//   }
-
-//   return (
-//     <div className="container">
-//       {/* Floating icons */}
-//       <div className="float h1">💖</div>
-//       <div className="float h2">🌹</div>
-//       <div className="float h3">💍</div>
-
-//       {!opened ? (
-//         /* Closed Ring Box */
-//         <div className="box-card" onClick={() => setOpened(true)}>
-//           <div className="ring">💍</div>
-//           <h2>A special moment awaits</h2>
-//           <p>{data.sender || "Someone special"} has something important to ask you</p>
-//           <div className="tap">Tap to open</div>
-//         </div>
-//       ) : (
-//         /* Proposal Content */
-//         <div className="proposal-card">
-//           <div className="title">A Question From The Heart</div>
-
-//           {/* Proposal Letter */}
-//           <div className="letter">
-//             <p className="message">“{data.message}”</p>
-//             <div className="from">— {data.sender}</div>
-//           </div>
-
-//           {/* Image Reveal */}
-//           {data.image && (
-//             <div className="media-section">
-//               <div className="label">📸 A memory was shared</div>
-
-//               <div
-//                 className={`media-card ${revealMedia ? "show" : ""}`}
-//                 onClick={() => setRevealMedia(true)}
-//               >
-//                 <img src={data.image} alt="memory" />
-//                 {!revealMedia && (
-//                   <div className="overlay">Tap to reveal</div>
-//                 )}
-//               </div>
-//             </div>
-//           )}
-
-//           {/* Response Section */}
-//           {!response && (
-//             <div className="actions">
-//               <button className="yes" onClick={() => setResponse("yes")}>
-//                 Yes 💖
-//               </button>
-
-//               <button className="maybe" onClick={() => setResponse("maybe")}>
-//                 Need Time
-//               </button>
-
-//               <button className="no" onClick={() => setResponse("no")}>
-//                 No
-//               </button>
-//             </div>
-//           )}
-
-//           {response === "yes" && (
-//             <div className="result success">🎉 She said YES!</div>
-//           )}
-
-//           {response === "maybe" && (
-//             <div className="result">
-//               Take your time. Love is patient.
-//             </div>
-//           )}
-
-//           {response === "no" && (
-//             <div className="result">
-//               Thank you for your honesty.
-//             </div>
-//           )}
-//         </div>
-//       )}
-
-//       {/* ----- DESIGN CSS (unchanged) ----- */}
-//       <style jsx>{`
-//         .container {
-//           min-height: 100vh;
-//           display: flex;
-//           justify-content: center;
-//           align-items: center;
-//           background: linear-gradient(180deg,#3a0d2e,#7b1e3b,#c72c41);
-//           font-family: 'Poppins', sans-serif;
-//           color: white;
-//           position: relative;
-//           overflow: hidden;
-//           padding: 20px;
-//         }
-
-//         .float {
-//           position: absolute;
-//           font-size: 30px;
-//           opacity: 0.1;
-//           animation: float 10s infinite ease-in-out;
-//         }
-//         .h1 { top: 15%; left: 10%; }
-//         .h2 { bottom: 20%; right: 15%; }
-//         .h3 { top: 45%; right: 25%; }
-
-//         @keyframes float {
-//           0%,100% { transform: translateY(0); }
-//           50% { transform: translateY(-25px); }
-//         }
-
-//         .box-card {
-//           background: rgba(255,255,255,0.15);
-//           backdrop-filter: blur(20px);
-//           border-radius: 30px;
-//           padding: 40px;
-//           width: 360px;
-//           text-align: center;
-//           box-shadow: 0 35px 80px rgba(0,0,0,0.4);
-//           cursor: pointer;
-//         }
-
-//         .ring {
-//           font-size: 70px;
-//           margin-bottom: 10px;
-//           animation: bounce 2s infinite;
-//         }
-
-//         @keyframes bounce {
-//           0%,100% { transform: translateY(0); }
-//           50% { transform: translateY(-10px); }
-//         }
-
-//         .tap {
-//           margin-top: 10px;
-//           font-size: 13px;
-//           opacity: 0.8;
-//         }
-
-//         .proposal-card {
-//           background: rgba(255,255,255,0.18);
-//           backdrop-filter: blur(20px);
-//           border-radius: 30px;
-//           padding: 28px;
-//           width: 380px;
-//           box-shadow: 0 40px 90px rgba(0,0,0,0.45);
-//           animation: fadeIn 0.6s ease;
-//         }
-
-//         .title {
-//           font-family: 'Playfair Display', serif;
-//           font-size: 26px;
-//           text-align: center;
-//           margin-bottom: 15px;
-//         }
-
-//         .letter {
-//           background: linear-gradient(180deg,#fff7f9,#ffeef2);
-//           color: #4a2c2c;
-//           padding: 26px;
-//           border-radius: 20px;
-//           box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-//         }
-
-//         .message {
-//           font-family: 'Playfair Display', serif;
-//           font-size: 18px;
-//           line-height: 1.9;
-//           font-style: italic;
-//         }
-
-//         .from {
-//           margin-top: 16px;
-//           font-size: 14px;
-//           opacity: 0.8;
-//         }
-
-//         .media-section { margin-top: 16px; }
-//         .label { font-size: 12px; opacity: 0.8; margin-bottom: 6px; }
-
-//         .media-card {
-//           height: 60px;
-//           border-radius: 14px;
-//           overflow: hidden;
-//           cursor: pointer;
-//           transition: 0.5s;
-//           position: relative;
-//         }
-
-//         .media-card.show { height: 220px; }
-
-//         .media-card img {
-//           width: 100%;
-//           height: 220px;
-//           object-fit: cover;
-//           filter: blur(12px);
-//           transition: 0.6s;
-//         }
-
-//         .media-card.show img {
-//           filter: blur(0);
-//           transform: scale(1.05);
-//         }
-
-//         .overlay {
-//           position: absolute;
-//           inset: 0;
-//           display: flex;
-//           justify-content: center;
-//           align-items: center;
-//           background: rgba(0,0,0,0.3);
-//           font-size: 12px;
-//         }
-
-//         .actions {
-//           margin-top: 20px;
-//           display: flex;
-//           gap: 10px;
-//         }
-
-//         .actions button {
-//           flex: 1;
-//           padding: 12px;
-//           border-radius: 20px;
-//           border: none;
-//           font-weight: 600;
-//           cursor: pointer;
-//         }
-
-//         .yes { background: linear-gradient(90deg,#ff758c,#ff7eb3); color: white; }
-//         .maybe { background: #ffffff; color: #7b1e3b; }
-//         .no { background: #eee; color: #444; }
-
-//         .result { margin-top: 18px; text-align: center; font-size: 14px; }
-//         .success { font-size: 18px; font-weight: 600; }
-
-//         @keyframes fadeIn {
-//           from { opacity: 0; transform: translateY(20px); }
-//           to { opacity: 1; transform: translateY(0); }
-//         }
-//       `}</style>
-//     </div>
-//   );
-// }
 "use client";
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import BrandHeader from "../BrandHeader";
+import { useRef } from "react";
+
 
 export default function ProposalReceiver() {
-  const params = useSearchParams();
-  const code = params.get("code");
-
   const [opened, setOpened] = useState(false);
   const [revealMedia, setRevealMedia] = useState(false);
   const [response, setResponse] = useState(null);
   const [data, setData] = useState(null);
+  const [error, setError] = useState("");
+const audioRef = useRef(null);
+const [isPlaying, setIsPlaying] = useState(false);
+const [duration, setDuration] = useState(0);
+const [currentTime, setCurrentTime] = useState(0);
+  const params = useSearchParams();
+  const code = params.get("code");
+
+const toggleAudio = () => {
+  const audio = audioRef.current;
+  if (!audio) return;
+
+  if (audio.paused) {
+    audio.play();
+    setIsPlaying(true);
+
+    // 🔥 force updates smoothly
+    const interval = setInterval(() => {
+      if (audio.ended) {
+  clearInterval(interval);
+  setIsPlaying(false); // 🔥 FIX
+  setCurrentTime(0);
+} else if (audio.paused) {
+  clearInterval(interval);
+} else {
+        setCurrentTime(audio.currentTime);
+      }
+    }, 200);
+
+  } else {
+    audio.pause();
+    setIsPlaying(false);
+  }
+};
+
+
+useEffect(() => {
+  const audio = audioRef.current;
+  if (!audio || !data?.audio) return;
+
+  const handleLoaded = () => {
+    setDuration(audio.duration || 0);
+  };
+
+  const handleTimeUpdate = () => {
+    setCurrentTime(audio.currentTime || 0);
+  };
+
+const handleEnded = () => {
+  setIsPlaying(false);
+  setCurrentTime(0);
+  audio.currentTime = 0; // 🔥 ensures reset
+};
+
+  audio.addEventListener("loadedmetadata", handleLoaded);
+  audio.addEventListener("timeupdate", handleTimeUpdate);
+  audio.addEventListener("ended", handleEnded);
+
+  audio.load(); // force reload
+
+  return () => {
+    audio.removeEventListener("loadedmetadata", handleLoaded);
+    audio.removeEventListener("timeupdate", handleTimeUpdate);
+    audio.removeEventListener("ended", handleEnded);
+  };
+}, [data?.audio]);
+
+const formatTime = (time) => {
+  if (!time) return "0:00";
+  const min = Math.floor(time / 60);
+  const sec = Math.floor(time % 60);
+  return `${min}:${sec < 10 ? "0" : ""}${sec}`;
+};
 
   useEffect(() => {
     document.body.style.margin = "0";
@@ -304,325 +98,375 @@ export default function ProposalReceiver() {
   }, []);
 
   useEffect(() => {
-    if (!code) return;
+    if (!code) {
+      setError("Proposal code not found");
+      return;
+    }
 
     fetch(`/api/messages?code=${code}`)
       .then((res) => res.json())
       .then((apiData) => {
+        if (!apiData) {
+          setError("No proposal found");
+          return;
+        }
+
         setData({
-          sender: apiData.senderName,
-          message: apiData.messageText,
-          image: apiData.imageUrl,
-          video: apiData.videoUrl,
-          audio: apiData.audioUrl,
-        });
+  receiverName: apiData.receiverName || "Love",
+  sender: apiData.senderName || "Someone special",
+  message: apiData.messageText,
+  image: apiData.imageUrl,
+  audio: apiData.audioUrl, // ✅ ADD THIS
+});
       })
-      .catch(console.error);
+      .catch(() => setError("Server error"));
   }, [code]);
 
-  if (!data) {
-    return <div className="loading">Loading proposal...</div>;
+  if (!data && !error) {
+    return <div className="state-screen">Crafting your proposal...</div>;
+  }
+
+  if (error) {
+    return <div className="state-screen error">{error}</div>;
   }
 
   return (
-    <div className="container">
-      <div className="float h1">💖</div>
-      <div className="float h2">🌹</div>
-      <div className="float h3">💍</div>
+    <div className={opened ? "proposal-container open" : "proposal-container"}>
+      {/* Romantic rose particles */}
+      <div className="rose-float r1">🌹</div>
+      <div className="rose-float r2">🌹</div>
+      <div className="rose-float r3">🌹</div>
+      <div className="rose-float r4">🌹</div>
+      
+      {/* Heart glow particles */}
+      <div className="heart-glow h1" />
+      <div className="heart-glow h2" />
+      <div className="heart-glow h3" />
 
-      {!opened ? (
-        <div className="box-card" onClick={() => setOpened(true)}>
-          <div className="ring">💍</div>
-          <h2>A special moment awaits</h2>
-          <p>{data.sender || "Someone special"} has something important to ask you</p>
-          <div className="tap">Tap to open</div>
-        </div>
-      ) : (
-        <div className="proposal-card">
-          <div className="title">A Question From The Heart</div>
-
-          <div className="letter">
-            <p className="message">“{data.message}”</p>
-            <div className="from">— {data.sender}</div>
+      <div className="proposal-box">
+        {!opened ? (
+          <div className="ring-box" onClick={() => setOpened(true)}>
+            <BrandHeader />
+            <div className="ring-gift">💝</div>
+            <h2 className="ring-title">Something Precious Awaits</h2>
+            <p className="ring-subtitle">
+              A life-changing question from {data.sender || "your love"}
+            </p>
+            <div className="open-prompt">Open the ring box</div>
           </div>
+        ) : (
+          <div className="proposal-reveal">
+            <div className="proposal-header">
+              <BrandHeader />
+              <div className="diamond-crown">💖</div>
+              <h1 className="proposal-question">Will You Be Mine?</h1>
+            </div>
 
-          {data.image && (
-            <div className="media-section">
-              <div className="label">📸 A memory was shared</div>
-
-              <div
-                className={`media-card ${revealMedia ? "show" : ""}`}
-                onClick={() => setRevealMedia(true)}
-              >
-                <img src={data.image} alt="memory" />
-                {!revealMedia && <div className="overlay">Tap to reveal</div>}
+            {/* Scrollable proposal letter */}
+            <div className="proposal-letter">
+              <div className="letter-content">
+                <p className="proposal-text">"{data.message}"</p>
+                <div className="letter-signoff">
+                  <span>Your forever,</span>
+                  <span className="sender-name">{data.sender}</span>
+                </div>
               </div>
             </div>
-          )}
 
-          {!response && (
-            <div className="actions">
-              <button className="yes" onClick={() => setResponse("yes")}>
-                Yes 💖
-              </button>
-              <button className="maybe" onClick={() => setResponse("maybe")}>
-                Need Time
-              </button>
-              <button className="no" onClick={() => setResponse("no")}>
-                No
-              </button>
+            <div className="voice-note-label">
+   {data.sender || "Someone special"} left you a voice full of love…
+</div>
+
+<div className="voice-player">
+  <button onClick={toggleAudio} className="play-btn">
+    {isPlaying ? "⏸" : "▶"}
+  </button>
+
+  <div className="wave-bar">
+<div
+  className="progress"
+  style={{
+    width:
+  duration > 0
+    ? `${Math.min((currentTime / duration) * 100, 100)}%`
+    : "0%",
+  }}
+></div>  </div>
+
+<span className="time-text">
+  {formatTime(currentTime)} / {formatTime(duration)}
+</span>
+<audio
+  ref={audioRef}
+  src={data.audio}
+  preload="auto"
+  onLoadedMetadata={() => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration);
+    }
+  }}
+/></div>
+
+            {data.image && (
+              <div className="memory-vault">
+                <div className="vault-label">💍 Our Memory</div>
+                <div 
+                  className={`vault-image ${revealMedia ? "unlocked" : ""}`}
+                  onClick={() => setRevealMedia(true)}
+                >
+                  <img src={data.image} alt="Shared memory" />
+                  {!revealMedia && (
+                    <div className="vault-lock">
+                      <span>Unlock memory</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            <div className="eternal-note">
+              A proposal changes everything... or waits patiently.
             </div>
-          )}
-
-          {response === "yes" && <div className="result success">🎉 She said YES!</div>}
-          {response === "maybe" && <div className="result">Take your time. Love is patient.</div>}
-          {response === "no" && <div className="result">Thank you for your honesty.</div>}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
 
       <style jsx>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Poppins:wght@300;400;500;600;700&display=swap');
+
         * {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
-          font-family: "Poppins", sans-serif;
         }
 
-        :global(html),
-        :global(body) {
+        :global(html), :global(body) {
           margin: 0;
           padding: 0;
           width: 100%;
           overflow-x: hidden;
         }
 
-        .loading {
+        .state-screen {
           min-height: 100vh;
           width: 100vw;
           display: flex;
           justify-content: center;
           align-items: center;
-          background: linear-gradient(180deg, #3a0d2e, #7b1e3b, #c72c41);
+          background: linear-gradient(135deg, #3a0d2e 0%, #7b1e3b 50%, #c72c41 100%);
           color: white;
+          font-size: 18px;
+          font-family: "Cinzel", serif;
           padding: 20px;
           text-align: center;
+          letter-spacing: 1px;
         }
 
-        .container {
+        .state-screen.error {
+          background: linear-gradient(135deg, #7b1e3b 0%, #3a0d2e 100%);
+        }
+
+        .proposal-container {
           min-height: 100vh;
           width: 100vw;
           display: flex;
           justify-content: center;
           align-items: center;
-          background: linear-gradient(180deg, #3a0d2e, #7b1e3b, #c72c41);
-          color: white;
           position: relative;
           overflow: hidden;
+          background: linear-gradient(135deg, #1a0a1a 0%, #3a0d2e 30%, #7b1e3b 70%, #c72c41 100%);
+          background-size: 300% 300%;
+          animation: proposalBgShift 15s ease infinite;
           padding: 20px;
-          box-sizing: border-box;
+          font-family: "Poppins", sans-serif;
         }
 
-        .float {
+        @keyframes proposalBgShift {
+          0%, 100% { background-position: 0% 50%; }
+          33% { background-position: 100% 50%; }
+          66% { background-position: 100% 100%; }
+        }
+
+        .proposal-container.open {
+          background: linear-gradient(135deg, #c72c41 0%, #7b1e3b 40%, #3a0d2e 80%);
+          animation-duration: 20s;
+        }
+
+        .rose-float {
           position: absolute;
-          font-size: 30px;
+          font-size: 22px;
           opacity: 0.1;
-          animation: float 10s infinite ease-in-out;
+          animation: roseFloat 14s infinite ease-in-out;
+          filter: drop-shadow(0 4px 15px rgba(255, 107, 180, 0.6));
+          pointer-events: none;
+          z-index: 1;
+        }
+
+        .r1 { top: 15%; left: 18%; animation-delay: 0s; }
+        .r2 { top: 55%; right: 22%; animation-delay: 5s; }
+        .r3 { bottom: 28%; left: 28%; animation-delay: 9s; }
+        .r4 { top: 65%; right: 32%; animation-delay: 3s; }
+
+        @keyframes roseFloat {
+          0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+          33% { transform: translateY(-25px) rotate(180deg) scale(1.15); }
+          66% { transform: translateY(-12px) rotate(360deg) scale(0.95); }
+        }
+
+        .heart-glow {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          background: radial-gradient(circle, rgba(255, 107, 180, 0.8) 0%, transparent 70%);
+          border-radius: 50%;
+          animation: heartPulse 8s infinite ease-in-out;
+          box-shadow: 0 0 20px rgba(255, 107, 180, 0.7);
           pointer-events: none;
         }
 
-        .h1 {
-          top: 15%;
-          left: 10%;
+        .h1 { top: 25%; left: 25%; animation-delay: 1s; }
+        .h2 { top: 60%; right: 28%; animation-delay: 4s; }
+        .h3 { bottom: 30%; left: 15%; animation-delay: 6s; }
+
+        @keyframes heartPulse {
+          0%, 100% { transform: scale(1) opacity: 0.6; }
+          50% { transform: scale(1.4) opacity: 1; }
         }
 
-        .h2 {
-          bottom: 20%;
-          right: 15%;
-        }
-
-        .h3 {
-          top: 45%;
-          right: 25%;
-        }
-
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-25px);
-          }
-        }
-
-        .box-card {
-          background: rgba(255, 255, 255, 0.15);
-          backdrop-filter: blur(20px);
-          border-radius: 30px;
-          padding: 40px;
-          width: min(360px, 100%);
-          text-align: center;
-          box-shadow: 0 35px 80px rgba(0, 0, 0, 0.4);
-          cursor: pointer;
-          z-index: 2;
+        .proposal-box {
+          width: min(440px, 95%);
+          min-height: 680px; /* Increased height */
+          background: linear-gradient(145deg, rgba(58, 13, 46, 0.95), rgba(123, 30, 59, 0.9));
+          backdrop-filter: blur(35px);
+          border-radius: 35px;
+          border: 2px solid rgba(255, 182, 193, 0.5);
+          box-shadow: 
+            0 40px 100px rgba(199, 44, 65, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.25),
+            0 0 60px rgba(255, 107, 180, 0.4);
           position: relative;
+          /* REMOVED: overflow: hidden; */
+          display: flex;
+          transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+          animation: proposalBoxReveal 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        .ring {
-          font-size: 70px;
-          margin-bottom: 10px;
-          animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-          0%,
-          100% {
-            transform: translateY(0);
+        @keyframes proposalBoxReveal {
+          0% { 
+            transform: scale(0.6) rotate(-5deg); 
+            opacity: 0; 
+            box-shadow: 0 20px 50px rgba(199, 44, 65, 0.3);
           }
-          50% {
-            transform: translateY(-10px);
+          50% { transform: scale(1.05) rotate(2deg); }
+          100% { 
+            transform: scale(1) rotate(0deg); 
+            opacity: 1; 
           }
         }
 
-        .tap {
-          margin-top: 10px;
-          font-size: 13px;
-          opacity: 0.8;
-        }
-
-        .proposal-card {
-          background: rgba(255, 255, 255, 0.18);
-          backdrop-filter: blur(20px);
-          border-radius: 30px;
-          padding: 28px;
-          width: min(380px, 100%);
-          box-shadow: 0 40px 90px rgba(0, 0, 0, 0.45);
-          animation: fadeIn 0.6s ease;
-          z-index: 2;
-          position: relative;
-        }
-
-        .title {
-          font-family: "Playfair Display", serif;
-          font-size: 26px;
-          text-align: center;
-          margin-bottom: 15px;
-          line-height: 1.2;
-        }
-
-        .letter {
-          background: linear-gradient(180deg, #fff7f9, #ffeef2);
-          color: #4a2c2c;
-          padding: 26px;
-          border-radius: 20px;
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-        }
-
-        .message {
-          font-family: "Playfair Display", serif;
-          font-size: 18px;
-          line-height: 1.9;
-          font-style: italic;
-          word-break: break-word;
-        }
-
-        .from {
-          margin-top: 16px;
-          font-size: 14px;
-          opacity: 0.8;
-        }
-
-        .media-section {
-          margin-top: 16px;
-        }
-
-        .label {
-          font-size: 12px;
-          opacity: 0.8;
-          margin-bottom: 6px;
-        }
-
-        .media-card {
-          height: 60px;
-          border-radius: 14px;
-          overflow: hidden;
-          cursor: pointer;
-          transition: 0.5s;
-          position: relative;
-        }
-
-        .media-card.show {
-          height: 220px;
-        }
-
-        .media-card img {
-          width: 100%;
-          height: 220px;
-          object-fit: cover;
-          filter: blur(12px);
-          transition: 0.6s;
-        }
-
-        .media-card.show img {
-          filter: blur(0);
-          transform: scale(1.05);
-        }
-
-        .overlay {
+        .proposal-box::before {
+          content: '';
           position: absolute;
           inset: 0;
+          background: radial-gradient(circle at 30% 30%, rgba(255, 182, 193, 0.15) 0%, transparent 50%);
+          pointer-events: none;
+          z-index: 0;
+        }
+
+        .ring-box, .proposal-reveal {
+          position: relative;
+          z-index: 2;
+          height: 100%;
+          width: 100%;
+        }
+
+        .ring-box {
           display: flex;
+          flex-direction: column;
           justify-content: center;
           align-items: center;
-          background: rgba(0, 0, 0, 0.3);
-          font-size: 12px;
-        }
-
-        .actions {
-          margin-top: 20px;
-          display: flex;
-          gap: 10px;
-        }
-
-        .actions button {
-          flex: 1;
-          padding: 12px;
-          border-radius: 20px;
-          border: none;
-          font-weight: 600;
+          padding: 50px 40px 80px 40px; /* Added bottom padding */
           cursor: pointer;
-        }
-
-        .yes {
-          background: linear-gradient(90deg, #ff758c, #ff7eb3);
-          color: white;
-        }
-
-        .maybe {
-          background: #ffffff;
-          color: #7b1e3b;
-        }
-
-        .no {
-          background: #eee;
-          color: #444;
-        }
-
-        .result {
-          margin-top: 18px;
+          transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
           text-align: center;
-          font-size: 14px;
         }
 
-        .success {
-          font-size: 18px;
+        .ring-box:hover {
+          transform: scale(1.02) rotate(1deg); /* Changed from translateY to scale */
+          box-shadow: 0 50px 120px rgba(199, 44, 65, 0.6);
+        }
+
+        .ring-gift {
+          font-size: 90px;
+          animation: giftBounce 2.5s infinite;
+          margin-bottom: 25px;
+          filter: drop-shadow(0 12px 30px rgba(255, 182, 193, 0.7));
+        }
+
+        @keyframes giftBounce {
+          0%, 100% { transform: translateY(0) rotate(-2deg); }
+          50% { transform: translateY(-18px) rotate(2deg); }
+        }
+
+        .ring-title {
+          font-family: 'Cinzel', serif;
+          font-size: 28px;
+          font-weight: 700;
+          letter-spacing: 2px;
+          margin-bottom: 12px;
+          text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+          background: linear-gradient(135deg, #ff9ff3, #ff6b9d);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .ring-subtitle {
+          font-size: 16px;
+          opacity: 0.95;
+          line-height: 1.6;
+          font-weight: 400;
+          max-width: 280px;
+          margin-bottom: 20px;
+          color: rgba(255, 255, 255, 0.95);
+        }
+
+        .open-prompt {
+          font-size: 15px;
           font-weight: 600;
+          letter-spacing: 1.5px;
+          background: linear-gradient(135deg, #ff6b9d, #ff9ff3);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-transform: uppercase;
+          padding: 12px 24px;
+          border: 2px solid rgba(255, 107, 180, 0.6);
+          border-radius: 30px;
+          backdrop-filter: blur(10px);
+          transition: all 0.3s ease;
+          box-shadow: 0 8px 25px rgba(255, 107, 180, 0.4);
         }
 
-        @keyframes fadeIn {
+        .open-prompt:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 12px 35px rgba(255, 107, 180, 0.6);
+        }
+
+        .proposal-reveal {
+          padding: 50px 35px;
+          display: flex;
+          flex-direction: column;
+          color: white;
+          overflow-y: auto;
+          gap: 25px;
+          animation: revealSlide 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes revealSlide {
           from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(40px);
           }
           to {
             opacity: 1;
@@ -630,118 +474,326 @@ export default function ProposalReceiver() {
           }
         }
 
+        .proposal-header {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 15px;
+          text-align: center;
+        }
+
+        .diamond-crown {
+          font-size: 40px;
+          animation: crownGlow 3s ease-in-out infinite alternate;
+          filter: drop-shadow(0 0 25px rgba(255, 107, 180, 0.9));
+        }
+
+        @keyframes crownGlow {
+          from { filter: drop-shadow(0 0 20px rgba(255, 107, 180, 0.7)); transform: scale(1); }
+          to { filter: drop-shadow(0 0 35px rgba(255, 107, 180, 1)); transform: scale(1.08); }
+        }
+
+        .proposal-question {
+          font-family: 'Cinzel', serif;
+          font-size: 42px;
+          font-weight: 900;
+          letter-spacing: -1px;
+          line-height: 1.1;
+          background: linear-gradient(135deg, #ff9ff3 0%, #ff6b9d 50%, #c72c41 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-shadow: 0 8px 30px rgba(255, 107, 180, 0.6);
+          margin: 0;
+          max-width: 90%;
+        }
+
+        .proposal-letter {
+          flex: 1;
+          background: linear-gradient(145deg, rgba(255, 255, 255, 0.97), rgba(255, 248, 247, 0.92));
+          border-radius: 25px;
+          padding: 35px;
+          position: relative;
+          box-shadow: 
+            0 35px 90px rgba(0, 0, 0, 0.45),
+            inset 0 2px 0 rgba(255, 182, 193, 0.3);
+          overflow: hidden;
+          border: 3px solid rgba(255, 182, 193, 0.5);
+        }
+
+        .proposal-letter::before {
+          content: '';
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          width: 60px;
+          height: 60px;
+          background: radial-gradient(circle, rgba(255, 107, 180, 0.25), transparent);
+          border-radius: 50%;
+          z-index: 0;
+        }
+
+        .letter-content {
+          position: relative;
+          z-index: 2;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .proposal-text {
+          font-family: 'Great Vibes', cursive;
+          font-size: 26px;
+          line-height: 1.6;
+          color: #3a0d2e;
+          font-weight: 400;
+          flex: 1;
+          margin-bottom: 25px;
+          text-shadow: 0 2px 8px rgba(255, 255, 255, 0.4);
+        }
+
+        .letter-signoff {
+          margin-top: auto;
+          text-align: right;
+          padding-top: 10px;
+          margin-bottom: 0px;
+          border-top: 2px dashed rgba(199, 44, 65, 0.4);
+        }
+
+        .letter-signoff span:first-child {
+          font-size: 14px;
+          color: #ff6b9d;
+          font-weight: 500;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          opacity: 0.95;
+          display: block;
+          margin-bottom: 1px;
+        }
+
+        .sender-name {
+          font-family: 'Cinzel', serif;
+          font-size: 28px;
+          background: linear-gradient(135deg, #ff6b9d, #c72c41);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          font-weight: 600;
+          letter-spacing: 1px;
+        }
+
+        .memory-vault {
+          margin-top: 20px;
+        }
+
+        .vault-label {
+          font-family: 'Cinzel', serif;
+          font-size: 14px;
+          font-weight: 700;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+          margin-bottom: 15px;
+          background: linear-gradient(135deg, #ff9ff3, #ff6b9d);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+        }
+
+        .vault-image {
+          position: relative;
+          height: 85px;
+          border-radius: 22px;
+          overflow: hidden;
+          cursor: pointer;
+          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
+          transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+          border: 3px solid rgba(255, 182, 193, 0.7);
+          background: linear-gradient(145deg, #2a0a1a, #4a1a2a);
+        }
+
+        .vault-image:hover {
+          transform: translateY(-8px) rotate(1deg);
+        }
+
+        .vault-image.unlocked {
+          height: 300px;
+          border-color: rgba(255, 107, 180, 1);
+          box-shadow: 0 35px 80px rgba(255, 107, 180, 0.5);
+        }
+
+        .vault-image img {
+          width: 100%;
+          height: 300px;
+          object-fit: cover;
+          filter: blur(20px) sepia(0.2) brightness(0.65);
+          transition: all 1s ease;
+        }
+
+        .vault-image.unlocked img {
+          filter: blur(0) sepia(0) brightness(1.15);
+          transform: scale(1.05);
+        }
+
+        .vault-lock {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: rgba(58, 13, 46, 0.97);
+          backdrop-filter: blur(8px);
+        }
+
+        .vault-lock span {
+          background: linear-gradient(135deg, #ff9ff3, #ff6b9d);
+          color: #2a0a1a;
+          padding: 16px 32px;
+          border-radius: 40px;
+          font-size: 15px;
+          font-weight: 700;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          box-shadow: 
+            0 15px 40px rgba(255, 107, 180, 0.6),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .eternal-note {
+          font-family: 'Cinzel', serif;
+          font-size: 15px;
+          font-weight: 500;
+          text-align: center;
+          opacity: 0.9;
+          letter-spacing: 1px;
+          margin-top: auto;
+          padding-top: 25px;
+          background: linear-gradient(135deg, #ff9ff3, #ff6b9d);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+          text-transform: uppercase;
+        }
+
         @media (max-width: 768px) {
-          .container {
-            padding: 16px;
+          .proposal-container { padding: 16px; }
+          .proposal-box { 
+            width: 95%;
+            min-height: 650px;
+            border-radius: 30px;
           }
-
-          .box-card,
-          .proposal-card {
-            width: 100%;
-            max-width: 100%;
-            border-radius: 24px;
-          }
-
-          .box-card {
-            padding: 34px 24px;
-          }
-
-          .proposal-card {
-            padding: 24px;
-          }
-
-          .title {
-            font-size: 24px;
-          }
-
-          .message {
-            font-size: 16px;
-          }
-
-          .media-card.show {
-            height: 200px;
-          }
-
-          .media-card img {
-            height: 200px;
-          }
+          .proposal-reveal { padding: 40px 30px; gap: 20px; }
+          .proposal-question { font-size: 36px; }
+          .proposal-text { font-size: 24px; }
         }
 
         @media (max-width: 480px) {
-          .container {
-            padding: 12px;
-          }
-
-          .box-card {
-            padding: 28px 18px;
-            border-radius: 20px;
-          }
-
-          .proposal-card {
-            padding: 18px;
-            border-radius: 20px;
-          }
-
-          .ring {
-            font-size: 60px;
-          }
-
-          .box-card h2 {
-            font-size: 20px;
-          }
-
-          .tap {
-            font-size: 12px;
-          }
-
-          .title {
-            font-size: 22px;
-          }
-
-          .letter {
-            padding: 20px;
-            border-radius: 18px;
-          }
-
-          .message {
-            font-size: 14px;
-            line-height: 1.8;
-          }
-
-          .from {
-            font-size: 13px;
-          }
-
-          .actions {
-            gap: 8px;
-          }
-
-          .actions button {
-            padding: 11px 10px;
-            font-size: 12px;
-            border-radius: 16px;
-          }
-
-          .result {
-            font-size: 13px;
-          }
-
-          .success {
-            font-size: 16px;
-          }
-
-          .float {
-            font-size: 22px;
-          }
-
-          .media-card.show {
-            height: 180px;
-          }
-
-          .media-card img {
-            height: 180px;
-          }
+          .proposal-container { padding: 12px; }
+          .proposal-box { min-height: 630px; border-radius: 25px; }
+          .proposal-reveal { padding: 35px 25px; gap: 18px; }
+          .proposal-question { font-size: 32px; }
+          .proposal-text { font-size: 22px; line-height: 1.5; }
+          .sender-name { font-size: 26px; }
+          .ring-gift { font-size: 80px; }
         }
+          .voice-message {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 30px rgba(255, 107, 180, 0.3);
+  text-align: center;
+}
+
+.voice-label {
+  font-size: 13px;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #ff9ff3, #ff6b9d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.audio-player {
+  width: 100%;
+  outline: none;
+  border-radius: 10px;
+}
+  .voice-player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, #ff6b9d, #c44569);
+  box-shadow: 0 10px 30px rgba(255, 107, 180, 0.4);
+}
+
+.play-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: white;
+  color: #c44569;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.wave-bar {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.4);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  width: 0%;
+  background: white;
+}
+
+.progress.animate {
+  animation: progressAnim 6s linear forwards;
+}
+
+@keyframes progressAnim {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+.time-text {
+  font-size: 12px;
+  color: white;
+}
+  .voice-note-label {
+  font-family: 'Dancing Script', cursive;
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, #ff9ff3, #ff6b9d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeInSoft 1s ease;
+  letter-spacing: 0.5px;
+}
+
+@keyframes fadeInSoft {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
       `}</style>
     </div>
   );
