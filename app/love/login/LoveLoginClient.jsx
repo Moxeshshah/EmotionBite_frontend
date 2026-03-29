@@ -1,432 +1,8 @@
-// "use client";
-
-// import { useRouter, useSearchParams } from "next/navigation";
-// import { useState } from "react";
-
-// export default function LoveLogin() {
-//   const router = useRouter();
-//   const params = useSearchParams();
-//   const code = params.get("code");
-// const [step, setStep] = useState("mobile"); 
-// // mobile → otp → profile → done
-
-// const [firstName, setFirstName] = useState("");
-// const [lastName, setLastName] = useState("");
-// const [token, setToken] = useState("");
-//   const [name, setName] = useState("");
-//   const [mobile, setMobile] = useState("");
-//   const [otp, setOtp] = useState("");
-//   const [showOtp, setShowOtp] = useState(false);
-//   const [loading, setLoading] = useState(false);
-
-//   // Step 1 → Send OTP (Demo)
-// const handleSendOtp = async () => {
-//   if (!/^[0-9]{10}$/.test(mobile)) {
-//     alert("Enter valid number");
-//     return;
-//   }
-
-//   setLoading(true);
-
-//   const res = await fetch("/api/otp/generate", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({ mobile: "+91" +mobile }),
-//   });
-
-//   if (!res.ok) {
-//     alert("Failed to send OTP");
-//     setLoading(false);
-//     return;
-//   }
-
-//   setStep("otp");
-//   setLoading(false);
-// };
-
-//   // Step 2 → Verify OTP & Login
-// const handleVerifyOtp = async () => {
-//   if (!otp) return alert("Enter OTP");
-
-//   setLoading(true);
-
-//   const res = await fetch("/api/otp/verify", {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify({mobile: "+91" + mobile, otp }),
-//   });
-
-//   const data = await res.json();
-
-//   if (!res.ok) {
-//     alert(data.message);
-//     setLoading(false);
-//     return;
-//   }
-
-//   // ✅ Save token
-//   setToken(data.token);
-//   localStorage.setItem("token", data.token);
-//   localStorage.setItem("sender_mobile", mobile);
-
-//   // ✅ Decide next step
-//   if (data.profileComplete) {
-//     router.push(`/love/home?code=${code}`);
-//   } else {
-//     setStep("profile");
-//   }
-
-//   setLoading(false);
-// };
-// const handleCompleteProfile = async () => {
-//   if (!firstName || !lastName) {
-//     alert("Enter full name");
-//     return;
-//   }
-
-//   setLoading(true);
-
-//   const res = await fetch("/api/complete-profile", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//     body: JSON.stringify({
-//       firstName,
-//       lastName,
-//     }),
-//   });
-
-//   if (!res.ok) {
-//     alert("Profile update failed");
-//     setLoading(false);
-//     return;
-//   }
-
-//   router.push(`/love/home?code=${code}`);
-// };
-
-//   return (
-//     <div className="body">
-//       <div className="card">
-
-//         <div className="avatar-section">
-//           <div className="avatar promo">
-//             <img src="https://randomuser.me/api/portraits/women/44.jpg" />
-//             <div className="tag">Promo 🔥</div>
-//           </div>
-
-//           <div className="avatar you">
-//             <img src="https://randomuser.me/api/portraits/women/65.jpg" />
-//             <div className="tag">You 👍</div>
-//           </div>
-//         </div>
-
-//         <div className="heart-section">
-//           <div className="hand left"></div>
-//           <div className="heart"></div>
-//           <div className="hand right"></div>
-//         </div>
-
-//         <h3 className="title">Welcome, Let’s Sign In</h3>
-
-//         {/* Name (replaces email) */}
-//        {/* STEP 1 → MOBILE */}
-// {step === "mobile" && (
-//   <div className="input-group password">
-//     <input
-//       type="text"
-//       placeholder="Mobile Number"
-//       value={mobile}
-//       onChange={(e) => setMobile(e.target.value)}
-//     />
-//     <span>📱</span>
-//   </div>
-// )}
-
-// {/* STEP 2 → OTP */}
-// {step === "otp" && (
-//   <div className="input-group password">
-//     <input
-//       type="text"
-//       placeholder="Enter OTP"
-//       value={otp}
-//       onChange={(e) => setOtp(e.target.value)}
-//     />
-//     <span>🔑</span>
-//   </div>
-// )}
-
-// {/* STEP 3 → PROFILE */}
-// {step === "profile" && (
-//   <>
-//     <div className="input-group">
-//       <input
-//         type="text"
-//         placeholder="First Name"
-//         value={firstName}
-//         onChange={(e) => setFirstName(e.target.value)}
-//       />
-//     </div>
-
-//     <div className="input-group">
-//       <input
-//         type="text"
-//         placeholder="Last Name"
-//         value={lastName}
-//         onChange={(e) => setLastName(e.target.value)}
-//       />
-//     </div>
-//   </>
-// )}
-
-//         {/* OTP dropdown (same style) */}
-//         {/* {showOtp && (
-//           <div className="input-group password">
-//             <input
-//               type="text"
-//               placeholder="Enter OTP"
-//               value={otp}
-//               onChange={(e) => setOtp(e.target.value)}
-//             />
-//             <span>🔑</span>
-//           </div>
-//         )} */}
-
-//         <div className="button-row">
-//   {step === "mobile" && (
-//     <button className="btn-primary" onClick={handleSendOtp}>
-//       Send OTP
-//     </button>
-//   )}
-
-//   {step === "otp" && (
-//     <button className="btn-primary" onClick={handleVerifyOtp}>
-//       {loading ? "Please wait..." : "Verify OTP"}
-//     </button>
-//   )}
-
-//   {step === "profile" && (
-//     <button className="btn-primary" onClick={handleCompleteProfile}>
-//       Submit
-//     </button>
-//   )}
-// </div>
-//         <div className="register">
-//           OTP verification is in demo mode
-//         </div>
-
-//       </div>
-
-//       <style jsx>{`
-//         *{
-//           margin:0;
-//           padding:0;
-//           box-sizing:border-box;
-//           font-family:'Poppins',sans-serif;
-//         }
-
-//         .body{
-//           height:100vh;
-//           display:flex;
-//           justify-content:center;
-//           align-items:center;
-//           background:#e7c8d2;
-//         }
-
-//         .card{
-//           width:360px;
-//           background:linear-gradient(180deg,#fbe3ea,#ffffff);
-//           border-radius:40px;
-//           padding:30px 25px;
-//           box-shadow:0 25px 60px rgba(0,0,0,0.08);
-//           position:relative;
-//           overflow:hidden;
-//         }
-
-//         .avatar-section{
-//           display:flex;
-//           justify-content:space-between;
-//           margin-bottom:20px;
-//         }
-
-//         .avatar{
-//           width:90px;
-//           height:90px;
-//           border-radius:50%;
-//           overflow:hidden;
-//           position:relative;
-//         }
-
-//         .avatar img{
-//           width:100%;
-//           height:100%;
-//           object-fit:cover;
-//         }
-
-//         .promo{
-//           border:5px solid #ff2e63;
-//         }
-
-//         .you{
-//           border:5px solid #f3d4db;
-//         }
-
-//         .tag{
-//           position:absolute;
-//           bottom:-10px;
-//           left:50%;
-//           transform:translateX(-50%);
-//           background:#ff2e63;
-//           color:#fff;
-//           padding:6px 14px;
-//           font-size:12px;
-//           border-radius:20px;
-//           font-weight:500;
-//         }
-
-//         .you .tag{
-//           background:#fff;
-//           color:#ff2e63;
-//           border:1px solid #ffd4df;
-//         }
-
-//         .heart-section{
-//           display:flex;
-//           justify-content:center;
-//           align-items:center;
-//           margin:30px 0 25px;
-//           position:relative;
-//           height:120px;
-//         }
-
-//         .hand{
-//           width:120px;
-//           height:70px;
-//           background:#f7c6cf;
-//           border-radius:50px;
-//           position:absolute;
-//         }
-
-//         .hand.left{
-//           left:-10px;
-//           transform:rotate(-10deg);
-//         }
-
-//         .hand.right{
-//           right:-10px;
-//           transform:rotate(10deg);
-//         }
-
-//         .heart{
-//           width:80px;
-//           height:80px;
-//           background:#ff2e63;
-//           position:relative;
-//           transform:rotate(-45deg);
-//           box-shadow:0 10px 25px rgba(255,46,99,0.4);
-//         }
-
-//         .heart:before,
-//         .heart:after{
-//           content:"";
-//           position:absolute;
-//           width:80px;
-//           height:80px;
-//           background:#ff2e63;
-//           border-radius:50%;
-//         }
-
-//         .heart:before{
-//           top:-40px;
-//           left:0;
-//         }
-
-//         .heart:after{
-//           left:40px;
-//           top:0;
-//         }
-
-//         .title{
-//           text-align:center;
-//           color:#ff2e63;
-//           font-weight:600;
-//           margin-bottom:20px;
-//         }
-
-//         .input-group{
-//           margin-bottom:15px;
-//         }
-
-//         .input-group input{
-//           width:100%;
-//           padding:14px 15px;
-//           border-radius:15px;
-//           border:none;
-//           background:#f6f6f6;
-//           outline:none;
-//           font-size:14px;
-//           box-shadow:inset 0 3px 8px rgba(0,0,0,0.05);
-//         }
-
-//         .password{
-//           position:relative;
-//         }
-
-//         .password span{
-//           position:absolute;
-//           right:15px;
-//           top:50%;
-//           transform:translateY(-50%);
-//           color:#999;
-//         }
-
-//         .button-row{
-//           display:flex;
-//           gap:12px;
-//           margin-top:15px;
-//         }
-
-//         .btn-primary{
-//           flex:1;
-//           padding:14px;
-//           border:none;
-//           border-radius:18px;
-//           background:linear-gradient(90deg,#ff2e63,#ff6b8f);
-//           color:white;
-//           font-weight:500;
-//           cursor:pointer;
-//           box-shadow:0 8px 20px rgba(255,46,99,0.4);
-//         }
-
-//         .btn-finger{
-//           width:60px;
-//           border-radius:18px;
-//           border:none;
-//           background:#f8d9e0;
-//           font-size:22px;
-//         }
-
-//         .register{
-//           text-align:center;
-//           margin-top:25px;
-//           font-size:13px;
-//           color:#777;
-//         }
-
-//         .register span{
-//           color:#ff2e63;
-//           font-weight:600;
-//         }
-//       `}</style>
-//     </div>
-//   );
-// }
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
+import BrandHeader from "../BrandHeader";
 
 export default function LoveLogin() {
   const router = useRouter();
@@ -541,102 +117,105 @@ export default function LoveLogin() {
 
   return (
     <div className="body">
-      <div className="card">
-        <div className="avatar-section">
-          <div className="avatar promo">
-            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Promo" />
-            <div className="tag">Promo 🔥</div>
-          </div>
+      
+      <div className="particle particle-1" style={{ left: "15%", animationDelay: "0s" }} />
+      <div className="particle particle-2" style={{ left: "30%", animationDelay: "2s" }} />
+      <div className="particle particle-3" style={{ left: "50%", animationDelay: "4s" }} />
+      <div className="particle particle-4" style={{ left: "70%", animationDelay: "1s" }} />
+      <div className="particle particle-5" style={{ left: "85%", animationDelay: "3s" }} />
 
-          <div className="avatar you">
-            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="You" />
-            <div className="tag">You 👍</div>
-          </div>
+      <div className="login-card">
+        <BrandHeader />
+        <div className="avatar">💕</div>
+        <h2 className="title-anim">Send Your Love</h2>
+        <div className="subtitle subtitle-anim">
+          Hearts connect through simple moments. Sign in to share your love message.
         </div>
 
-        <div className="heart-section">
-          <div className="hand left" />
-          <div className="heart" />
-          <div className="hand right" />
-        </div>
-
-        <h3 className="title">Welcome, Let’s Sign In</h3>
-
-        {step === "mobile" && (
-          <div className="input-group password">
-            <input
-              type="text"
-              placeholder="Mobile Number"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
-            />
-            <span>📱</span>
-          </div>
-        )}
-
-        {step === "otp" && (
-          <div className="input-group password">
-            <input
-              type="text"
-              placeholder="Enter OTP"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-            />
-            <span>🔑</span>
-          </div>
-        )}
-
-        {step === "profile" && (
-          <>
-            <div className="input-group">
-              <input
-                type="text"
-                placeholder="First Name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-            </div>
-
-            <div className="input-group">
-              <input
-                type="text"
-                placeholder="Last Name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-            </div>
-          </>
-        )}
-
-        <div className="button-row">
+        <form className="form-anim">
           {step === "mobile" && (
-            <button className="btn-primary" onClick={handleSendOtp}>
+            <div className="input-box input-anim">
+              <label className="label-anim">Mobile Number</label>
+              <input
+                type="text"
+                placeholder="Enter mobile number"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                className="input-field"
+              />
+            </div>
+          )}
+
+          {step === "otp" && (
+            <div className="input-box input-anim">
+              <label className="label-anim">Enter OTP</label>
+              <input
+                type="text"
+                placeholder="Enter OTP"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                className="input-field"
+              />
+            </div>
+          )}
+
+          {step === "profile" && (
+            <>
+              <div className="input-box input-anim">
+                <label className="label-anim">First Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter first name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="input-field"
+                />
+              </div>
+
+              <div className="input-box input-anim">
+                <label className="label-anim">Last Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="input-field"
+                />
+              </div>
+            </>
+          )}
+
+          {step === "mobile" && (
+            <button type="button" className="login-btn btn-anim" onClick={handleSendOtp}>
               {loading ? "Please wait..." : "Send OTP"}
             </button>
           )}
 
           {step === "otp" && (
-            <button className="btn-primary" onClick={handleVerifyOtp}>
+            <button type="button" className="login-btn btn-anim" onClick={handleVerifyOtp}>
               {loading ? "Please wait..." : "Verify OTP"}
             </button>
           )}
 
           {step === "profile" && (
-            <button className="btn-primary" onClick={handleCompleteProfile}>
+            <button type="button" className="login-btn btn-anim" onClick={handleCompleteProfile}>
               {loading ? "Please wait..." : "Submit"}
             </button>
           )}
-        </div>
+        </form>
+      </div>
 
-        <div className="register">OTP verification is in demo mode</div>
+      <div className="quote quote-anim">
+        "Love is not only a feeling, it's an art to give."
       </div>
 
       <style jsx>{`
+        @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap");
+
         * {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
-          font-family: "Poppins", sans-serif;
         }
 
         :global(html),
@@ -653,319 +232,299 @@ export default function LoveLogin() {
           display: flex;
           justify-content: center;
           align-items: center;
-          background: #e7c8d2;
-          padding: 16px;
-          box-sizing: border-box;
-        }
-
-        .card {
-          width: min(360px, 100%);
-          background: linear-gradient(180deg, #fbe3ea, #ffffff);
-          border-radius: 40px;
-          padding: 30px 25px;
-          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.08);
-          position: relative;
+          background: linear-gradient(135deg, #ff6b9d, #c44569, #ff9ff3, #f368e0);
+          background-size: 400% 400%;
+          animation: gradientShift 12s ease infinite;
           overflow: hidden;
+          position: relative;
+          font-family: "Poppins", sans-serif;
+          padding: 16px;
         }
 
-        .avatar-section {
-          display: flex;
-          justify-content: space-between;
-          margin-bottom: 20px;
-          gap: 12px;
+        @keyframes gradientShift {
+          0%, 100% { background-position: 0% 50%; }
+          25% { background-position: 100% 50%; }
+          50% { background-position: 100% 100%; }
+          75% { background-position: 0% 100%; }
+        }
+
+        @keyframes float {
+          0% {
+            transform: translateY(100vh) rotate(0deg);
+            opacity: 0;
+          }
+          20% {
+            opacity: 0.8;
+          }
+          80% {
+            opacity: 0.8;
+          }
+          100% {
+            transform: translateY(-20vh) rotate(360deg);
+            opacity: 0;
+          }
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes bounceIn {
+          0% {
+            transform: scale(0.3);
+            opacity: 0;
+          }
+          50% {
+            transform: scale(1.05);
+          }
+          70% {
+            transform: scale(0.9);
+          }
+          100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+
+        @keyframes heartbeat {
+          0% { transform: scale(1); }
+          14% { transform: scale(1.1); }
+          28% { transform: scale(1); }
+          42% { transform: scale(1.1); }
+          70% { transform: scale(1); }
+        }
+
+        @keyframes shimmer {
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
+        }
+
+        .particle {
+          position: absolute;
+          border-radius: 50%;
+          pointer-events: none;
+          animation: float 10s infinite linear;
+          box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+        }
+
+        .particle-1 {
+          width: 8px;
+          height: 8px;
+          background: linear-gradient(45deg, #ff69b4, #ff1493);
+        }
+
+        .particle-2 {
+          width: 6px;
+          height: 6px;
+          background: linear-gradient(45deg, #ff9ff3, #f368e0);
+          animation-duration: 12s;
+        }
+
+        .particle-3 {
+          width: 10px;
+          height: 10px;
+          background: linear-gradient(45deg, #c44569, #ff6b9d);
+          animation-duration: 9s;
+        }
+
+        .particle-4 {
+          width: 7px;
+          height: 7px;
+          background: linear-gradient(45deg, #ff1493, #ff69b4);
+          animation-duration: 11s;
+        }
+
+        .particle-5 {
+          width: 9px;
+          height: 9px;
+          background: linear-gradient(45deg, #f368e0, #ff9ff3);
+          animation-duration: 13s;
+        }
+
+        .login-card {
+          width: min(400px, 100%);
+          background: rgba(255, 255, 255, 0.12);
+          backdrop-filter: blur(25px);
+          border-radius: 28px;
+          padding: 50px 40px;
+          text-align: center;
+          box-shadow: 
+            0 25px 60px rgba(255, 107, 180, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          position: relative;
+          z-index: 2;
+          animation: fadeInUp 1s ease-out;
         }
 
         .avatar {
-          width: 90px;
-          height: 90px;
-          border-radius: 50%;
-          overflow: hidden;
-          position: relative;
-          flex: 1;
-          min-width: 0;
-        }
-
-        .avatar img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-        }
-
-        .promo {
-          border: 5px solid #ff2e63;
-        }
-
-        .you {
-          border: 5px solid #f3d4db;
-        }
-
-        .tag {
-          position: absolute;
-          bottom: -10px;
-          left: 50%;
-          transform: translateX(-50%);
-          background: #ff2e63;
-          color: #fff;
-          padding: 6px 14px;
-          font-size: 12px;
-          border-radius: 20px;
-          font-weight: 500;
-          white-space: nowrap;
-        }
-
-        .you .tag {
-          background: #fff;
-          color: #ff2e63;
-          border: 1px solid #ffd4df;
-        }
-
-        .heart-section {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin: 30px 0 25px;
-          position: relative;
-          height: 120px;
-        }
-
-        .hand {
-          width: 120px;
-          height: 70px;
-          background: #f7c6cf;
-          border-radius: 50px;
-          position: absolute;
-        }
-
-        .hand.left {
-          left: -10px;
-          transform: rotate(-10deg);
-        }
-
-        .hand.right {
-          right: -10px;
-          transform: rotate(10deg);
-        }
-
-        .heart {
-          width: 80px;
-          height: 80px;
-          background: #ff2e63;
-          position: relative;
-          transform: rotate(-45deg);
-          box-shadow: 0 10px 25px rgba(255, 46, 99, 0.4);
-        }
-
-        .heart:before,
-        .heart:after {
-          content: "";
-          position: absolute;
-          width: 80px;
-          height: 80px;
-          background: #ff2e63;
-          border-radius: 50%;
-        }
-
-        .heart:before {
-          top: -40px;
-          left: 0;
-        }
-
-        .heart:after {
-          left: 40px;
-          top: 0;
-        }
-
-        .title {
-          text-align: center;
-          color: #ff2e63;
-          font-weight: 600;
+          font-size: 70px;
           margin-bottom: 20px;
-          font-size: 20px;
-          line-height: 1.2;
+          animation: heartbeat 2s ease-in-out infinite;
+          filter: drop-shadow(0 10px 25px rgba(255, 182, 193, 0.6));
+          background: linear-gradient(45deg, #ff69b4, #ff1493, #ff9ff3);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
 
-        .input-group {
+        .title-anim {
+          font-family: "Dancing Script", cursive;
+          font-size: 38px;
+          font-weight: 700;
+          background: linear-gradient(135deg, #fff, #ffe4e1, #fff);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
           margin-bottom: 15px;
+          line-height: 1.1;
+          animation: bounceIn 1.2s ease-out, shimmer 3s infinite;
+          background-size: 200% 100%;
         }
 
-        .input-group input {
-          width: 100%;
-          padding: 14px 15px;
-          border-radius: 15px;
-          border: none;
-          background: #f6f6f6;
-          outline: none;
+        .subtitle-anim {
+          color: rgba(255, 255, 255, 0.95);
+          font-size: 16px;
+          font-weight: 300;
+          margin-bottom: 35px;
+          line-height: 1.7;
+          font-family: "Poppins", sans-serif;
+          animation: fadeInUp 1s ease-out 0.3s both;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-anim {
+          animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .input-anim {
+          animation: fadeInUp 0.8s ease-out both;
+          animation-fill-mode: forwards;
+        }
+
+        .input-anim:nth-child(1) { animation-delay: 0.6s; }
+        .input-anim:nth-child(2) { animation-delay: 0.7s; }
+        .input-anim:nth-child(3) { animation-delay: 0.8s; }
+
+        .label-anim {
           font-size: 14px;
-          box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.05);
-        }
-
-        .password {
-          position: relative;
-        }
-
-        .password span {
-          position: absolute;
-          right: 15px;
-          top: 50%;
-          transform: translateY(-50%);
-          color: #999;
-        }
-
-        .button-row {
-          display: flex;
-          gap: 12px;
-          margin-top: 15px;
-        }
-
-        .btn-primary {
-          flex: 1;
-          padding: 14px;
-          border: none;
-          border-radius: 18px;
-          background: linear-gradient(90deg, #ff2e63, #ff6b8f);
-          color: white;
+          color: rgba(255, 255, 255, 0.98);
+          display: block;
+          margin-bottom: 10px;
           font-weight: 500;
-          cursor: pointer;
-          box-shadow: 0 8px 20px rgba(255, 46, 99, 0.4);
-          font-size: 14px;
-          transition: 0.3s;
+          font-family: "Poppins", sans-serif;
+          letter-spacing: 0.5px;
+          animation: fadeInUp 0.6s ease-out both;
         }
 
-        .register {
+        .input-field {
+          width: 100%;
+          padding: 16px 18px;
+          border-radius: 20px;
+          border: none;
+          outline: none;
+          background: rgba(255, 255, 255, 0.92);
+          font-size: 16px;
+          font-weight: 400;
+          color: #333;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+          transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          font-family: "Poppins", sans-serif;
+        }
+
+        .input-field:focus {
+          background: rgba(255, 255, 255, 1);
+          box-shadow: 
+            0 10px 30px rgba(255, 182, 193, 0.4),
+            0 0 0 3px rgba(255, 105, 180, 0.2);
+          transform: translateY(-2px);
+          color: #2d1b69;
+        }
+
+        .input-field::placeholder {
+          color: rgba(100, 100, 100, 0.7);
+          font-weight: 400;
+        }
+
+        .btn-anim {
+          width: 100%;
+          padding: 16px 20px;
+          border: none;
+          border-radius: 35px;
+          background: linear-gradient(135deg, #ff6b9d, #c44569, #ff9ff3);
+          background-size: 300% 300%;
+          color: #fff;
+          cursor: pointer;
+          margin-top: 15px;
+          font-size: 16px;
+          font-weight: 600;
+          font-family: "Poppins", sans-serif;
+          transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          box-shadow: 0 10px 30px rgba(255, 107, 180, 0.5);
+          animation: fadeInUp 1s ease-out 0.9s both;
+          position: relative;
+          overflow: hidden;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+
+        .btn-anim:hover {
+          transform: translateY(-3px) scale(1.02);
+          box-shadow: 0 15px 40px rgba(255, 107, 180, 0.7);
+          background-position: 100% 0;
+        }
+
+        .btn-anim:active {
+          transform: translateY(-1px) scale(0.98);
+        }
+
+        .quote-anim {
+          position: absolute;
+          bottom: 35px;
+          left: 0;
+          width: 100%;
+          font-size: 15px;
+          color: rgba(255, 255, 255, 0.85);
           text-align: center;
-          margin-top: 25px;
-          font-size: 13px;
-          color: #777;
-          line-height: 1.5;
+          padding: 0 20px;
+          font-style: italic;
+          font-family: "Dancing Script", cursive;
+          font-weight: 400;
+          animation: fadeInUp 1.2s ease-out 1.1s both;
+          text-shadow: 0 2px 15px rgba(255, 182, 193, 0.3);
+          max-width: 90%;
+          margin: 0 auto;
         }
 
         @media (max-width: 768px) {
-          .body {
-            padding: 14px;
-          }
-
-          .card {
-            padding: 28px 20px;
-            border-radius: 32px;
-          }
-
-          .avatar {
-            width: 80px;
-            height: 80px;
-          }
-
-          .heart-section {
-            height: 110px;
-          }
-
-          .hand {
-            width: 100px;
-            height: 62px;
-          }
-
-          .heart {
-            width: 72px;
-            height: 72px;
-          }
-
-          .heart:before,
-          .heart:after {
-            width: 72px;
-            height: 72px;
-          }
-
-          .title {
-            font-size: 19px;
-          }
+          .body { padding: 14px; }
+          .login-card { padding: 40px 30px; border-radius: 24px; }
+          .avatar { font-size: 65px; }
+          .title-anim { font-size: 34px; }
+          .subtitle-anim { font-size: 15px; margin-bottom: 28px; }
+          .quote-anim { bottom: 25px; font-size: 14px; }
         }
 
         @media (max-width: 480px) {
-          .body {
-            padding: 12px;
-          }
-
-          .card {
-            padding: 24px 16px;
-            border-radius: 26px;
-          }
-
-          .avatar-section {
-            gap: 10px;
-            margin-bottom: 16px;
-          }
-
-          .avatar {
-            width: 72px;
-            height: 72px;
-          }
-
-          .tag {
-            font-size: 11px;
-            padding: 5px 12px;
-          }
-
-          .heart-section {
-            height: 96px;
-            margin: 22px 0 18px;
-          }
-
-          .hand {
-            width: 84px;
-            height: 52px;
-          }
-
-          .hand.left {
-            left: -6px;
-          }
-
-          .hand.right {
-            right: -6px;
-          }
-
-          .heart {
-            width: 62px;
-            height: 62px;
-          }
-
-          .heart:before,
-          .heart:after {
-            width: 62px;
-            height: 62px;
-          }
-
-          .heart:before {
-            top: -31px;
-          }
-
-          .heart:after {
-            left: 31px;
-          }
-
-          .title {
-            font-size: 18px;
-            margin-bottom: 16px;
-          }
-
-          .input-group input {
-            padding: 12px 13px;
-            font-size: 13px;
-          }
-
-          .button-row {
-            gap: 10px;
-          }
-
-          .btn-primary {
-            padding: 13px;
-            font-size: 13px;
-            border-radius: 16px;
-          }
-
-          .register {
-            margin-top: 20px;
-            font-size: 12px;
-          }
+          .body { padding: 12px; }
+          .login-card { padding: 32px 24px; border-radius: 22px; }
+          .avatar { font-size: 60px; margin-bottom: 16px; }
+          .title-anim { font-size: 30px; }
+          .subtitle-anim { font-size: 14px; margin-bottom: 24px; }
+          .input-field { padding: 14px 16px; font-size: 15px; }
+          .btn-anim { padding: 15px; font-size: 15px; }
+          .quote-anim { bottom: 20px; font-size: 13px; }
         }
       `}</style>
     </div>

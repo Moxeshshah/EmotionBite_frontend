@@ -1,254 +1,679 @@
 // "use client";
 
-// import { useState } from "react";
+// import { useState, useEffect } from "react";
 // import { useSearchParams } from "next/navigation";
-// import { useEffect } from "react";
+// import BrandHeader from "../BrandHeader";
 
 // export default function LoveReceiver() {
 //   const [opened, setOpened] = useState(false);
 //   const [revealMedia, setRevealMedia] = useState(false);
-// const params = useSearchParams();
-// const code = params.get("code");
+//   const [data, setData] = useState(null);
+//   const [error, setError] = useState("");
+//   const [playMusic, setPlayMusic] = useState(false);
 
-// const [data, setData] = useState(null);
+//   const params = useSearchParams();
+//   const code = params.get("code");
 
-// useEffect(() => {
-//   if (!code) return;
+//   useEffect(() => {
+//     if (!code) {
+//       setError("Message code not found");
+//       return;
+//     }
 
-//   fetch(`/api/messages?code=${code}`)
-//     .then(res => res.json())
-//     .then(apiData => {
-//       setData({
-//         sender: apiData.senderName,
-//         message: apiData.messageText,
-//         image: apiData.imageUrl,
-//       });
-//     })
-//     .catch(console.error);
-// }, [code]);
+//     fetch(`/api/messages?code=${code}`)
+//       .then((res) => res.json())
+//       .then((apiData) => {
+//         if (!apiData) {
+//           setError("No message found");
+//           return;
+//         }
 
-// if (!data) {
-//   return <div style={{padding:40}}>Loading love message...</div>;
-// }
+//         setData({
+//   receiverName: apiData.receiverName || "You",
+//   sender: apiData.senderName || "Someone special",
+//   message: apiData.messageText,
+//   image: apiData.imageUrl,
+//   audio: apiData.audioUrl, // ✅ ADD THIS
+// });
+//       })
+//       .catch(() => setError("Server error"));
+//   }, [code]);
+
+//   if (!data && !error) {
+//     return <div className="state-screen">Loading your love message...</div>;
+//   }
+
+//   if (error) {
+//     return <div className="state-screen">{error}</div>;
+//   }
 
 //   return (
-//     <div className="container">
-//       {/* Floating hearts */}
-//       <div className="heart h1">❤️</div>
-//       <div className="heart h2">💕</div>
-//       <div className="heart h3">💖</div>
-//       <div className="heart h4">💗</div>
+//     <div className={opened ? "main-container open" : "main-container"}>
+//       {/* Floating Particles & Hearts */}
+//       <div className="particle" style={{ left: "15%" }} />
+//       <div className="particle" style={{ left: "35%", animationDelay: "2s" }} />
+//       <div className="particle" style={{ left: "55%", animationDelay: "4s" }} />
+//       <div className="particle" style={{ left: "75%", animationDelay: "1s" }} />
+//       <div className="particle" style={{ left: "90%", animationDelay: "3s" }} />
+      
+//       <div className="heart-float h1">💖</div>
+//       <div className="heart-float h2">💕</div>
+//       <div className="heart-float h3">❤️</div>
 
-//       {!opened ? (
-//         /* Closed Envelope */
-//         <div className="envelope-card" onClick={() => setOpened(true)}>
-//           <div className="envelope">💌</div>
-//           <h2>A love message for you</h2>
-//           <p>Someone shared their feelings</p>
-//           <div className="tap">Tap to open ❤️</div>
-//         </div>
-//       ) : (
-//         /* Opened Letter */
-//         <div className="letter-wrapper">
-//           <div className="title">For You</div>
-
-//           <div className="letter">
-//             <p className="message">“{data.message}”</p>
-//             <div className="from">— {data.sender}</div>
+//       {/* Main Card Container */}
+//       <div className={`letter-card ${opened ? "opened" : ""}`}>
+//         {!opened ? (
+//           <div className="closed-envelope" onClick={() => {
+//   setOpened(true);
+//   // setPlayMusic(true); // 🎵 trigger music
+// }}>
+//             <BrandHeader />
+//             <div className="envelope-icon">💌</div>
+//             <div className="envelope-title">A love message awaits ✨</div>
+//             <div className="envelope-hint">Tap to open your heart 💖</div>
 //           </div>
+//         ) : (
+//           <div className="letter-content">
+//             <div className="header-section">
+//               <BrandHeader />
+//               <div className="heart-icon">💝</div>
+//               <h2 className="receiver-name">{data.receiverName}</h2>
+//             </div>
 
-//           {/* Media reveal */}
-//           {data.image && (
-//             <div className="media-section">
-//               <div className="media-label">📸 A memory was shared</div>
-
-//               <div
-//                 className={`media-card ${revealMedia ? "show" : ""}`}
-//                 onClick={() => setRevealMedia(true)}
-//               >
-//                 <img src={data.image} alt="memory" />
-
-//                 {!revealMedia && (
-//                   <div className="overlay">Tap to reveal</div>
-//                 )}
+//             {/* Completely Redesigned Message Display */}
+//             <div className="love-message-container">
+//               <div className="message-header">
+//                 <div className="ribbon">💌 Love Letter</div>
+//               </div>
+              
+//               <div className="message-scroll-wrapper">
+//                 <div className="message-content">
+//                   <p className="love-message">"{data.message}"</p>
+//                 </div>
+//               </div>
+              
+//               <div className="message-footer">
+//                 <div className="signature">
+//                   <span className="signature-line">With all my love,</span>
+//                   <span className="sender-signature">{data.sender}</span>
+//                 </div>
 //               </div>
 //             </div>
-//           )}
+// {data.audio && data.audio.includes("spotify") && (
+//   <div className="music-section">
+//     <div className="music-label">🎵 Tap to play your song</div>
 
-//           <div className="note">
-//             Some feelings are meant to be felt, not replied.
+//     {!playMusic ? (
+//       <button 
+//         className="play-btn"
+//         onClick={() => setPlayMusic(true)}
+//       >
+//         ▶️ Play Song
+//       </button>
+//     ) : (
+//       <iframe
+//   src={
+//     data.audio
+//       .replace("open.spotify.com", "open.spotify.com/embed") + "?autoplay=1"
+//   }
+//   width="100%"
+//   height="80"
+//   allow="autoplay; encrypted-media"
+//   style={{ borderRadius: "12px" }}
+// />
+//     )}
+//   </div>
+// )}
+//             {data.image && (
+//               <div className="memory-section">
+//                 <div className="memory-label">📸 A memory was shared</div>
+//                 <div
+//                   className={`memory-card ${revealMedia ? "revealed" : ""}`}
+//                   onClick={() => setRevealMedia(true)}
+//                 >
+//                   <img src={data.image} alt="Shared memory" />
+//                   {!revealMedia && (
+//                     <div className="memory-overlay">
+//                       <span className="memory-text">Tap to reveal</span>
+//                     </div>
+//                   )}
+//                 </div>
+//               </div>
+//             )}
+
+//             <div className="love-note">
+//               💕 Some feelings are meant to be cherished, not replied to.
+//             </div>
 //           </div>
-//         </div>
-//       )}
+//         )}
+//       </div>
 
 //       <style jsx>{`
-//         .container {
+//         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Parisienne&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+//         * {
+//           margin: 0;
+//           padding: 0;
+//           box-sizing: border-box;
+//         }
+
+//         :global(html),
+//         :global(body) {
+//           margin: 0;
+//           padding: 0;
+//           width: 100%;
+//           overflow-x: hidden;
+//         }
+
+//         .state-screen {
 //           min-height: 100vh;
+//           width: 100vw;
 //           display: flex;
 //           justify-content: center;
 //           align-items: center;
-//           background: linear-gradient(180deg,#ff758c,#ff7eb3,#ffb199);
-//           font-family: 'Poppins', sans-serif;
+//           background: radial-gradient(circle at top, #ff6b9d, #c44569);
 //           color: white;
+//           font-size: 18px;
+//           padding: 20px;
+//           text-align: center;
+//           font-family: "Poppins", sans-serif;
+//         }
+
+//         .main-container {
+//           min-height: 100vh;
+//           width: 100vw;
+//           display: flex;
+//           justify-content: center;
+//           align-items: center;
 //           position: relative;
 //           overflow: hidden;
+//           background: radial-gradient(circle at top, #ff6b9d, #c44569, #ff9ff3);
+//           transition: background 0.6s ease;
 //           padding: 20px;
+//           font-family: "Poppins", sans-serif;
 //         }
 
-//         /* Floating hearts */
-//         .heart {
+//         .main-container.open {
+//           background: radial-gradient(circle at top, #ff1493, #c44569, #8b5cf6);
+//         }
+
+//         .particle {
 //           position: absolute;
-//           font-size: 28px;
-//           opacity: 0.15;
-//           animation: float 10s infinite ease-in-out;
-//         }
-//         .h1 { top: 10%; left: 15%; }
-//         .h2 { bottom: 20%; right: 10%; }
-//         .h3 { top: 35%; right: 25%; }
-//         .h4 { bottom: 15%; left: 20%; }
-
-//         @keyframes float {
-//           0%,100% { transform: translateY(0); }
-//           50% { transform: translateY(-25px); }
+//           width: 6px;
+//           height: 6px;
+//           background: rgba(255, 255, 255, 0.6);
+//           border-radius: 50%;
+//           animation: floatParticle 12s infinite linear;
+//           pointer-events: none;
+//           top: 0;
+//           z-index: 1;
+//           box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
 //         }
 
-//         /* Envelope screen */
-//         .envelope-card {
-//           background: rgba(255,255,255,0.15);
-//           backdrop-filter: blur(20px);
-//           border-radius: 28px;
-//           padding: 40px;
-//           width: 360px;
-//           text-align: center;
-//           box-shadow: 0 30px 70px rgba(0,0,0,0.35);
+//         .heart-float {
+//           position: absolute;
+//           font-size: 26px;
+//           opacity: 0.12;
+//           animation: floatHeart 15s infinite ease-in-out;
+//           pointer-events: none;
+//           filter: drop-shadow(0 4px 12px rgba(255, 182, 193, 0.4));
+//           z-index: 1;
+//         }
+
+//         .h1 { top: 15%; left: 20%; }
+//         .h2 { top: 60%; right: 15%; animation-delay: 3s; }
+//         .h3 { bottom: 25%; left: 10%; animation-delay: 7s; }
+
+//         @keyframes floatParticle {
+//           0% { 
+//             transform: translateY(100vh) rotate(0deg); 
+//             opacity: 0; 
+//           }
+//           20% { opacity: 0.8; }
+//           80% { opacity: 0.8; }
+//           100% { 
+//             transform: translateY(-15vh) rotate(360deg); 
+//             opacity: 0; 
+//           }
+//         }
+
+//         @keyframes floatHeart {
+//           0%, 100% { transform: translateY(0) rotate(0deg); }
+//           50% { transform: translateY(-30px) rotate(15deg); }
+//         }
+
+//         .letter-card {
+//           width: min(450px, 95%);
+//           min-height: 580px;
+//           background: rgba(255, 255, 255, 0.12);
+//           backdrop-filter: blur(25px);
+//           border-radius: 30px;
+//           border: 1px solid rgba(255, 255, 255, 0.25);
+//           box-shadow: 
+//             0 30px 70px rgba(255, 105, 180, 0.3),
+//             inset 0 1px 0 rgba(255, 255, 255, 0.4);
+//           position: relative;
+//           overflow: hidden;
+//           transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+//           transform: scale(0.95);
+//           animation: cardEntrance 0.9s ease-out;
+//         }
+
+//         .letter-card.opened {
+//           transform: scale(1);
+//           box-shadow: 
+//             0 45px 100px rgba(255, 105, 180, 0.4),
+//             inset 0 1px 0 rgba(255, 255, 255, 0.3);
+//           min-height: 620px;
+//         }
+
+//         @keyframes cardEntrance {
+//           0% { 
+//             opacity: 0; 
+//             transform: scale(0.7) rotateX(25deg) translateY(30px); 
+//           }
+//           100% { 
+//             opacity: 1; 
+//             transform: scale(0.95) rotateX(0deg) translateY(0); 
+//           }
+//         }
+
+//         .closed-envelope {
+//           height: 100%;
+//           display: flex;
+//           flex-direction: column;
+//           justify-content: center;
+//           align-items: center;
 //           cursor: pointer;
-//           animation: fadeIn 0.6s ease;
+//           padding: 45px;
+//           transition: all 0.4s ease;
+//           text-align: center;
 //         }
 
-//         .envelope {
-//           font-size: 70px;
-//           margin-bottom: 10px;
-//           animation: bounce 2s infinite;
+//         .closed-envelope:hover {
+//           transform: translateY(-8px);
 //         }
 
-//         .tap {
-//           margin-top: 10px;
-//           font-size: 13px;
-//           opacity: 0.8;
+//         .envelope-icon {
+//           font-size: 85px;
+//           animation: bounce 2.2s infinite;
+//           margin-bottom: 25px;
+//           filter: drop-shadow(0 8px 25px rgba(255, 182, 193, 0.5));
 //         }
 
 //         @keyframes bounce {
-//           0%,100% { transform: translateY(0); }
-//           50% { transform: translateY(-10px); }
+//           0%, 100% { transform: translateY(0); }
+//           50% { transform: translateY(-15px); }
 //         }
 
-//         /* Letter */
-//         .letter-wrapper {
-//           width: 380px;
-//           max-width: 100%;
-//           text-align: center;
-//           animation: fadeIn 0.6s ease;
+//         .envelope-title {
+//           font-size: 26px;
+//           margin-bottom: 12px;
+//           font-weight: 600;
+//           letter-spacing: 0.5px;
+//           text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 //         }
 
-//         .title {
-//           font-family: 'Playfair Display', serif;
-//           font-size: 28px;
-//           margin-bottom: 15px;
+//         .envelope-hint {
+//           font-size: 16px;
+//           opacity: 0.85;
+//           letter-spacing: 0.8px;
+//           font-weight: 400;
 //         }
 
-//         .letter {
-//           background: linear-gradient(180deg,#fff7f9,#ffeef2);
-//           color: #4a2c2c;
-//           padding: 28px;
-//           border-radius: 20px;
-//           box-shadow: 0 25px 60px rgba(0,0,0,0.35);
-//           text-align: left;
+//         .letter-content {
+//           height: 100%;
+//           padding: 45px 35px;
+//           display: flex;
+//           flex-direction: column;
+//           color: white;
+//           overflow-y: auto;
 //           position: relative;
+//           gap: 25px;
 //         }
 
-//         .letter:before {
-//           content: "";
-//           position: absolute;
-//           top: 0;
-//           left: 0;
-//           right: 0;
-//           height: 6px;
-//           border-radius: 20px 20px 0 0;
-//           background: linear-gradient(to right,#ff4f81,#ff758c);
+//         .header-section {
+//           display: flex;
+//           flex-direction: column;
+//           align-items: center;
+//           justify-content: center;
+//           gap: 0px;
 //         }
 
-//         .message {
-//           font-family: 'Playfair Display', serif;
-//           font-size: 18px;
-//           line-height: 1.9;
+//         .heart-icon {
+//           font-size: 30px;
+//           animation: glowHeart 3s ease-in-out infinite alternate;
+//         }
+
+//         @keyframes glowHeart {
+//           from { 
+//             filter: drop-shadow(0 0 12px rgba(255, 182, 193, 0.6)); 
+//             transform: scale(1);
+//           }
+//           to { 
+//             filter: drop-shadow(0 0 25px rgba(255, 182, 193, 0.9)); 
+//             transform: scale(1.05);
+//           }
+//         }
+
+//         .receiver-name {
+//           font-family: 'Dancing Script', 'Great Vibes', cursive;
+//           font-size: 38px;
+//           line-height: 1.1;
+//           font-weight: 700;
+//           letter-spacing: -1px;
+//           text-align: center;
+//           margin: 0;
+//           color: white;
+//           text-shadow: 
+//             0 5px 15px rgba(0,0,0,0.4),
+//             0 0 35px rgba(255,255,255,0.25);
+//           max-width: 90%;
+//           word-break: break-word;
+//           padding: 0 12px;
+//         }
+
+//         /* COMPLETELY NEW MESSAGE DISPLAY DESIGN */
+//         .love-message-container {
+//           flex: 1;
+//           background: rgba(255, 255, 255, 0.95);
+//           border-radius: 28px;
+//           overflow: hidden;
+//           box-shadow: 
+//             0 30px 80px rgba(0, 0, 0, 0.4),
+//             inset 0 1px 0 rgba(255, 255, 255, 1);
+//           border: 1px solid rgba(255, 255, 255, 0.3);
+//           position: relative;
+//           backdrop-filter: blur(15px);
+//         }
+
+//         .message-header {
+//           background: linear-gradient(135deg, #ff69b4, #ff1493, #ff9ff3);
+//           padding: 20px 25px;
+//           text-align: center;
+//         }
+
+//         .ribbon {
+//           font-family: 'Dancing Script', cursive;
+//           font-size: 22px;
+//           color: white;
+//           font-weight: 700;
+//           text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+//           letter-spacing: -0.5px;
+//         }
+
+//         .message-scroll-wrapper {
+//           height: 220px;
+//           overflow-y: auto;
+//           padding: 30px 28px;
+//           display: flex;
+//           align-items: flex-start;
+//         }
+
+//         .message-scroll-wrapper::-webkit-scrollbar {
+//           width: 6px;
+//         }
+
+//         .message-scroll-wrapper::-webkit-scrollbar-track {
+//           background: rgba(255, 255, 255, 0.1);
+//           border-radius: 10px;
+//         }
+
+//         .message-scroll-wrapper::-webkit-scrollbar-thumb {
+//           background: linear-gradient(135deg, #ff69b4, #ff1493);
+//           border-radius: 10px;
+//         }
+
+//         .message-content {
+//           width: 100%;
+//         }
+
+//         .love-message {
+//           font-family: 'Dancing Script', serif;
+//           font-size: 22px;
+//           line-height: 1.75;
+//           color: #2d1b69;
 //           font-style: italic;
+//           font-weight: 400;
+//           margin: 0;
+//           word-break: break-word;
+//           text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+//           letter-spacing: -0.3px;
 //         }
 
-//         .from {
-//           margin-top: 18px;
+//         .message-footer {
+//           background: rgba(255, 248, 247, 0.9);
+//           padding: 22px 28px;
+//           text-align: right;
+//           border-top: 1px solid rgba(255, 182, 193, 0.4);
+//         }
+
+//         .signature {
+//           display: flex;
+//           flex-direction: column;
+//           gap: 5px;
+//         }
+
+//         .signature-line {
+//           font-size: 13px;
+//           color: #ff69b4;
+//           font-weight: 500;
+//           letter-spacing: 1px;
+//           text-transform: uppercase;
+//           opacity: 0.9;
+//         }
+
+//         .sender-signature {
+//           font-family: 'Great Vibes', cursive;
+//           font-size: 24px;
+//           color: #c44569;
+//           font-weight: 400;
+//           letter-spacing: 0.5px;
+//           margin-top: 2px;
+//         }
+
+//         .memory-section {
+//           margin-top: 20px;
+//         }
+
+//         .memory-label {
 //           font-size: 14px;
-//           opacity: 0.8;
+//           opacity: 0.85;
+//           margin-bottom: 15px;
+//           font-weight: 500;
+//           letter-spacing: 0.4px;
+//           text-transform: uppercase;
 //         }
 
-//         /* Media */
-//         .media-section {
-//           margin-top: 18px;
-//           text-align: left;
-//         }
-
-//         .media-label {
-//           font-size: 12px;
-//           opacity: 0.8;
-//           margin-bottom: 6px;
-//         }
-
-//         .media-card {
-//           height: 60px;
-//           border-radius: 14px;
+//         .memory-card {
+//           position: relative;
+//           height: 75px;
+//           border-radius: 22px;
 //           overflow: hidden;
 //           cursor: pointer;
-//           transition: 0.5s;
-//           box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-//           position: relative;
+//           box-shadow: 0 22px 55px rgba(0, 0, 0, 0.4);
+//           transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+//           border: 2px solid rgba(255, 255, 255, 0.25);
 //         }
 
-//         .media-card.show {
-//           height: 220px;
+//         .memory-card:hover {
+//           transform: translateY(-5px);
 //         }
 
-//         .media-card img {
+//         .memory-card.revealed {
+//           height: 290px;
+//         }
+
+//         .memory-card img {
 //           width: 100%;
-//           height: 220px;
+//           height: 290px;
 //           object-fit: cover;
-//           filter: blur(12px);
-//           transition: 0.6s;
+//           filter: blur(16px) brightness(0.7);
+//           transform: scale(1.12);
+//           transition: all 0.9s ease;
 //         }
 
-//         .media-card.show img {
-//           filter: blur(0);
-//           transform: scale(1.05);
+//         .memory-card.revealed img {
+//           filter: blur(0) brightness(1.05);
+//           transform: scale(1);
 //         }
 
-//         .overlay {
+//         .memory-overlay {
 //           position: absolute;
 //           inset: 0;
 //           display: flex;
 //           justify-content: center;
 //           align-items: center;
-//           background: rgba(0,0,0,0.3);
-//           font-size: 12px;
+//           background: rgba(0, 0, 0, 0.45);
+//           backdrop-filter: blur(6px);
 //         }
 
-//         .note {
-//           margin-top: 15px;
-//           font-size: 12px;
-//           opacity: 0.7;
+//         .memory-text {
+//           background: rgba(255, 255, 255, 0.98);
+//           color: #ff1493;
+//           padding: 14px 28px;
+//           border-radius: 35px;
+//           font-size: 14px;
+//           font-weight: 600;
+//           box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+//           letter-spacing: 0.5px;
+//           text-transform: uppercase;
 //         }
 
-//         @keyframes fadeIn {
-//           from { opacity: 0; transform: translateY(20px); }
-//           to { opacity: 1; transform: translateY(0); }
+//         .love-note {
+//           font-size: 14px;
+//           opacity: 0.8;
+//           font-style: italic;
+//           text-align: center;
+//           padding-top: 15px;
+//           border-top: 1px solid rgba(255, 255, 255, 0.25);
+//           font-family: "Poppins", sans-serif;
+//           font-weight: 300;
+//           letter-spacing: 0.3px;
 //         }
+
+//         @media (max-width: 768px) {
+//           .main-container {
+//             padding: 16px;
+//           }
+          
+//           .letter-card {
+//             width: 95%;
+//             min-height: 550px;
+//           }
+          
+//           .letter-card.opened {
+//             min-height: 600px;
+//           }
+          
+//           .letter-content {
+//             padding: 35px 28px;
+//             gap: 20px;
+//           }
+          
+//           .love-message-container {
+//             border-radius: 25px;
+//           }
+          
+//           .message-scroll-wrapper {
+//             height: 200px;
+//             padding: 25px 24px;
+//           }
+          
+//           .love-message {
+//             font-size: 20px;
+//           }
+          
+//           .envelope-icon {
+//             font-size: 75px;
+//           }
+          
+//           .receiver-name {
+//             font-size: 34px;
+//           }
+//         }
+
+//         @media (max-width: 480px) {
+//           .main-container {
+//             padding: 12px;
+//           }
+          
+//           .letter-card {
+//             min-height: 520px;
+//           }
+          
+//           .letter-card.opened {
+//             min-height: 580px;
+//           }
+          
+//           .letter-content {
+//             padding: 28px 22px;
+//             gap: 18px;
+//           }
+          
+//           .message-scroll-wrapper {
+//             height: 180px;
+//             padding: 22px 20px;
+//           }
+          
+//           .love-message {
+//             font-size: 18px;
+//             line-height: 1.7;
+//           }
+          
+//           .sender-signature {
+//             font-size: 22px;
+//           }
+          
+//           .envelope-icon {
+//             font-size: 70px;
+//           }
+          
+//           .receiver-name {
+//             font-size: 30px;
+//           }
+//         }
+//           .music-section {
+//   margin-top: 20px;
+//   animation: fadeIn 0.6s ease;
+// }
+
+// .music-label {
+//   font-size: 13px;
+//   margin-bottom: 6px;
+//   opacity: 0.85;
+// }
+//   .music-section {
+//   margin-top: 20px;
+//   text-align: center;
+//   animation: fadeIn 0.6s ease;
+// }
+
+// .music-label {
+//   font-size: 13px;
+//   margin-bottom: 10px;
+//   opacity: 0.85;
+// }
+
+// .play-btn {
+//   background: linear-gradient(135deg, #ff1493, #ff69b4);
+//   border: none;
+//   color: white;
+//   padding: 12px 24px;
+//   border-radius: 30px;
+//   font-size: 14px;
+//   cursor: pointer;
+//   box-shadow: 0 8px 25px rgba(255, 20, 147, 0.4);
+//   transition: all 0.3s ease;
+// }
+
+// .play-btn:hover {
+//   transform: scale(1.05);
+// }
+
+// .play-btn:active {
+//   transform: scale(0.95);
+// }
 //       `}</style>
 //     </div>
 //   );
@@ -258,80 +683,174 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import BrandHeader from "../BrandHeader";
 
 export default function LoveReceiver() {
   const [opened, setOpened] = useState(false);
   const [revealMedia, setRevealMedia] = useState(false);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState("");
+  const [playMusic, setPlayMusic] = useState(false);
+
   const params = useSearchParams();
   const code = params.get("code");
-  const [data, setData] = useState(null);
 
   useEffect(() => {
-    if (!code) return;
+    if (!code) {
+      setError("Message code not found");
+      return;
+    }
 
     fetch(`/api/messages?code=${code}`)
       .then((res) => res.json())
       .then((apiData) => {
+        if (!apiData) {
+          setError("No message found");
+          return;
+        }
+
         setData({
-          sender: apiData.senderName,
-          message: apiData.messageText,
-          image: apiData.imageUrl,
-        });
+  receiverName: apiData.receiverName || "You",
+  sender: apiData.senderName || "Someone special",
+  message: apiData.messageText,
+  image: apiData.imageUrl,
+  audio: apiData.audioUrl, // ✅ ADD THIS
+});
       })
-      .catch(console.error);
+      .catch(() => setError("Server error"));
   }, [code]);
 
-  if (!data) {
-    return <div className="loading-screen">Loading love message...</div>;
+  if (!data && !error) {
+    return <div className="state-screen">Loading your love message...</div>;
   }
 
+  if (error) {
+    return <div className="state-screen">{error}</div>;
+  }
+const getYouTubeEmbedUrl = (url) => {
+  try {
+    if (!url) return "";
+
+    // If already embed → return as it is
+    if (url.includes("/embed/")) {
+      return url;
+    }
+
+    let videoId = "";
+
+    if (url.includes("youtu.be")) {
+      videoId = url.split("/").pop();
+    } else if (url.includes("youtube.com/watch")) {
+      const params = new URL(url).searchParams;
+      videoId = params.get("v");
+    }
+
+    if (!videoId) return "";
+
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+  } catch {
+    return "";
+  }
+};
   return (
-    <div className="container">
-      <div className="heart h1">❤️</div>
-      <div className="heart h2">💕</div>
-      <div className="heart h3">💖</div>
-      <div className="heart h4">💗</div>
+    <div className={opened ? "main-container open" : "main-container"}>
+      {/* Floating Particles & Hearts */}
+      <div className="particle" style={{ left: "15%" }} />
+      <div className="particle" style={{ left: "35%", animationDelay: "2s" }} />
+      <div className="particle" style={{ left: "55%", animationDelay: "4s" }} />
+      <div className="particle" style={{ left: "75%", animationDelay: "1s" }} />
+      <div className="particle" style={{ left: "90%", animationDelay: "3s" }} />
+      
+      <div className="heart-float h1">💖</div>
+      <div className="heart-float h2">💕</div>
+      <div className="heart-float h3">❤️</div>
 
-      {!opened ? (
-        <div className="envelope-card" onClick={() => setOpened(true)}>
-          <div className="envelope">💌</div>
-          <h2>A love message for you</h2>
-          <p>Someone shared their feelings</p>
-          <div className="tap">Tap to open ❤️</div>
-        </div>
-      ) : (
-        <div className="letter-wrapper">
-          <div className="title">For You</div>
-
-          <div className="letter">
-            <p className="message">“{data.message}”</p>
-            <div className="from">— {data.sender}</div>
+      {/* Main Card Container */}
+      <div className={`letter-card ${opened ? "opened" : ""}`}>
+        {!opened ? (
+          <div className="closed-envelope" onClick={() => {
+  setOpened(true);
+  setPlayMusic(true); // 🎵 trigger music
+}}>
+            <BrandHeader />
+            <div className="envelope-icon">💌</div>
+            <div className="envelope-title">A love message awaits ✨</div>
+            <div className="envelope-hint">Tap to open your heart 💖</div>
           </div>
+        ) : (
+          <div className="letter-content">
+            <div className="header-section">
+              <BrandHeader />
+              <div className="heart-icon">💝</div>
+              <h2 className="receiver-name">{data.receiverName}</h2>
+            </div>
 
-          {data.image && (
-            <div className="media-section">
-              <div className="media-label">📸 A memory was shared</div>
-
-              <div
-                className={`media-card ${revealMedia ? "show" : ""}`}
-                onClick={() => setRevealMedia(true)}
-              >
-                <img src={data.image} alt="memory" />
-                {!revealMedia && <div className="overlay">Tap to reveal</div>}
+            {/* Completely Redesigned Message Display */}
+            <div className="love-message-container">
+              <div className="message-header">
+                <div className="ribbon">💌 Love Letter</div>
+              </div>
+              
+              <div className="message-scroll-wrapper">
+                <div className="message-content">
+                  <p className="love-message">"{data.message}"</p>
+                </div>
+              </div>
+              
+              <div className="message-footer">
+                <div className="signature">
+                  <span className="signature-line">With all my love,</span>
+                  <span className="sender-signature">{data.sender}</span>
+                </div>
               </div>
             </div>
-          )}
+{data.audio && (
+  <div className="music-section">
+    {/* <div className="music-label">🎵 Tap to play your song</div> */}
 
-          <div className="note">Some feelings are meant to be felt, not replied.</div>
-        </div>
-      )}
+   {playMusic && (
+  <iframe
+    width="0"
+    height="0"
+    src={getYouTubeEmbedUrl(data.audio)}
+    title="audio player"
+    allow="autoplay"
+    style={{ display: "none" }}
+  />
+)}
+  </div>
+)}
+            {/* {data.image && (
+              <div className="memory-section">
+                <div className="memory-label">📸 A memory was shared</div>
+                <div
+                  className={`memory-card ${revealMedia ? "revealed" : ""}`}
+                  onClick={() => setRevealMedia(true)}
+                >
+                  <img src={data.image} alt="Shared memory" />
+                  {!revealMedia && (
+                    <div className="memory-overlay">
+                      <span className="memory-text">Tap to reveal</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )} */}
+
+            <div className="love-note">
+              💕 Some feelings are meant to be cherished, not replied to.
+            </div>
+          </div>
+        )}
+      </div>
 
       <style jsx>{`
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Parisienne&family=Poppins:wght@300;400;500;600;700&display=swap');
+
         * {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
-          font-family: "Poppins", sans-serif;
         }
 
         :global(html),
@@ -342,313 +861,517 @@ export default function LoveReceiver() {
           overflow-x: hidden;
         }
 
-        .loading-screen {
+        .state-screen {
           min-height: 100vh;
           width: 100vw;
           display: flex;
           justify-content: center;
           align-items: center;
-          background: linear-gradient(180deg, #ff758c, #ff7eb3, #ffb199);
+          background: radial-gradient(circle at top, #ff6b9d, #c44569);
           color: white;
           font-size: 18px;
           padding: 20px;
           text-align: center;
+          font-family: "Poppins", sans-serif;
         }
 
-        .container {
+        .main-container {
           min-height: 100vh;
           width: 100vw;
           display: flex;
           justify-content: center;
           align-items: center;
-          background: linear-gradient(180deg, #ff758c, #ff7eb3, #ffb199);
-          font-family: "Poppins", sans-serif;
-          color: white;
           position: relative;
           overflow: hidden;
+          background: radial-gradient(circle at top, #ff6b9d, #c44569, #ff9ff3);
+          transition: background 0.6s ease;
           padding: 20px;
-          box-sizing: border-box;
+          font-family: "Poppins", sans-serif;
         }
 
-        .heart {
+        .main-container.open {
+          background: radial-gradient(circle at top, #ff1493, #c44569, #8b5cf6);
+        }
+
+        .particle {
           position: absolute;
-          font-size: 28px;
-          opacity: 0.15;
-          animation: float 10s infinite ease-in-out;
+          width: 6px;
+          height: 6px;
+          background: rgba(255, 255, 255, 0.6);
+          border-radius: 50%;
+          animation: floatParticle 12s infinite linear;
           pointer-events: none;
+          top: 0;
+          z-index: 1;
+          box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
         }
 
-        .h1 {
-          top: 10%;
-          left: 15%;
+        .heart-float {
+          position: absolute;
+          font-size: 26px;
+          opacity: 0.12;
+          animation: floatHeart 15s infinite ease-in-out;
+          pointer-events: none;
+          filter: drop-shadow(0 4px 12px rgba(255, 182, 193, 0.4));
+          z-index: 1;
         }
 
-        .h2 {
-          bottom: 20%;
-          right: 10%;
-        }
+        .h1 { top: 15%; left: 20%; }
+        .h2 { top: 60%; right: 15%; animation-delay: 3s; }
+        .h3 { bottom: 25%; left: 10%; animation-delay: 7s; }
 
-        .h3 {
-          top: 35%;
-          right: 25%;
-        }
-
-        .h4 {
-          bottom: 15%;
-          left: 20%;
-        }
-
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0);
+        @keyframes floatParticle {
+          0% { 
+            transform: translateY(100vh) rotate(0deg); 
+            opacity: 0; 
           }
-          50% {
-            transform: translateY(-25px);
+          20% { opacity: 0.8; }
+          80% { opacity: 0.8; }
+          100% { 
+            transform: translateY(-15vh) rotate(360deg); 
+            opacity: 0; 
           }
         }
 
-        .envelope-card {
-          background: rgba(255, 255, 255, 0.15);
-          backdrop-filter: blur(20px);
-          border-radius: 28px;
-          padding: 40px;
-          width: min(360px, 100%);
-          text-align: center;
-          box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
-          cursor: pointer;
-          animation: fadeIn 0.6s ease;
-          z-index: 2;
+        @keyframes floatHeart {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-30px) rotate(15deg); }
+        }
+
+        .letter-card {
+          width: min(450px, 95%);
+          min-height: 580px;
+          background: rgba(255, 255, 255, 0.12);
+          backdrop-filter: blur(25px);
+          border-radius: 30px;
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          box-shadow: 
+            0 30px 70px rgba(255, 105, 180, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
           position: relative;
+          overflow: hidden;
+          transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+          transform: scale(0.95);
+          animation: cardEntrance 0.9s ease-out;
         }
 
-        .envelope {
-          font-size: 70px;
-          margin-bottom: 10px;
-          animation: bounce 2s infinite;
+        .letter-card.opened {
+          transform: scale(1);
+          box-shadow: 
+            0 45px 100px rgba(255, 105, 180, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
+          min-height: 620px;
         }
 
-        .tap {
-          margin-top: 10px;
-          font-size: 13px;
-          opacity: 0.8;
+        @keyframes cardEntrance {
+          0% { 
+            opacity: 0; 
+            transform: scale(0.7) rotateX(25deg) translateY(30px); 
+          }
+          100% { 
+            opacity: 1; 
+            transform: scale(0.95) rotateX(0deg) translateY(0); 
+          }
+        }
+
+        .closed-envelope {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          padding: 45px;
+          transition: all 0.4s ease;
+          text-align: center;
+        }
+
+        .closed-envelope:hover {
+          transform: translateY(-8px);
+        }
+
+        .envelope-icon {
+          font-size: 85px;
+          animation: bounce 2.2s infinite;
+          margin-bottom: 25px;
+          filter: drop-shadow(0 8px 25px rgba(255, 182, 193, 0.5));
         }
 
         @keyframes bounce {
-          0%,
-          100% {
-            transform: translateY(0);
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-15px); }
+        }
+
+        .envelope-title {
+          font-size: 26px;
+          margin-bottom: 12px;
+          font-weight: 600;
+          letter-spacing: 0.5px;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .envelope-hint {
+          font-size: 16px;
+          opacity: 0.85;
+          letter-spacing: 0.8px;
+          font-weight: 400;
+        }
+
+        .letter-content {
+          height: 100%;
+          padding: 45px 35px;
+          display: flex;
+          flex-direction: column;
+          color: white;
+          overflow-y: auto;
+          position: relative;
+          gap: 15px;
+        }
+
+        .header-section {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 0px;
+        }
+
+        .heart-icon {
+          font-size: 30px;
+          animation: glowHeart 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowHeart {
+          from { 
+            filter: drop-shadow(0 0 12px rgba(255, 182, 193, 0.6)); 
+            transform: scale(1);
           }
-          50% {
-            transform: translateY(-10px);
+          to { 
+            filter: drop-shadow(0 0 25px rgba(255, 182, 193, 0.9)); 
+            transform: scale(1.05);
           }
         }
 
-        .letter-wrapper {
-          width: min(380px, 100%);
+        .receiver-name {
+          font-family: 'Dancing Script', 'Great Vibes', cursive;
+          font-size: 38px;
+          line-height: 1.1;
+          font-weight: 700;
+          letter-spacing: -1px;
           text-align: center;
-          animation: fadeIn 0.6s ease;
-          z-index: 2;
-          position: relative;
-        }
-
-        .title {
-          font-family: "Playfair Display", serif;
-          font-size: 28px;
-          margin-bottom: 15px;
-        }
-
-        .letter {
-          background: linear-gradient(180deg, #fff7f9, #ffeef2);
-          color: #4a2c2c;
-          padding: 28px;
-          border-radius: 20px;
-          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.35);
-          text-align: left;
-          position: relative;
-        }
-
-        .letter:before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 6px;
-          border-radius: 20px 20px 0 0;
-          background: linear-gradient(to right, #ff4f81, #ff758c);
-        }
-
-        .message {
-          font-family: "Playfair Display", serif;
-          font-size: 18px;
-          line-height: 1.9;
-          font-style: italic;
+          margin: 0;
+          color: white;
+          text-shadow: 
+            0 5px 15px rgba(0,0,0,0.4),
+            0 0 35px rgba(255,255,255,0.25);
+          max-width: 90%;
           word-break: break-word;
+          padding: 0 12px;
         }
 
-        .from {
-          margin-top: 18px;
+        /* COMPLETELY NEW MESSAGE DISPLAY DESIGN */
+        .love-message-container {
+          flex: 1;
+          background: rgba(255, 255, 255, 0.95);
+          border-radius: 28px;
+          overflow: hidden;
+          box-shadow: 
+            0 30px 80px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 1);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          position: relative;
+          backdrop-filter: blur(15px);
+        }
+
+        .message-header {
+          background: linear-gradient(135deg, #ff69b4, #ff1493, #ff9ff3);
+          padding: 20px 25px;
+          text-align: center;
+        }
+
+        .ribbon {
+          font-family: 'Dancing Script', cursive;
+          font-size: 22px;
+          color: white;
+          font-weight: 700;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+          letter-spacing: -0.5px;
+        }
+
+        .message-scroll-wrapper {
+          height: 220px;
+          overflow-y: auto;
+          padding: 30px 28px;
+          display: flex;
+          align-items: flex-start;
+        }
+
+        .message-scroll-wrapper::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .message-scroll-wrapper::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 10px;
+        }
+
+        .message-scroll-wrapper::-webkit-scrollbar-thumb {
+          background: linear-gradient(135deg, #ff69b4, #ff1493);
+          border-radius: 10px;
+        }
+
+        .message-content {
+          width: 100%;
+        }
+
+        .love-message {
+          font-family: 'Dancing Script', serif;
+          font-size: 22px;
+          line-height: 1.75;
+          color: #2d1b69;
+          font-style: italic;
+          font-weight: 400;
+          margin: 0;
+          word-break: break-word;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+          letter-spacing: -0.3px;
+        }
+
+        .message-footer {
+          background: rgba(255, 248, 247, 0.9);
+          padding: 2px 22px;
+          text-align: right;
+          border-top: 1px solid rgba(255, 182, 193, 0.4);
+        }
+
+        .signature {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+
+        .signature-line {
+          font-size: 13px;
+          color: #ff69b4;
+          font-weight: 500;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          opacity: 0.9;
+        }
+
+        .sender-signature {
+          font-family: 'Great Vibes', cursive;
+          font-size: 24px;
+          color: #c44569;
+          font-weight: 400;
+          letter-spacing: 0.5px;
+          margin-top: 2px;
+        }
+
+        .memory-section {
+          margin-top: 20px;
+        }
+
+        .memory-label {
           font-size: 14px;
-          opacity: 0.8;
+          opacity: 0.85;
+          margin-bottom: 15px;
+          font-weight: 500;
+          letter-spacing: 0.4px;
+          text-transform: uppercase;
         }
 
-        .media-section {
-          margin-top: 18px;
-          text-align: left;
-        }
-
-        .media-label {
-          font-size: 12px;
-          opacity: 0.8;
-          margin-bottom: 6px;
-        }
-
-        .media-card {
-          height: 60px;
-          border-radius: 14px;
+        .memory-card {
+          position: relative;
+          height: 75px;
+          border-radius: 22px;
           overflow: hidden;
           cursor: pointer;
-          transition: 0.5s;
-          box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-          position: relative;
+          box-shadow: 0 22px 55px rgba(0, 0, 0, 0.4);
+          transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 2px solid rgba(255, 255, 255, 0.25);
         }
 
-        .media-card.show {
-          height: 220px;
+        .memory-card:hover {
+          transform: translateY(-5px);
         }
 
-        .media-card img {
+        .memory-card.revealed {
+          height: 290px;
+        }
+
+        .memory-card img {
           width: 100%;
-          height: 220px;
+          height: 290px;
           object-fit: cover;
-          filter: blur(12px);
-          transition: 0.6s;
+          filter: blur(16px) brightness(0.7);
+          transform: scale(1.12);
+          transition: all 0.9s ease;
         }
 
-        .media-card.show img {
-          filter: blur(0);
-          transform: scale(1.05);
+        .memory-card.revealed img {
+          filter: blur(0) brightness(1.05);
+          transform: scale(1);
         }
 
-        .overlay {
+        .memory-overlay {
           position: absolute;
           inset: 0;
           display: flex;
           justify-content: center;
           align-items: center;
-          background: rgba(0, 0, 0, 0.3);
-          font-size: 12px;
+          background: rgba(0, 0, 0, 0.45);
+          backdrop-filter: blur(6px);
         }
 
-        .note {
-          margin-top: 15px;
-          font-size: 12px;
-          opacity: 0.7;
+        .memory-text {
+          background: rgba(255, 255, 255, 0.98);
+          color: #ff1493;
+          padding: 14px 28px;
+          border-radius: 35px;
+          font-size: 14px;
+          font-weight: 600;
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
         }
 
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+        .love-note {
+          font-size: 14px;
+          opacity: 0.8;
+          font-style: italic;
+          text-align: center;
+            margin-top: 5px;
+          padding-top: 0px;
+          border-top: 1px solid rgba(255, 255, 255, 0.25);
+          font-family: "Poppins", sans-serif;
+          font-weight: 300;
+          letter-spacing: 0.3px;
         }
 
         @media (max-width: 768px) {
-          .container {
+          .main-container {
             padding: 16px;
           }
-
-          .envelope-card {
-            padding: 34px 24px;
-            border-radius: 24px;
+          
+          .letter-card {
+            width: 95%;
+            min-height: 550px;
           }
-
-          .letter-wrapper {
-            width: 100%;
+          
+          .letter-card.opened {
+            min-height: 600px;
           }
-
-          .title {
-            font-size: 25px;
+          
+          .letter-content {
+            padding: 35px 28px;
+            gap: 20px;
           }
-
-          .letter {
-            padding: 24px;
+          
+          .love-message-container {
+            border-radius: 25px;
+              margin-bottom: 1px; /* add this */
           }
-
-          .message {
-            font-size: 16px;
-          }
-
-          .media-card.show {
+          
+          .message-scroll-wrapper {
             height: 200px;
+            padding: 25px 24px;
           }
-
-          .media-card img {
-            height: 200px;
+          
+          .love-message {
+            font-size: 20px;
+          }
+          
+          .envelope-icon {
+            font-size: 75px;
+          }
+          
+          .receiver-name {
+            font-size: 34px;
           }
         }
 
         @media (max-width: 480px) {
-          .container {
+          .main-container {
             padding: 12px;
           }
-
-          .envelope-card {
-            padding: 28px 18px;
-            border-radius: 20px;
+          
+          .letter-card {
+            min-height: 520px;
           }
-
-          .envelope {
-            font-size: 60px;
+          
+          .letter-card.opened {
+            min-height: 580px;
           }
-
-          .envelope-card h2 {
-            font-size: 20px;
+          
+          .letter-content {
+            padding: 28px 22px;
+            gap: 18px;
           }
-
-          .tap {
-            font-size: 12px;
+          
+          .message-scroll-wrapper {
+            height: 180px;
+            padding: 22px 20px;
           }
-
-          .title {
+          
+          .love-message {
+            font-size: 18px;
+            line-height: 1.7;
+          }
+          
+          .sender-signature {
             font-size: 22px;
           }
-
-          .letter {
-            padding: 20px;
-            border-radius: 18px;
+          
+          .envelope-icon {
+            font-size: 70px;
           }
-
-          .message {
-            font-size: 14px;
-            line-height: 1.8;
-          }
-
-          .from {
-            font-size: 13px;
-          }
-
-          .note {
-            font-size: 11px;
-          }
-
-          .media-card.show {
-            height: 180px;
-          }
-
-          .media-card img {
-            height: 180px;
-          }
-
-          .heart {
-            font-size: 22px;
+          
+          .receiver-name {
+            font-size: 30px;
           }
         }
+          .music-section {
+  margin-top: 20px;
+  animation: fadeIn 0.6s ease;
+}
+
+.music-label {
+  font-size: 13px;
+  margin-bottom: 6px;
+  opacity: 0.85;
+}
+  .music-section {
+  margin-top: 20px;
+  text-align: center;
+  animation: fadeIn 0.6s ease;
+}
+
+.music-label {
+  font-size: 13px;
+  margin-bottom: 10px;
+  opacity: 0.85;
+}
+
+.play-btn {
+  background: linear-gradient(135deg, #ff1493, #ff69b4);
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(255, 20, 147, 0.4);
+  transition: all 0.3s ease;
+}
+
+.play-btn:hover {
+  transform: scale(1.05);
+}
+
+.play-btn:active {
+  transform: scale(0.95);
+}
       `}</style>
     </div>
   );
