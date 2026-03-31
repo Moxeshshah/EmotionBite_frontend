@@ -1502,19 +1502,28 @@ export default function About() {
           .hero { padding: 2.5rem 1.25rem 2rem; }
           .section, .categories-section { padding: 2.25rem 1.25rem; }
           .promise-inner { gap: 1rem; }
+          .contact-cards { flex-direction: column; }
           .float-tiles { gap: 0.45rem; }
           .float-tile { padding: 0.48rem 0.8rem; font-size: 0.76rem; }
           .cta-btns { flex-direction: column; align-items: center; }
           .cta-section { padding: 2.75rem 1.25rem; }
         }
           .cat-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
-      `}</style>
+      `}
+      </style>
 
       {/* NAV */}
       <nav className="nav">
 <div className="nav-logo"><img src="/qr-logo.png" alt="Emotion Bite" style={{height:'28px',objectFit:'contain'}} /> Emotion<span>Bite</span></div>
-        <a href="/shop" className="nav-pill">Shop Now →</a>
-      </nav>
+  <a 
+    href="https://www.instagram.com/emotionbite.in" 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="nav-pill"
+  >
+    Shop Now →
+  </a>     
+   </nav>
 
       {/* TICKER */}
       <div className="ticker-wrap">
@@ -1548,7 +1557,7 @@ export default function About() {
             hidden inside delicious chocolates. For every emotion. Every occasion.
           </p>
           <div className="hero-ctas">
-            <a href="/shop" className="btn-primary">🍫 Shop Chocolates</a>
+            <a href="https://www.instagram.com/emotionbite.in" className="btn-primary">🍫 Shop Chocolates</a>
             <a href="#how-it-works" className="btn-ghost">How it works ↓</a>
           </div>
           <div className="float-tiles">
@@ -1651,10 +1660,68 @@ export default function About() {
           >
             <span style={{ fontSize: '2rem', display: 'block', marginBottom: '0.45rem' }}>＋</span>
             <div className="cat-name" style={{ color: 'var(--rose)', fontSize: '0.95rem' }}>More Coming Soon</div>
-            <div className="cat-sub" style={{ color: 'var(--rose)', opacity: 0.6 }}>New emotions every month</div>
+            {/* <div className="cat-sub" style={{ color: 'var(--rose)', opacity: 0.6 }}>New emotions every month</div> */}
           </div>
         </div>
       </section>
+
+
+{/* CONTACT */}
+<section className="section" style={{ paddingTop: '3rem' }}>
+  <hr className="divider" style={{ marginBottom: '3rem' }} />
+  <div className="section-label">Get in Touch</div>
+  <h2 className="section-title">Contact <em>Us</em></h2>
+  <p className="section-sub">Have questions? We'd love to hear from you.</p>
+  <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+    <div className="step-card" style={{ flex: '1', minWidth: '220px', '--step-color': '#E91E8C' }}>
+      <div className="step-icon-wrap">📧</div>
+      <div className="step-title" style={{ fontSize: '1rem', marginBottom: '0.4rem' }}>Email Us</div>
+      <p style={{ fontSize: '0.84rem', color: 'var(--muted)', lineHeight: 1.6 }}>
+        For support, orders & inquiries
+      </p>
+      <a
+        href="mailto:support.emotionbite@gmail.com"
+        style={{
+          display: 'inline-block',
+          marginTop: '0.75rem',
+          color: '#E91E8C',
+          fontSize: '0.85rem',
+          fontFamily: 'var(--font-mono)',
+          textDecoration: 'none',
+          borderBottom: '1px solid rgba(233,30,140,0.35)',
+          paddingBottom: '1px',
+          transition: 'border-color 0.2s',
+        }}
+      >
+        support.emotionbite@gmail.com
+      </a>
+    </div>
+
+    <div className="step-card" style={{ flex: '1', minWidth: '220px', '--step-color': '#F59E0B' }}>
+      <div className="step-icon-wrap">📞</div>
+      <div className="step-title" style={{ fontSize: '1rem', marginBottom: '0.4rem' }}>Call Us</div>
+      <p style={{ fontSize: '0.84rem', color: 'var(--muted)', lineHeight: 1.6 }}>
+        Mon – Sat, 10am to 7pm
+      </p>
+      <a
+        href="tel:+911234567890"
+        style={{
+          display: 'inline-block',
+          marginTop: '0.75rem',
+          color: '#F59E0B',
+          fontSize: '0.85rem',
+          fontFamily: 'var(--font-mono)',
+          textDecoration: 'none',
+          borderBottom: '1px solid rgba(245,158,11,0.35)',
+          paddingBottom: '1px',
+        }}
+      >
+        +91 12345 67890
+      </a>
+    </div>
+  </div>
+</section>
+
 
       {/* CTA */}
       <section className="cta-section">
@@ -1667,8 +1734,8 @@ export default function About() {
             One chocolate, one message, one unforgettable moment.
           </p>
           <div className="cta-btns">
-            <a href="/shop" className="btn-primary">🍫 Shop Online</a>
-            <a href="/find-store" className="btn-ghost">📍 Find a Store</a>
+            {/* <a href="/https://www.instagram.com/emotionbite.in" className="btn-primary">🍫 Shop Online</a> */}
+            {/* <a href="/find-store" className="btn-ghost">📍 Find a Store</a> */}
           </div>
         </div>
       </section>

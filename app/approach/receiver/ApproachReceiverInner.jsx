@@ -581,3 +581,696 @@ export default function ApproachReceiver() {
     </div>
   );
 }
+
+
+
+// "use client";
+
+// import { useEffect, useState } from "react";
+// import { useSearchParams } from "next/navigation";
+// import BrandHeader from "../BrandHeader";
+
+// export default function ApproachReceiver() {
+//   const searchParams = useSearchParams();
+//   const code = searchParams?.get("code");
+//   const [data, setData] = useState(null);
+//   const [opened, setOpened] = useState(false);
+//   const [revealImage, setRevealImage] = useState(false);
+//   const [typedMessage, setTypedMessage] = useState("");
+//   const [mounted, setMounted] = useState(false);
+//   const [particles, setParticles] = useState([]);
+
+//   useEffect(() => { setMounted(true); }, []);
+
+//   useEffect(() => {
+//     if (!code || !mounted) return;
+//     fetch(`/api/messages?code=${code}`)
+//       .then((res) => res.json())
+//       .then((apiData) => {
+//         setData({
+//           sender: apiData.senderName,
+//           receiver: apiData.receiverName,
+//           message: apiData.messageText,
+//           image: apiData.imageUrl,
+//           video: apiData.videoUrl,
+//           audio: apiData.audioUrl,
+//           instagram: apiData.instagramUrl,
+//         });
+//       })
+//       .catch(console.error);
+//   }, [code, mounted]);
+
+//   useEffect(() => {
+//     if (!opened || !data?.message) return;
+//     setTypedMessage("");
+//     // Spawn particles on open
+//     setParticles(Array.from({ length: 12 }, (_, i) => ({
+//       id: i,
+//       x: Math.random() * 100,
+//       delay: Math.random() * 0.8,
+//       size: 8 + Math.random() * 12,
+//       char: ["✦", "◆", "✿", "❋", "⬡"][Math.floor(Math.random() * 5)],
+//     })));
+//     setTimeout(() => setParticles([]), 2500);
+
+//     let i = 0;
+//     const text = data.message;
+//     const interval = setInterval(() => {
+//       setTypedMessage(text.slice(0, i + 1));
+//       i++;
+//       if (i >= text.length) clearInterval(interval);
+//     }, 22);
+//     return () => clearInterval(interval);
+//   }, [opened, data]);
+
+//   if (!mounted || !data) {
+//     return (
+//       <div className="eb-loading">
+//         <div className="pulse-ring" />
+//         <div className="eb-loader" />
+//         <p>{!mounted ? "Loading Emotion Bite…" : "Fetching your message…"}</p>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="eb-root">
+//       <div className="orb orb-1" />
+//       <div className="orb orb-2" />
+//       <div className="orb orb-3" />
+
+//       {/* Burst particles */}
+//       {particles.map((p) => (
+//         <div
+//           key={p.id}
+//           className="particle"
+//           style={{
+//             left: `${p.x}%`,
+//             bottom: "45%",
+//             animationDelay: `${p.delay}s`,
+//             fontSize: `${p.size}px`,
+//           }}
+//         >
+//           {p.char}
+//         </div>
+//       ))}
+
+//       {!opened ? (
+//         /* ── SEALED ENVELOPE VIEW ── */
+//         <div className="invite-wrap">
+//           <div className="invite-card" onClick={() => setOpened(true)}>
+//             <div className="card-accent" />
+//             <BrandHeader />
+
+//             <div className="envelope-area">
+//               <div className="envelope">
+//                 <div className="envelope-body">
+//                   <div className="envelope-flap" />
+//                   <div className="envelope-letter">
+//                     <div className="letter-lines">
+//                       <div className="letter-line" />
+//                       <div className="letter-line short" />
+//                       <div className="letter-line" />
+//                       <div className="letter-line short" />
+//                     </div>
+//                   </div>
+//                 </div>
+//                 <div className="seal">
+//                   <span>♥</span>
+//                 </div>
+//               </div>
+//             </div>
+
+//             <h2 className="invite-title">Someone sent you a message</h2>
+//             <p className="invite-sub">
+//               A stranger reached out. Something heartfelt is waiting inside.
+//             </p>
+
+//             <div className="tap-btn">
+//               <span>Open Message</span>
+//               <span className="tap-sparkle">✨</span>
+//             </div>
+
+//             <p className="tap-micro">Tap anywhere to reveal</p>
+//           </div>
+//         </div>
+//       ) : (
+//         /* ── OPENED MESSAGE VIEW ── */
+//         <div className="chat-wrap">
+//           <div className="chat-card">
+//             <div className="card-accent" />
+//             <BrandHeader />
+
+//             {/* Sender */}
+//             <div className="sender-row">
+//               <div className="sender-avatar">
+//                 {data.sender ? data.sender.charAt(0).toUpperCase() : "?"}
+//               </div>
+//               <div>
+//                 <div className="sender-name">{data.sender || "A Stranger"}</div>
+//                 <div className="sender-tag">reached out to you</div>
+//               </div>
+//               <div className="new-badge">NEW</div>
+//             </div>
+
+//             {/* Message bubble */}
+//             <div className="msg-section">
+//               <div className="msg-label">
+//                 <span className="label-dot" />
+//                 Message for you
+//               </div>
+//               <div className="bubble">
+//                 <div className="bubble-quote">"</div>
+//                 <p className="bubble-text">{typedMessage}</p>
+//                 {typedMessage.length < (data?.message?.length || 0) && (
+//                   <span className="typing-cursor">|</span>
+//                 )}
+//               </div>
+//             </div>
+
+//             {/* Image */}
+//             {data.image && (
+//               <div className="media-section">
+//                 <div className="media-label">
+//                   <span className="label-dot" />
+//                   Photo shared
+//                 </div>
+//                 <div
+//                   className={`media-card ${revealImage ? "revealed" : ""}`}
+//                   onClick={() => setRevealImage(true)}
+//                 >
+//                   <img src={data.image} alt="shared" className="media-img" />
+//                   {!revealImage && (
+//                     <div className="media-overlay">
+//                       <div className="reveal-pill">Tap to reveal 👁</div>
+//                     </div>
+//                   )}
+//                 </div>
+//               </div>
+//             )}
+
+//             {/* Instagram */}
+//             {data.instagram && (
+//               <div className="insta-section">
+//                 <div className="media-label">
+//                   <span className="label-dot" />
+//                   Connect on Instagram
+//                 </div>
+//                 <div
+//                   className="insta-card"
+//                   onClick={() => window.open(data.instagram, "_blank")}
+//                 >
+//                   <div className="insta-logo-wrap">
+//                     <img src="/image1.png" alt="Instagram" className="insta-logo" />
+//                   </div>
+//                   <div className="insta-info">
+//                     <div className="insta-cta">They want to stay connected 👀</div>
+//                     <div className="insta-link">
+//                       {data.instagram.replace("https://www.instagram.com/", "@")}
+//                     </div>
+//                   </div>
+//                   <div className="insta-arrow">→</div>
+//                 </div>
+//               </div>
+//             )}
+//           </div>
+//         </div>
+//       )}
+
+//       <style jsx global>{`
+//         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap');
+
+//         * { margin: 0; padding: 0; box-sizing: border-box; }
+//         html, body { margin: 0; padding: 0; width: 100%; overflow-x: hidden; }
+//         body { font-family: 'DM Sans', sans-serif; }
+
+//         .eb-root {
+//           min-height: 100vh;
+//           width: 100%;
+//           background: #0c0a12;
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           padding: 24px 16px;
+//           position: relative;
+//           overflow: hidden;
+//         }
+
+//         .orb {
+//           position: absolute;
+//           border-radius: 50%;
+//           filter: blur(90px);
+//           pointer-events: none;
+//         }
+//         .orb-1 {
+//           width: 500px; height: 500px;
+//           background: radial-gradient(circle, rgba(233,30,140,0.14) 0%, transparent 70%);
+//           top: -150px; left: -100px;
+//           animation: driftOrb 22s ease-in-out infinite;
+//         }
+//         .orb-2 {
+//           width: 400px; height: 400px;
+//           background: radial-gradient(circle, rgba(100,30,200,0.1) 0%, transparent 70%);
+//           bottom: -100px; right: -80px;
+//           animation: driftOrb 18s ease-in-out infinite reverse;
+//         }
+//         .orb-3 {
+//           width: 280px; height: 280px;
+//           background: radial-gradient(circle, rgba(245,200,66,0.06) 0%, transparent 70%);
+//           top: 50%; right: 15%;
+//           animation: driftOrb 26s ease-in-out infinite 8s;
+//         }
+
+//         /* Burst particles */
+//         .particle {
+//           position: fixed;
+//           color: rgba(233,30,140,0.6);
+//           pointer-events: none;
+//           z-index: 50;
+//           animation: burstUp 2s ease-out both;
+//         }
+
+//         /* ─── INVITE CARD ─── */
+//         .invite-wrap {
+//           width: 100%;
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           z-index: 10;
+//         }
+
+//         .invite-card {
+//           position: relative;
+//           width: 100%;
+//           max-width: 420px;
+//           background: rgba(255,255,255,0.04);
+//           border: 1px solid rgba(233,30,140,0.18);
+//           border-radius: 28px;
+//           padding: 32px 28px 28px;
+//           backdrop-filter: blur(24px);
+//           box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset, 0 32px 64px rgba(0,0,0,0.55), 0 0 80px rgba(233,30,140,0.1);
+//           cursor: pointer;
+//           text-align: center;
+//           color: #F5EEE8;
+//           animation: cardRise 0.7s cubic-bezier(0.22,1,0.36,1) both;
+//           transition: transform 0.3s ease, box-shadow 0.3s ease;
+//         }
+//         .invite-card:hover {
+//           transform: translateY(-4px);
+//           box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset, 0 40px 80px rgba(0,0,0,0.6), 0 0 100px rgba(233,30,140,0.18);
+//         }
+
+//         .card-accent {
+//           position: absolute;
+//           top: 0; left: 10%; right: 10%;
+//           height: 2px;
+//           background: linear-gradient(90deg, transparent, #E91E8C, #F5C842, #E91E8C, transparent);
+//           border-radius: 0 0 2px 2px;
+//         }
+
+//         /* Envelope illustration */
+//         .envelope-area {
+//           display: flex;
+//           justify-content: center;
+//           margin: 24px 0 20px;
+//           position: relative;
+//         }
+//         .envelope {
+//           position: relative;
+//           width: 120px; height: 90px;
+//         }
+//         .envelope-body {
+//           width: 120px; height: 90px;
+//           background: linear-gradient(135deg, rgba(233,30,140,0.15) 0%, rgba(233,30,140,0.05) 100%);
+//           border: 1px solid rgba(233,30,140,0.3);
+//           border-radius: 4px;
+//           position: relative;
+//           overflow: hidden;
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//         }
+//         .envelope-flap {
+//           position: absolute;
+//           top: 0; left: 0; right: 0;
+//           height: 50%;
+//           background: linear-gradient(180deg, rgba(233,30,140,0.25) 0%, rgba(233,30,140,0.1) 100%);
+//           clip-path: polygon(0 0, 100% 0, 50% 75%);
+//           border-bottom: 1px solid rgba(233,30,140,0.25);
+//           animation: flapFloat 3s ease-in-out infinite;
+//         }
+//         .envelope-letter {
+//           width: 70px; height: 50px;
+//           background: rgba(255,255,255,0.08);
+//           border-radius: 3px;
+//           border: 1px solid rgba(255,255,255,0.12);
+//           display: flex;
+//           flex-direction: column;
+//           justify-content: center;
+//           align-items: center;
+//           gap: 5px;
+//           padding: 8px;
+//           margin-top: 16px;
+//         }
+//         .letter-line {
+//           height: 2px;
+//           width: 100%;
+//           background: rgba(255,255,255,0.2);
+//           border-radius: 1px;
+//         }
+//         .letter-line.short { width: 65%; }
+//         .seal {
+//           position: absolute;
+//           bottom: -12px; left: 50%;
+//           transform: translateX(-50%);
+//           width: 28px; height: 28px;
+//           border-radius: 50%;
+//           background: linear-gradient(135deg, #E91E8C, #c4156f);
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           color: white;
+//           font-size: 11px;
+//           box-shadow: 0 4px 14px rgba(233,30,140,0.5);
+//           animation: sealPulse 2s ease-in-out infinite;
+//           z-index: 2;
+//         }
+
+//         .invite-title {
+//           font-family: 'Cormorant Garamond', serif;
+//           font-size: 26px;
+//           font-weight: 600;
+//           color: #F5EEE8;
+//           margin: 20px 0 10px;
+//           letter-spacing: -0.02em;
+//           line-height: 1.2;
+//         }
+//         .invite-sub {
+//           font-size: 13px;
+//           color: rgba(255,255,255,0.38);
+//           line-height: 1.65;
+//           font-weight: 300;
+//           max-width: 300px;
+//           margin: 0 auto 24px;
+//         }
+
+//         .tap-btn {
+//           display: inline-flex;
+//           align-items: center;
+//           gap: 8px;
+//           background: linear-gradient(135deg, #E91E8C, #c4156f);
+//           color: white;
+//           padding: 13px 28px;
+//           border-radius: 100px;
+//           font-size: 14px;
+//           font-weight: 500;
+//           box-shadow: 0 8px 28px rgba(233,30,140,0.4);
+//           transition: all 0.3s ease;
+//           animation: tapPulse 2.5s ease-in-out infinite;
+//         }
+//         .tap-sparkle { font-size: 16px; }
+//         .tap-micro {
+//           margin-top: 12px;
+//           font-size: 11px;
+//           color: rgba(255,255,255,0.18);
+//           letter-spacing: 0.06em;
+//         }
+
+//         /* ─── CHAT CARD ─── */
+//         .chat-wrap {
+//           width: 100%;
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           z-index: 10;
+//         }
+
+//         .chat-card {
+//           position: relative;
+//           width: 100%;
+//           max-width: 520px;
+//           background: rgba(255,255,255,0.04);
+//           border: 1px solid rgba(233,30,140,0.15);
+//           border-radius: 28px;
+//           padding: 32px 28px 28px;
+//           backdrop-filter: blur(24px);
+//           box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset, 0 32px 64px rgba(0,0,0,0.55);
+//           color: #F5EEE8;
+//           animation: cardRise 0.6s cubic-bezier(0.22,1,0.36,1) both;
+//         }
+
+//         /* Sender */
+//         .sender-row {
+//           display: flex;
+//           align-items: center;
+//           gap: 12px;
+//           padding: 16px 0 20px;
+//           border-bottom: 1px solid rgba(255,255,255,0.06);
+//           margin-bottom: 20px;
+//         }
+//         .sender-avatar {
+//           width: 48px; height: 48px;
+//           border-radius: 50%;
+//           background: linear-gradient(135deg, rgba(233,30,140,0.3), rgba(233,30,140,0.1));
+//           border: 1px solid rgba(233,30,140,0.3);
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           font-family: 'Cormorant Garamond', serif;
+//           font-size: 22px;
+//           font-weight: 600;
+//           color: rgba(233,30,140,0.9);
+//           flex-shrink: 0;
+//         }
+//         .sender-name {
+//           font-family: 'Cormorant Garamond', serif;
+//           font-size: 20px;
+//           font-weight: 600;
+//           color: #F5EEE8;
+//           letter-spacing: -0.01em;
+//         }
+//         .sender-tag {
+//           font-size: 12px;
+//           color: rgba(255,255,255,0.3);
+//           margin-top: 1px;
+//         }
+//         .new-badge {
+//           margin-left: auto;
+//           background: rgba(233,30,140,0.15);
+//           border: 1px solid rgba(233,30,140,0.3);
+//           color: rgba(233,30,140,0.9);
+//           font-size: 9px;
+//           font-weight: 600;
+//           letter-spacing: 0.1em;
+//           padding: 3px 8px;
+//           border-radius: 100px;
+//           flex-shrink: 0;
+//         }
+
+//         /* Message */
+//         .msg-section { margin-bottom: 20px; }
+//         .msg-label, .media-label {
+//           display: flex;
+//           align-items: center;
+//           gap: 7px;
+//           font-size: 11px;
+//           letter-spacing: 0.12em;
+//           text-transform: uppercase;
+//           color: rgba(255,255,255,0.3);
+//           margin-bottom: 10px;
+//         }
+//         .label-dot {
+//           width: 5px; height: 5px;
+//           border-radius: 50%;
+//           background: #E91E8C;
+//           flex-shrink: 0;
+//         }
+
+//         .bubble {
+//           background: rgba(255,255,255,0.06);
+//           border: 1px solid rgba(255,255,255,0.08);
+//           border-radius: 6px 20px 20px 20px;
+//           padding: 20px 22px;
+//           position: relative;
+//           min-height: 80px;
+//         }
+//         .bubble-quote {
+//           font-family: 'Cormorant Garamond', serif;
+//           font-size: 52px;
+//           color: rgba(233,30,140,0.2);
+//           line-height: 0.6;
+//           position: absolute;
+//           top: 12px; left: 14px;
+//           font-weight: 700;
+//           font-style: italic;
+//         }
+//         .bubble-text {
+//           font-size: 15px;
+//           line-height: 1.7;
+//           color: rgba(255,255,255,0.85);
+//           font-weight: 300;
+//           white-space: pre-wrap;
+//           padding-top: 8px;
+//         }
+//         .typing-cursor {
+//           display: inline-block;
+//           color: #E91E8C;
+//           font-weight: 300;
+//           animation: blink 0.7s step-end infinite;
+//         }
+
+//         /* Media */
+//         .media-section { margin-bottom: 16px; }
+//         .media-card {
+//           border-radius: 16px;
+//           overflow: hidden;
+//           cursor: pointer;
+//           position: relative;
+//           transition: transform 0.3s ease;
+//         }
+//         .media-card:hover { transform: scale(1.01); }
+//         .media-img { width: 100%; height: 240px; object-fit: cover; display: block; }
+//         .media-overlay {
+//           position: absolute; inset: 0;
+//           background: rgba(10,5,7,0.6);
+//           backdrop-filter: blur(6px);
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//         }
+//         .reveal-pill {
+//           background: rgba(233,30,140,0.2);
+//           border: 1px solid rgba(233,30,140,0.4);
+//           color: rgba(233,30,140,0.9);
+//           padding: 10px 22px;
+//           border-radius: 100px;
+//           font-size: 13px;
+//           font-weight: 500;
+//         }
+
+//         /* Instagram card */
+//         .insta-section { margin-top: 4px; }
+//         .insta-card {
+//           display: flex;
+//           align-items: center;
+//           gap: 14px;
+//           padding: 14px 16px;
+//           background: rgba(255,255,255,0.04);
+//           border: 1px solid rgba(255,255,255,0.08);
+//           border-radius: 16px;
+//           cursor: pointer;
+//           transition: all 0.3s ease;
+//         }
+//         .insta-card:hover {
+//           background: rgba(255,255,255,0.07);
+//           border-color: rgba(233,30,140,0.2);
+//           transform: translateY(-2px);
+//         }
+//         .insta-logo-wrap {
+//           width: 40px; height: 40px;
+//           border-radius: 11px;
+//           background: white;
+//           display: flex;
+//           align-items: center;
+//           justify-content: center;
+//           overflow: hidden;
+//           flex-shrink: 0;
+//         }
+//         .insta-logo { width: 26px; height: 26px; object-fit: contain; }
+//         .insta-info { flex: 1; }
+//         .insta-cta {
+//           font-size: 13px;
+//           color: rgba(255,255,255,0.75);
+//           font-weight: 500;
+//           margin-bottom: 2px;
+//         }
+//         .insta-link {
+//           font-size: 12px;
+//           color: rgba(233,30,140,0.7);
+//         }
+//         .insta-arrow {
+//           color: rgba(255,255,255,0.2);
+//           font-size: 18px;
+//           flex-shrink: 0;
+//         }
+
+//         /* Loading */
+//         .eb-loading {
+//           min-height: 100vh;
+//           background: #0c0a12;
+//           display: flex;
+//           flex-direction: column;
+//           align-items: center;
+//           justify-content: center;
+//           gap: 16px;
+//           color: rgba(255,255,255,0.35);
+//           font-family: 'DM Sans', sans-serif;
+//           font-size: 13px;
+//           position: relative;
+//         }
+//         .pulse-ring {
+//           position: absolute;
+//           width: 120px; height: 120px;
+//           border-radius: 50%;
+//           border: 1px solid rgba(233,30,140,0.2);
+//           animation: ringPulse 2s ease-out infinite;
+//         }
+//         .eb-loader {
+//           width: 36px; height: 36px;
+//           border: 2px solid rgba(233,30,140,0.15);
+//           border-top-color: #E91E8C;
+//           border-radius: 50%;
+//           animation: spin 0.8s linear infinite;
+//           position: relative;
+//           z-index: 1;
+//         }
+
+//         @keyframes cardRise {
+//           from { opacity: 0; transform: translateY(28px) scale(0.97); }
+//           to { opacity: 1; transform: translateY(0) scale(1); }
+//         }
+//         @keyframes driftOrb {
+//           0%, 100% { transform: translate(0, 0); }
+//           33% { transform: translate(28px, -18px); }
+//           66% { transform: translate(-18px, 14px); }
+//         }
+//         @keyframes burstUp {
+//           0% { transform: translateY(0) scale(0); opacity: 0; }
+//           20% { opacity: 1; transform: translateY(-30px) scale(1); }
+//           100% { transform: translateY(-120px) scale(0.5); opacity: 0; }
+//         }
+//         @keyframes flapFloat {
+//           0%, 100% { transform: rotateX(0deg); }
+//           50% { transform: rotateX(15deg); }
+//         }
+//         @keyframes sealPulse {
+//           0%, 100% { box-shadow: 0 4px 14px rgba(233,30,140,0.5); }
+//           50% { box-shadow: 0 6px 24px rgba(233,30,140,0.7); }
+//         }
+//         @keyframes tapPulse {
+//           0%, 100% { box-shadow: 0 8px 28px rgba(233,30,140,0.4); }
+//           50% { box-shadow: 0 12px 40px rgba(233,30,140,0.6); transform: scale(1.02); }
+//         }
+//         @keyframes blink {
+//           0%, 100% { opacity: 1; }
+//           50% { opacity: 0; }
+//         }
+//         @keyframes ringPulse {
+//           0% { transform: scale(0.8); opacity: 0.5; }
+//           100% { transform: scale(2); opacity: 0; }
+//         }
+//         @keyframes spin { to { transform: rotate(360deg); } }
+
+//         @media (max-width: 768px) {
+//           .invite-card, .chat-card { max-width: 100%; }
+//         }
+//         @media (max-width: 480px) {
+//           .invite-card, .chat-card { padding: 24px 18px 22px; border-radius: 20px; }
+//           .invite-title { font-size: 22px; }
+//           .bubble-text { font-size: 14px; }
+//           .media-img { height: 200px; }
+//         }
+//       `}</style>
+//     </div>
+//   );
+// }
