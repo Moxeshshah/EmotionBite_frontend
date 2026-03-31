@@ -10,7 +10,6 @@ export default function CongratsLogin() {
   const code = params.get("code");
 
   const [name, setName] = useState("");
-  const [showOtp, setShowOtp] = useState(false);
   const [step, setStep] = useState("mobile");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -117,96 +116,105 @@ export default function CongratsLogin() {
 
   return (
     <div className="body">
-      <div className="confetti" />
-      <div className="confetti" />
-      <div className="confetti" />
-      <div className="confetti" />
+      {/* Animated confetti particles */}
+      <div className="particle particle-1" style={{ left: "15%", animationDelay: "0s" }} />
+      <div className="particle particle-2" style={{ left: "30%", animationDelay: "2s" }} />
+      <div className="particle particle-3" style={{ left: "50%", animationDelay: "4s" }} />
+      <div className="particle particle-4" style={{ left: "70%", animationDelay: "1s" }} />
+      <div className="particle particle-5" style={{ left: "85%", animationDelay: "3s" }} />
 
-      <div className="card">
+      <div className="login-card">
         <BrandHeader />
-        <div className="avatar-section">
-          <div className="avatar">😊</div>
-          <div className="avatar">🎉</div>
-        </div>
-
-        <div className="title">Celebrate Someone Today!</div>
-        <div className="subtitle">
+        <div className="avatar">🎉</div>
+        <h2 className="title-anim">Celebrate Someone Today!</h2>
+        <div className="subtitle subtitle-anim">
           Log in to send warm congratulations and share joyful moments.
         </div>
 
-        {step === "mobile" && (
-          <div className="input-group">
-            <label>Mobile Number</label>
-            <input
-              type="text"
-              placeholder="Enter mobile number"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
-            />
-          </div>
-        )}
-
-        {step === "otp" && (
-          <div className="input-group">
-            <label>Enter OTP</label>
-            <input
-              type="text"
-              placeholder="Enter OTP"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-            />
-          </div>
-        )}
-
-        {step === "profile" && (
-          <>
-            <div className="input-group">
-              <label>First Name</label>
+        <form className="form-anim">
+          {step === "mobile" && (
+            <div className="input-box input-anim">
+              <label className="label-anim">Mobile Number</label>
               <input
                 type="text"
-                placeholder="Enter first name"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="Enter mobile number"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+                className="input-field"
               />
             </div>
+          )}
 
-            <div className="input-group">
-              <label>Last Name</label>
+          {step === "otp" && (
+            <div className="input-box input-anim">
+              <label className="label-anim">Enter OTP</label>
               <input
                 type="text"
-                placeholder="Enter last name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                placeholder="Enter OTP"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                className="input-field"
               />
             </div>
-          </>
-        )}
+          )}
 
-        {step === "mobile" && (
-          <button className="btn-login" onClick={handleSendOtp}>
-            {loading ? "Please wait..." : "Send OTP"}
-          </button>
-        )}
+          {step === "profile" && (
+            <>
+              <div className="input-box input-anim">
+                <label className="label-anim">First Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter first name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="input-field"
+                />
+              </div>
 
-        {step === "otp" && (
-          <button className="btn-login" onClick={handleVerifyOtp}>
-            {loading ? "Please wait..." : "Verify OTP"}
-          </button>
-        )}
+              <div className="input-box input-anim">
+                <label className="label-anim">Last Name</label>
+                <input
+                  type="text"
+                  placeholder="Enter last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="input-field"
+                />
+              </div>
+            </>
+          )}
 
-        {step === "profile" && (
-          <button className="btn-login" onClick={handleCompleteProfile}>
-            {loading ? "Please wait..." : "Submit"}
-          </button>
-        )}
+          {step === "mobile" && (
+            <button type="button" className="login-btn btn-anim" onClick={handleSendOtp}>
+              {loading ? "Please wait..." : "Send OTP"}
+            </button>
+          )}
+
+          {step === "otp" && (
+            <button type="button" className="login-btn btn-anim" onClick={handleVerifyOtp}>
+              {loading ? "Please wait..." : "Verify OTP"}
+            </button>
+          )}
+
+          {step === "profile" && (
+            <button type="button" className="login-btn btn-anim" onClick={handleCompleteProfile}>
+              {loading ? "Please wait..." : "Submit"}
+            </button>
+          )}
+        </form>
+      </div>
+
+      <div className="quote quote-anim">
+        "Celebrations create the best memories."
       </div>
 
       <style jsx>{`
+        @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500;600;700&display=swap");
+
         * {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
-          font-family: "Poppins", sans-serif;
         }
 
         :global(html),
@@ -223,245 +231,316 @@ export default function CongratsLogin() {
           display: flex;
           justify-content: center;
           align-items: center;
-          background: linear-gradient(135deg, #4a00e0, #8e2de2, #ff6a00);
+          background: linear-gradient(135deg, #4a00e0, #8e2de2, #ff6a00, #ffd93d);
+          background-size: 400% 400%;
+          animation: gradientShift 12s ease infinite;
           overflow: hidden;
           position: relative;
+          font-family: "Poppins", sans-serif;
           padding: 16px;
-          box-sizing: border-box;
         }
 
-        .confetti {
-          position: absolute;
-          width: 15px;
-          height: 15px;
-          border-radius: 50%;
-          opacity: 0.6;
-          animation: float 8s infinite ease-in-out;
-          pointer-events: none;
-        }
-
-        .confetti:nth-child(1) {
-          background: #ffeb3b;
-          top: 10%;
-          left: 20%;
-        }
-
-        .confetti:nth-child(2) {
-          background: #ff4081;
-          top: 70%;
-          left: 10%;
-        }
-
-        .confetti:nth-child(3) {
-          background: #00e5ff;
-          top: 30%;
-          right: 15%;
-        }
-
-        .confetti:nth-child(4) {
-          background: #69f0ae;
-          bottom: 20%;
-          right: 25%;
+        @keyframes gradientShift {
+          0%, 100% { background-position: 0% 50%; }
+          25% { background-position: 100% 50%; }
+          50% { background-position: 100% 100%; }
+          75% { background-position: 0% 100%; }
         }
 
         @keyframes float {
           0% {
-            transform: translateY(0);
+            transform: translateY(100vh) rotate(0deg);
+            opacity: 0;
           }
-          50% {
-            transform: translateY(-40px);
+          20% {
+            opacity: 0.8;
+          }
+          80% {
+            opacity: 0.8;
           }
           100% {
+            transform: translateY(-20vh) rotate(360deg);
+            opacity: 0;
+          }
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
             transform: translateY(0);
           }
         }
 
-        .card {
-          width: min(420px, 100%);
-          padding: 45px 40px;
-          border-radius: 30px;
-          background: rgba(255, 255, 255, 0.15);
-          backdrop-filter: blur(20px);
-          box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
-          color: white;
+        @keyframes bounceIn {
+          0% {
+            transform: scale(0.3);
+            opacity: 0;
+          }
+          50% {
+            transform: scale(1.05);
+          }
+          70% {
+            transform: scale(0.9);
+          }
+          100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+
+        @keyframes heartbeat {
+          0% { transform: scale(1); }
+          14% { transform: scale(1.1); }
+          28% { transform: scale(1); }
+          42% { transform: scale(1.1); }
+          70% { transform: scale(1); }
+        }
+
+        @keyframes shimmer {
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
+        }
+
+        .particle {
+          position: absolute;
+          border-radius: 50%;
+          pointer-events: none;
+          animation: float 10s infinite linear;
+          box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+        }
+
+        .particle-1 {
+          width: 10px;
+          height: 10px;
+          background: linear-gradient(45deg, #ffd93d, #ff6a00);
+        }
+
+        .particle-2 {
+          width: 8px;
+          height: 8px;
+          background: linear-gradient(45deg, #8e2de2, #4a00e0);
+          animation-duration: 12s;
+        }
+
+        .particle-3 {
+          width: 12px;
+          height: 12px;
+          background: linear-gradient(45deg, #ff6a00, #ffd93d);
+          animation-duration: 9s;
+        }
+
+        .particle-4 {
+          width: 9px;
+          height: 9px;
+          background: linear-gradient(45deg, #4a00e0, #8e2de2);
+          animation-duration: 11s;
+        }
+
+        .particle-5 {
+          width: 11px;
+          height: 11px;
+          background: linear-gradient(45deg, #ffd93d, #ff6a00);
+          animation-duration: 13s;
+        }
+
+        .login-card {
+          width: min(400px, 100%);
+          background: rgba(255, 255, 255, 0.12);
+          backdrop-filter: blur(25px);
+          border-radius: 28px;
+          padding: 50px 40px;
           text-align: center;
+          box-shadow: 
+            0 25px 60px rgba(255, 106, 0, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+          border: 1px solid rgba(255, 255, 255, 0.2);
           position: relative;
           z-index: 2;
-        }
-
-        .card::before {
-          content: "🎈";
-          position: absolute;
-          font-size: 60px;
-          top: -30px;
-          left: -20px;
-        }
-
-        .card::after {
-          content: "🎊";
-          position: absolute;
-          font-size: 60px;
-          bottom: -30px;
-          right: -20px;
-        }
-
-        .avatar-section {
-          display: flex;
-          justify-content: center;
-          gap: 25px;
-          margin-bottom: 25px;
+          animation: fadeInUp 1s ease-out;
         }
 
         .avatar {
-          width: 85px;
-          height: 85px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 34px;
-          background: linear-gradient(135deg, #ff9800, #ff5722);
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+          font-size: 70px;
+          margin-bottom: 20px;
+          animation: heartbeat 2s ease-in-out infinite;
+          filter: drop-shadow(0 10px 25px rgba(255, 215, 0, 0.6));
+          background: linear-gradient(45deg, #ffd93d, #ff6a00, #8e2de2);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
 
-        .avatar:nth-child(2) {
-          background: linear-gradient(135deg, #03a9f4, #00e5ff);
-        }
-
-        .title {
-          font-size: 26px;
+        .title-anim {
+          font-family: "Dancing Script", cursive;
+          font-size: 38px;
           font-weight: 700;
-          margin-bottom: 8px;
-          line-height: 1.2;
+          background: linear-gradient(135deg, #fff, #fff9c4, #fff);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          margin-bottom: 15px;
+          line-height: 1.1;
+          animation: bounceIn 1.2s ease-out, shimmer 3s infinite;
+          background-size: 200% 100%;
         }
 
         .subtitle {
-          font-size: 14px;
-          opacity: 0.9;
-          margin-bottom: 30px;
-          line-height: 1.6;
+          color: rgba(255, 255, 255, 0.95);
+          font-size: 16px;
+          font-weight: 300;
+          margin-bottom: 35px;
+          line-height: 1.7;
+          font-family: "Poppins", sans-serif;
+          animation: fadeInUp 1s ease-out 0.3s both;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .input-group {
+        .subtitle-anim {
+          animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .form-anim {
+          animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .input-anim {
+          animation: fadeInUp 0.8s ease-out both;
+          animation-fill-mode: forwards;
+        }
+
+        .input-anim:nth-child(1) { animation-delay: 0.6s; }
+        .input-anim:nth-child(2) { animation-delay: 0.7s; }
+        .input-anim:nth-child(3) { animation-delay: 0.8s; }
+
+        .label-anim {
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.98);
+          display: block;
+          margin-bottom: 10px;
+          font-weight: 500;
+          font-family: "Poppins", sans-serif;
+          letter-spacing: 0.5px;
+          animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .input-box {
           margin-bottom: 18px;
           text-align: left;
         }
 
-        .input-group label {
-          font-size: 13px;
-          font-weight: 500;
-        }
-
-        .input-group input {
+        .input-field {
           width: 100%;
-          margin-top: 6px;
-          padding: 14px;
-          border-radius: 14px;
+          padding: 16px 18px;
+          border-radius: 20px;
           border: none;
-          background: rgba(255, 255, 255, 0.2);
-          color: white;
           outline: none;
-          font-size: 14px;
+          background: rgba(255, 255, 255, 0.92);
+          font-size: 16px;
+          font-weight: 400;
+          color: #333;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+          transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          font-family: "Poppins", sans-serif;
         }
 
-        .input-group input::placeholder {
-          color: rgba(255, 255, 255, 0.7);
+        .input-field:focus {
+          background: rgba(255, 255, 255, 1);
+          box-shadow: 
+            0 10px 30px rgba(255, 215, 0, 0.4),
+            0 0 0 3px rgba(255, 106, 0, 0.2);
+          transform: translateY(-2px);
+          color: #2d1b69;
         }
 
-        .btn-login {
+        .input-field::placeholder {
+          color: rgba(100, 100, 100, 0.7);
+          font-weight: 400;
+        }
+
+        .login-btn {
           width: 100%;
-          padding: 15px;
+          padding: 16px 20px;
           border: none;
-          border-radius: 18px;
-          background: linear-gradient(90deg, #ff9800, #ff5722);
-          color: white;
-          font-weight: 600;
+          border-radius: 35px;
+          background: linear-gradient(135deg, #ff6a00, #ffd93d, #8e2de2);
+          background-size: 300% 300%;
+          color: #fff;
           cursor: pointer;
-          margin-top: 10px;
-          transition: 0.3s;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-          font-size: 14px;
+          margin-top: 15px;
+          font-size: 16px;
+          font-weight: 600;
+          font-family: "Poppins", sans-serif;
+          transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          box-shadow: 0 10px 30px rgba(255, 106, 0, 0.5);
+          animation: fadeInUp 1s ease-out 0.9s both;
+          position: relative;
+          overflow: hidden;
+          text-transform: uppercase;
+          letter-spacing: 1px;
         }
 
-        .btn-login:hover {
-          transform: translateY(-3px);
+        .login-btn:hover {
+          transform: translateY(-3px) scale(1.02);
+          box-shadow: 0 15px 40px rgba(255, 106, 0, 0.7);
+          background-position: 100% 0;
+        }
+
+        .login-btn:active {
+          transform: translateY(-1px) scale(0.98);
+        }
+
+        .btn-anim {
+          animation: fadeInUp 1s ease-out 0.9s both;
+        }
+
+        .quote {
+          position: absolute;
+          bottom: 35px;
+          left: 0;
+          width: 100%;
+          font-size: 15px;
+          color: rgba(255, 255, 255, 0.85);
+          text-align: center;
+          padding: 0 20px;
+          font-style: italic;
+          font-family: "Dancing Script", cursive;
+          font-weight: 400;
+          animation: fadeInUp 1.2s ease-out 1.1s both;
+          text-shadow: 0 2px 15px rgba(255, 215, 0, 0.3);
+          max-width: 90%;
+          margin: 0 auto;
+        }
+
+        .quote-anim {
+          animation: fadeInUp 1.2s ease-out 1.1s both;
         }
 
         @media (max-width: 768px) {
-          .body {
-            padding: 14px;
-          }
-
-          .card {
-            padding: 36px 24px;
-            border-radius: 24px;
-          }
-
-          .avatar {
-            width: 74px;
-            height: 74px;
-            font-size: 30px;
-          }
-
-          .title {
-            font-size: 24px;
-          }
-
-          .subtitle {
-            font-size: 13px;
-            margin-bottom: 24px;
-          }
+          .body { padding: 14px; }
+          .login-card { padding: 40px 30px; border-radius: 24px; }
+          .avatar { font-size: 65px; }
+          .title-anim { font-size: 34px; }
+          .subtitle { font-size: 15px; margin-bottom: 28px; }
+          .quote { bottom: 25px; font-size: 14px; }
         }
 
         @media (max-width: 480px) {
-          .body {
-            padding: 12px;
-          }
-
-          .card {
-            padding: 28px 18px;
-            border-radius: 20px;
-          }
-
-          .card::before,
-          .card::after {
-            font-size: 46px;
-          }
-
-          .avatar-section {
-            gap: 16px;
-            margin-bottom: 20px;
-          }
-
-          .avatar {
-            width: 64px;
-            height: 64px;
-            font-size: 26px;
-          }
-
-          .title {
-            font-size: 22px;
-          }
-
-          .subtitle {
-            font-size: 12px;
-            margin-bottom: 20px;
-          }
-
-          .input-group input {
-            padding: 12px;
-            font-size: 13px;
-          }
-
-          .btn-login {
-            padding: 13px;
-            font-size: 13px;
-          }
-
-          .confetti {
-            width: 11px;
-            height: 11px;
-          }
+          .body { padding: 12px; }
+          .login-card { padding: 32px 24px; border-radius: 22px; }
+          .avatar { font-size: 60px; margin-bottom: 16px; }
+          .title-anim { font-size: 30px; }
+          .subtitle { font-size: 14px; margin-bottom: 24px; }
+          .input-field { padding: 14px 16px; font-size: 15px; }
+          .login-btn { padding: 15px; font-size: 15px; }
+          .quote { bottom: 20px; font-size: 13px; }
         }
       `}</style>
     </div>

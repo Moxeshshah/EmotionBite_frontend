@@ -31,12 +31,14 @@ export default function Dashboard() {
       fetch("/api/categories?page=0&size=1", { headers }),
       fetch("/api/users?page=0&size=1", { headers }),
       fetch("/api/messages/all?page=0&size=1", { headers }),
+      fetch("/api/qr/all?page=0&size=1", { headers }),
     ])
-      .then(async ([catRes, userRes, msgRes]) => {
+      .then(async ([catRes, userRes, msgRes,qrRes]) => {
         if (
           catRes.status === 401 ||
           userRes.status === 401 ||
-          msgRes.status === 401
+          msgRes.status === 401 ||
+          qrRes.status === 401
         ) {
           deleteCookie("authToken");
           window.location.href = "/admin/login";
@@ -46,12 +48,13 @@ export default function Dashboard() {
         const catData = await catRes.json();
         const userData = await userRes.json();
         const msgData = await msgRes.json();
+        const qrData = await qrRes.json();
 
         setStats({
           categories: catData.totalElements || 0,
           users: userData.totalElements || 0,
           messages: msgData.totalElements || 0,
-          qrs: 0,
+          qrs: qrData.totalElements || 0,
         });
       })
       .catch((err) => console.error(err));

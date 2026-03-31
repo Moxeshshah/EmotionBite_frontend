@@ -1,3 +1,424 @@
+// "use client";
+
+// import { useRouter, useSearchParams } from "next/navigation";
+// import { useState, useEffect } from "react";
+// import BrandHeader from "../BrandHeader";
+
+// export default function ClosureLogin() {
+//   const router = useRouter();
+//   const params = useSearchParams();
+//   const code = params.get("code");
+
+//   const [step, setStep] = useState("mobile");
+//   const [firstName, setFirstName] = useState("");
+//   const [lastName, setLastName] = useState("");
+//   const [mobile, setMobile] = useState("");
+//   const [otp, setOtp] = useState("");
+//   const [token, setToken] = useState("");
+//   const [name, setName] = useState("");
+//   const [showOtp, setShowOtp] = useState(false);
+//   const [loading, setLoading] = useState(false);
+
+//   useEffect(() => {
+//     document.body.style.margin = "0";
+//     document.body.style.padding = "0";
+//     document.body.style.overflowX = "hidden";
+//     return () => {
+//       document.body.style.margin = "";
+//       document.body.style.padding = "";
+//       document.body.style.overflowX = "";
+//     };
+//   }, []);
+
+//   const handleSendOtp = async () => {
+//     if (!/^[0-9]{10}$/.test(mobile)) {
+//       alert("Enter valid 10 digit mobile number");
+//       return;
+//     }
+
+//     setLoading(true);
+
+//     const res = await fetch("/api/otp/generate", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ mobile: "+91" + mobile }),
+//     });
+
+//     if (!res.ok) {
+//       alert("Failed to send OTP");
+//       setLoading(false);
+//       return;
+//     }
+
+//     setStep("otp");
+//     setLoading(false);
+//   };
+
+//   const handleVerifyOtp = async () => {
+//     if (!otp) return alert("Enter OTP");
+
+//     setLoading(true);
+
+//     const res = await fetch("/api/otp/verify", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ mobile: "+91" + mobile, otp }),
+//     });
+
+//     const data = await res.json();
+
+//     if (!res.ok) {
+//       alert(data.message);
+//       setLoading(false);
+//       return;
+//     }
+
+//     setToken(data.token);
+//     localStorage.setItem("token", data.token);
+//     localStorage.setItem("sender_mobile", mobile);
+
+//     if (data.profileComplete) {
+//       router.push(`/closure/home?code=${code}`);
+//     } else {
+//       setStep("profile");
+//     }
+
+//     setLoading(false);
+//   };
+
+//   const handleCompleteProfile = async () => {
+//     if (!firstName || !lastName) {
+//       alert("Enter full name");
+//       return;
+//     }
+
+//     setLoading(true);
+
+//     const res = await fetch("/api/complete-profile", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Authorization: `Bearer ${token}`,
+//       },
+//       body: JSON.stringify({
+//         firstName,
+//         lastName,
+//       }),
+//     });
+
+//     if (!res.ok) {
+//       alert("Profile update failed");
+//       setLoading(false);
+//       return;
+//     }
+
+//     router.push(`/closure/home?code=${code}`);
+//   };
+
+//   return (
+//     <div className="body">
+      
+//       <div className="particle" style={{ left: "15%", animationDelay: "0s" }} />
+//       <div className="particle" style={{ left: "30%", animationDelay: "2s" }} />
+//       <div className="particle" style={{ left: "50%", animationDelay: "4s" }} />
+//       <div className="particle" style={{ left: "70%", animationDelay: "1s" }} />
+//       <div className="particle" style={{ left: "85%", animationDelay: "3s" }} />
+
+//       <div className="login-card">
+//         <BrandHeader /> 
+//         <div className="avatar">🌙</div>
+//         <h2>Find Your Closure</h2>
+//         <div className="subtitle">
+//           Some endings bring peace. Sign in to send your final message.
+//         </div>
+
+//         <form>
+//           {step === "mobile" && (
+//             <div className="input-box">
+//               <label>Mobile Number</label>
+//               <input
+//                 type="text"
+//                 placeholder="Enter mobile number"
+//                 value={mobile}
+//                 onChange={(e) => setMobile(e.target.value)}
+//               />
+//             </div>
+//           )}
+
+//           {step === "otp" && (
+//             <div className="input-box">
+//               <label>Enter OTP</label>
+//               <input
+//                 type="text"
+//                 placeholder="Enter OTP"
+//                 value={otp}
+//                 onChange={(e) => setOtp(e.target.value)}
+//               />
+//             </div>
+//           )}
+
+//           {step === "profile" && (
+//             <>
+//               <div className="input-box">
+//                 <label>First Name</label>
+//                 <input
+//                   type="text"
+//                   placeholder="Enter first name"
+//                   value={firstName}
+//                   onChange={(e) => setFirstName(e.target.value)}
+//                 />
+//               </div>
+
+//               <div className="input-box">
+//                 <label>Last Name</label>
+//                 <input
+//                   type="text"
+//                   placeholder="Enter last name"
+//                   value={lastName}
+//                   onChange={(e) => setLastName(e.target.value)}
+//                 />
+//               </div>
+//             </>
+//           )}
+
+//           {step === "mobile" && (
+//             <button type="button" className="login-btn" onClick={handleSendOtp}>
+//               {loading ? "Please wait..." : "Send OTP"}
+//             </button>
+//           )}
+
+//           {step === "otp" && (
+//             <button type="button" className="login-btn" onClick={handleVerifyOtp}>
+//               {loading ? "Please wait..." : "Verify OTP"}
+//             </button>
+//           )}
+
+//           {step === "profile" && (
+//             <button type="button" className="login-btn" onClick={handleCompleteProfile}>
+//               {loading ? "Please wait..." : "Submit"}
+//             </button>
+//           )}
+//         </form>
+//       </div>
+
+//       <div className="quote">
+//         “Sometimes letting go is the most powerful closure.”
+//       </div>
+
+//       <style jsx>{`
+//         @import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@300;400;500&display=swap");
+
+//         * {
+//           margin: 0;
+//           padding: 0;
+//           box-sizing: border-box;
+//         }
+
+//         :global(html),
+//         :global(body) {
+//           margin: 0;
+//           padding: 0;
+//           width: 100%;
+//           overflow-x: hidden;
+//         }
+
+//         .body {
+//           min-height: 100vh;
+//           width: 100vw;
+//           display: flex;
+//           justify-content: center;
+//           align-items: center;
+//           background: linear-gradient(135deg, #667eea, #764ba2, #6a11cb);
+//           overflow: hidden;
+//           position: relative;
+//           font-family: "Inter", sans-serif;
+//           padding: 16px;
+//         }
+
+//         .particle {
+//           position: absolute;
+//           width: 6px;
+//           height: 6px;
+//           background: rgba(255, 255, 255, 0.4);
+//           border-radius: 50%;
+//           animation: float 8s infinite linear;
+//           pointer-events: none;
+//         }
+
+//         @keyframes float {
+//           0% {
+//             transform: translateY(100vh);
+//             opacity: 0;
+//           }
+//           30% {
+//             opacity: 0.6;
+//           }
+//           100% {
+//             transform: translateY(-10vh);
+//             opacity: 0;
+//           }
+//         }
+
+//         .login-card {
+//           width: min(390px, 100%);
+//           background: rgba(255, 255, 255, 0.12);
+//           backdrop-filter: blur(18px);
+//           border-radius: 22px;
+//           padding: 45px 35px;
+//           text-align: center;
+//           box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+//           border: 1px solid rgba(255, 255, 255, 0.2);
+//           position: relative;
+//           z-index: 2;
+//         }
+
+//         .avatar {
+//           font-size: 55px;
+//           margin-bottom: 15px;
+//         }
+
+//         h2 {
+//           font-family: "Cormorant Garamond", serif;
+//           font-size: 30px;
+//           color: #fff;
+//           margin-bottom: 10px;
+//           line-height: 1.2;
+//         }
+
+//         .subtitle {
+//           color: #e0e0e0;
+//           font-size: 14px;
+//           margin-bottom: 28px;
+//           line-height: 1.6;
+//         }
+
+//         .input-box {
+//           margin-bottom: 18px;
+//           text-align: left;
+//         }
+
+//         .input-box label {
+//           font-size: 13px;
+//           color: #fff;
+//           display: block;
+//           margin-bottom: 6px;
+//         }
+
+//         .input-box input {
+//           width: 100%;
+//           padding: 12px;
+//           border-radius: 14px;
+//           border: none;
+//           outline: none;
+//           background: rgba(255, 255, 255, 0.85);
+//           font-size: 14px;
+//         }
+
+//         .login-btn {
+//           width: 100%;
+//           padding: 13px;
+//           border: none;
+//           border-radius: 30px;
+//           background: linear-gradient(to right, #4e73df, #9b59b6);
+//           color: #fff;
+//           cursor: pointer;
+//           margin-top: 10px;
+//           font-size: 14px;
+//           font-weight: 600;
+//           transition: 0.3s;
+//         }
+
+//         .quote {
+//           position: absolute;
+//           bottom: 30px;
+//           left: 0;
+//           width: 100%;
+//           font-size: 13px;
+//           color: rgba(255, 255, 255, 0.6);
+//           text-align: center;
+//           padding: 0 16px;
+//         }
+
+//         @media (max-width: 768px) {
+//           .body {
+//             padding: 14px;
+//           }
+
+//           .login-card {
+//             padding: 36px 24px;
+//             border-radius: 20px;
+//           }
+
+//           .avatar {
+//             font-size: 50px;
+//           }
+
+//           h2 {
+//             font-size: 28px;
+//           }
+
+//           .subtitle {
+//             font-size: 13px;
+//             margin-bottom: 22px;
+//           }
+
+//           .quote {
+//             bottom: 18px;
+//             font-size: 12px;
+//           }
+//         }
+
+//         @media (max-width: 480px) {
+//           .body {
+//             padding: 12px;
+//             align-items: center;
+//           }
+
+//           .login-card {
+//             padding: 28px 18px;
+//             border-radius: 18px;
+//           }
+
+//           .avatar {
+//             font-size: 46px;
+//             margin-bottom: 12px;
+//           }
+
+//           h2 {
+//             font-size: 24px;
+//           }
+
+//           .subtitle {
+//             font-size: 12px;
+//             margin-bottom: 18px;
+//           }
+
+//           .input-box input {
+//             padding: 11px;
+//             font-size: 13px;
+//           }
+
+//           .login-btn {
+//             padding: 12px;
+//             font-size: 13px;
+//           }
+
+//           .particle {
+//             width: 5px;
+//             height: 5px;
+//           }
+
+//           .quote {
+//             bottom: 14px;
+//             font-size: 11px;
+//             line-height: 1.4;
+//           }
+//         }
+//       `}</style>
+//     </div>
+//   );
+// }
+
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
@@ -15,8 +436,6 @@ export default function ClosureLogin() {
   const [mobile, setMobile] = useState("");
   const [otp, setOtp] = useState("");
   const [token, setToken] = useState("");
-  const [name, setName] = useState("");
-  const [showOtp, setShowOtp] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -118,91 +537,95 @@ export default function ClosureLogin() {
   return (
     <div className="body">
       
-      <div className="particle" style={{ left: "15%", animationDelay: "0s" }} />
-      <div className="particle" style={{ left: "30%", animationDelay: "2s" }} />
-      <div className="particle" style={{ left: "50%", animationDelay: "4s" }} />
-      <div className="particle" style={{ left: "70%", animationDelay: "1s" }} />
-      <div className="particle" style={{ left: "85%", animationDelay: "3s" }} />
+      <div className="particle particle-1" style={{ left: "15%", animationDelay: "0s" }} />
+      <div className="particle particle-2" style={{ left: "30%", animationDelay: "2s" }} />
+      <div className="particle particle-3" style={{ left: "50%", animationDelay: "4s" }} />
+      <div className="particle particle-4" style={{ left: "70%", animationDelay: "1s" }} />
+      <div className="particle particle-5" style={{ left: "85%", animationDelay: "3s" }} />
 
       <div className="login-card">
-        <BrandHeader /> 
+        <BrandHeader />
         <div className="avatar">🌙</div>
-        <h2>Find Your Closure</h2>
-        <div className="subtitle">
+        <h2 className="title-anim">Find Your Closure</h2>
+        <div className="subtitle subtitle-anim">
           Some endings bring peace. Sign in to send your final message.
         </div>
 
-        <form>
+        <form className="form-anim">
           {step === "mobile" && (
-            <div className="input-box">
-              <label>Mobile Number</label>
+            <div className="input-box input-anim">
+              <label className="label-anim">Mobile Number</label>
               <input
                 type="text"
                 placeholder="Enter mobile number"
                 value={mobile}
                 onChange={(e) => setMobile(e.target.value)}
+                className="input-field"
               />
             </div>
           )}
 
           {step === "otp" && (
-            <div className="input-box">
-              <label>Enter OTP</label>
+            <div className="input-box input-anim">
+              <label className="label-anim">Enter OTP</label>
               <input
                 type="text"
                 placeholder="Enter OTP"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
+                className="input-field"
               />
             </div>
           )}
 
           {step === "profile" && (
             <>
-              <div className="input-box">
-                <label>First Name</label>
+              <div className="input-box input-anim">
+                <label className="label-anim">First Name</label>
                 <input
                   type="text"
                   placeholder="Enter first name"
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
+                  className="input-field"
                 />
               </div>
 
-              <div className="input-box">
-                <label>Last Name</label>
+              <div className="input-box input-anim">
+                <label className="label-anim">Last Name</label>
                 <input
                   type="text"
                   placeholder="Enter last name"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
+                  className="input-field"
                 />
               </div>
             </>
           )}
 
           {step === "mobile" && (
-            <button type="button" className="login-btn" onClick={handleSendOtp}>
+            <button type="button" className="login-btn btn-anim" onClick={handleSendOtp}>
               {loading ? "Please wait..." : "Send OTP"}
             </button>
           )}
 
           {step === "otp" && (
-            <button type="button" className="login-btn" onClick={handleVerifyOtp}>
+            <button type="button" className="login-btn btn-anim" onClick={handleVerifyOtp}>
               {loading ? "Please wait..." : "Verify OTP"}
             </button>
           )}
 
           {step === "profile" && (
-            <button type="button" className="login-btn" onClick={handleCompleteProfile}>
+            <button type="button" className="login-btn btn-anim" onClick={handleCompleteProfile}>
               {loading ? "Please wait..." : "Submit"}
             </button>
           )}
         </form>
       </div>
 
-      <div className="quote">
-        “Sometimes letting go is the most powerful closure.”
+      <div className="quote quote-anim">
+        "Sometimes letting go is the most powerful closure."
       </div>
 
       <style jsx>{`
@@ -228,191 +651,297 @@ export default function ClosureLogin() {
           display: flex;
           justify-content: center;
           align-items: center;
-          background: linear-gradient(135deg, #667eea, #764ba2, #6a11cb);
+          background: linear-gradient(135deg, #667eea, #764ba2, #6a11cb, #4a00e0);
+          background-size: 400% 400%;
+          animation: gradientShift 15s ease infinite;
           overflow: hidden;
           position: relative;
           font-family: "Inter", sans-serif;
           padding: 16px;
         }
 
-        .particle {
-          position: absolute;
-          width: 6px;
-          height: 6px;
-          background: rgba(255, 255, 255, 0.4);
-          border-radius: 50%;
-          animation: float 8s infinite linear;
-          pointer-events: none;
+        @keyframes gradientShift {
+          0%, 100% { background-position: 0% 50%; }
+          25% { background-position: 100% 50%; }
+          50% { background-position: 100% 100%; }
+          75% { background-position: 0% 100%; }
         }
 
         @keyframes float {
           0% {
-            transform: translateY(100vh);
+            transform: translateY(100vh) rotate(0deg);
             opacity: 0;
           }
-          30% {
-            opacity: 0.6;
+          20% {
+            opacity: 0.7;
+          }
+          80% {
+            opacity: 0.7;
           }
           100% {
-            transform: translateY(-10vh);
+            transform: translateY(-20vh) rotate(720deg);
             opacity: 0;
           }
+        }
+
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes bounceIn {
+          0% {
+            transform: scale(0.3);
+            opacity: 0;
+          }
+          50% {
+            transform: scale(1.05);
+          }
+          70% {
+            transform: scale(0.9);
+          }
+          100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+
+        @keyframes pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.08); }
+          100% { transform: scale(1); }
+        }
+
+        @keyframes shimmer {
+          0% {
+            background-position: -200% 0;
+          }
+          100% {
+            background-position: 200% 0;
+          }
+        }
+
+        .particle {
+          position: absolute;
+          border-radius: 50%;
+          pointer-events: none;
+          animation: float 12s infinite linear;
+          box-shadow: 0 0 25px rgba(255, 255, 255, 0.5);
+        }
+
+        .particle-1 {
+          width: 8px;
+          height: 8px;
+          background: linear-gradient(45deg, #a8e6cf, #667eea);
+        }
+
+        .particle-2 {
+          width: 6px;
+          height: 6px;
+          background: linear-gradient(45deg, #764ba2, #6a11cb);
+          animation-duration: 14s;
+        }
+
+        .particle-3 {
+          width: 10px;
+          height: 10px;
+          background: linear-gradient(45deg, #4a00e0, #667eea);
+          animation-duration: 11s;
+        }
+
+        .particle-4 {
+          width: 7px;
+          height: 7px;
+          background: linear-gradient(45deg, #6a11cb, #764ba2);
+          animation-duration: 13s;
+        }
+
+        .particle-5 {
+          width: 9px;
+          height: 9px;
+          background: linear-gradient(45deg, #667eea, #a8e6cf);
+          animation-duration: 15s;
         }
 
         .login-card {
-          width: min(390px, 100%);
+          width: min(400px, 100%);
           background: rgba(255, 255, 255, 0.12);
-          backdrop-filter: blur(18px);
-          border-radius: 22px;
-          padding: 45px 35px;
+          backdrop-filter: blur(25px);
+          border-radius: 28px;
+          padding: 50px 40px;
           text-align: center;
-          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+          box-shadow: 
+            0 25px 60px rgba(102, 126, 234, 0.3),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
           border: 1px solid rgba(255, 255, 255, 0.2);
           position: relative;
           z-index: 2;
+          animation: fadeInUp 1s ease-out;
         }
 
         .avatar {
-          font-size: 55px;
-          margin-bottom: 15px;
+          font-size: 70px;
+          margin-bottom: 20px;
+          animation: pulse 3s ease-in-out infinite;
+          filter: drop-shadow(0 10px 25px rgba(168, 230, 207, 0.6));
+          background: linear-gradient(45deg, #667eea, #764ba2, #6a11cb);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
 
-        h2 {
+        .title-anim {
           font-family: "Cormorant Garamond", serif;
-          font-size: 30px;
-          color: #fff;
-          margin-bottom: 10px;
-          line-height: 1.2;
+          font-size: 38px;
+          font-weight: 600;
+          background: linear-gradient(135deg, #fff, #e0e6ff, #fff);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          margin-bottom: 15px;
+          line-height: 1.1;
+          animation: bounceIn 1.2s ease-out, shimmer 4s infinite;
+          background-size: 200% 100%;
         }
 
-        .subtitle {
-          color: #e0e0e0;
+        .subtitle-anim {
+          color: rgba(255, 255, 255, 0.95);
+          font-size: 16px;
+          font-weight: 300;
+          margin-bottom: 35px;
+          line-height: 1.7;
+          font-family: "Inter", sans-serif;
+          animation: fadeInUp 1s ease-out 0.3s both;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-anim {
+          animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .input-anim {
+          animation: fadeInUp 0.8s ease-out both;
+          animation-fill-mode: forwards;
+        }
+
+        .input-anim:nth-child(1) { animation-delay: 0.6s; }
+        .input-anim:nth-child(2) { animation-delay: 0.7s; }
+        .input-anim:nth-child(3) { animation-delay: 0.8s; }
+
+        .label-anim {
           font-size: 14px;
-          margin-bottom: 28px;
-          line-height: 1.6;
-        }
-
-        .input-box {
-          margin-bottom: 18px;
-          text-align: left;
-        }
-
-        .input-box label {
-          font-size: 13px;
-          color: #fff;
+          color: rgba(255, 255, 255, 0.98);
           display: block;
-          margin-bottom: 6px;
+          margin-bottom: 10px;
+          font-weight: 500;
+          font-family: "Inter", sans-serif;
+          letter-spacing: 0.5px;
+          animation: fadeInUp 0.6s ease-out both;
         }
 
-        .input-box input {
+        .input-field {
           width: 100%;
-          padding: 12px;
-          border-radius: 14px;
+          padding: 16px 18px;
+          border-radius: 20px;
           border: none;
           outline: none;
-          background: rgba(255, 255, 255, 0.85);
-          font-size: 14px;
+          background: rgba(255, 255, 255, 0.92);
+          font-size: 16px;
+          font-weight: 400;
+          color: #333;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+          transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          font-family: "Inter", sans-serif;
         }
 
-        .login-btn {
+        .input-field:focus {
+          background: rgba(255, 255, 255, 1);
+          box-shadow: 
+            0 10px 30px rgba(168, 230, 207, 0.4),
+            0 0 0 3px rgba(102, 126, 234, 0.2);
+          transform: translateY(-2px);
+          color: #2d1b69;
+        }
+
+        .input-field::placeholder {
+          color: rgba(100, 100, 100, 0.7);
+          font-weight: 400;
+        }
+
+        .btn-anim {
           width: 100%;
-          padding: 13px;
+          padding: 16px 20px;
           border: none;
-          border-radius: 30px;
-          background: linear-gradient(to right, #4e73df, #9b59b6);
+          border-radius: 35px;
+          background: linear-gradient(135deg, #667eea, #764ba2, #6a11cb);
+          background-size: 300% 300%;
           color: #fff;
           cursor: pointer;
-          margin-top: 10px;
-          font-size: 14px;
+          margin-top: 15px;
+          font-size: 16px;
           font-weight: 600;
-          transition: 0.3s;
+          font-family: "Inter", sans-serif;
+          transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+          animation: fadeInUp 1s ease-out 0.9s both;
+          position: relative;
+          overflow: hidden;
+          text-transform: uppercase;
+          letter-spacing: 1px;
         }
 
-        .quote {
+        .btn-anim:hover {
+          transform: translateY(-3px) scale(1.02);
+          box-shadow: 0 15px 40px rgba(102, 126, 234, 0.7);
+          background-position: 100% 0;
+        }
+
+        .btn-anim:active {
+          transform: translateY(-1px) scale(0.98);
+        }
+
+        .quote-anim {
           position: absolute;
-          bottom: 30px;
+          bottom: 35px;
           left: 0;
           width: 100%;
-          font-size: 13px;
-          color: rgba(255, 255, 255, 0.6);
+          font-size: 15px;
+          color: rgba(255, 255, 255, 0.85);
           text-align: center;
-          padding: 0 16px;
+          padding: 0 20px;
+          font-style: italic;
+          font-family: "Cormorant Garamond", serif;
+          font-weight: 500;
+          animation: fadeInUp 1.2s ease-out 1.1s both;
+          text-shadow: 0 2px 15px rgba(168, 230, 207, 0.3);
+          max-width: 90%;
+          margin: 0 auto;
         }
 
         @media (max-width: 768px) {
-          .body {
-            padding: 14px;
-          }
-
-          .login-card {
-            padding: 36px 24px;
-            border-radius: 20px;
-          }
-
-          .avatar {
-            font-size: 50px;
-          }
-
-          h2 {
-            font-size: 28px;
-          }
-
-          .subtitle {
-            font-size: 13px;
-            margin-bottom: 22px;
-          }
-
-          .quote {
-            bottom: 18px;
-            font-size: 12px;
-          }
+          .body { padding: 14px; }
+          .login-card { padding: 40px 30px; border-radius: 24px; }
+          .avatar { font-size: 65px; }
+          .title-anim { font-size: 34px; }
+          .subtitle-anim { font-size: 15px; margin-bottom: 28px; }
+          .quote-anim { bottom: 25px; font-size: 14px; }
         }
 
         @media (max-width: 480px) {
-          .body {
-            padding: 12px;
-            align-items: center;
-          }
-
-          .login-card {
-            padding: 28px 18px;
-            border-radius: 18px;
-          }
-
-          .avatar {
-            font-size: 46px;
-            margin-bottom: 12px;
-          }
-
-          h2 {
-            font-size: 24px;
-          }
-
-          .subtitle {
-            font-size: 12px;
-            margin-bottom: 18px;
-          }
-
-          .input-box input {
-            padding: 11px;
-            font-size: 13px;
-          }
-
-          .login-btn {
-            padding: 12px;
-            font-size: 13px;
-          }
-
-          .particle {
-            width: 5px;
-            height: 5px;
-          }
-
-          .quote {
-            bottom: 14px;
-            font-size: 11px;
-            line-height: 1.4;
-          }
+          .body { padding: 12px; }
+          .login-card { padding: 32px 24px; border-radius: 22px; }
+          .avatar { font-size: 60px; margin-bottom: 16px; }
+          .title-anim { font-size: 30px; }
+          .subtitle-anim { font-size: 14px; margin-bottom: 24px; }
+          .input-field { padding: 14px 16px; font-size: 15px; }
+          .btn-anim { padding: 15px; font-size: 15px; }
+          .quote-anim { bottom: 20px; font-size: 13px; }
         }
       `}</style>
     </div>
