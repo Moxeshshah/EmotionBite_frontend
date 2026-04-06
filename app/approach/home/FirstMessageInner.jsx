@@ -474,13 +474,15 @@ export default function FirstMessage() {
         }
 
         .insta-input-box {
-          display: flex;
-          align-items: center;
-          background: white;
-          border-radius: 14px;
-          padding: 6px 14px;
-          gap: 8px;
-        }
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 14px;
+  padding: 6px 14px;
+  gap: 8px;
+  width: 100%;
+  overflow: hidden;   /* prevents any edge bleed */
+}
 
         .insta-input-box span {
           color: #888;
@@ -488,11 +490,12 @@ export default function FirstMessage() {
         }
 
         .insta-input-box input {
-          border: none;
-          outline: none;
-          flex: 1;
-          font-size: 14px;
-        }
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  min-width: 0;        /* 🔥 THIS FIXES MOBILE */
+}
 
         .insta-preview {
           margin-top: 10px;

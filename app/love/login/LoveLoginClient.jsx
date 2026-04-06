@@ -203,10 +203,9 @@ export default function LoveLogin() {
             </button>
           )}
         </form>
-      </div>
-
-      <div className="quote quote-anim">
+        <div className="quote quote-anim">
         "Love is not only a feeling, it's an art to give."
+      </div>
       </div>
 
       <style jsx>{`
@@ -369,15 +368,17 @@ export default function LoveLogin() {
         }
 
         .avatar {
-          font-size: 70px;
-          margin-bottom: 20px;
-          animation: heartbeat 2s ease-in-out infinite;
-          filter: drop-shadow(0 10px 25px rgba(255, 182, 193, 0.6));
-          background: linear-gradient(45deg, #ff69b4, #ff1493, #ff9ff3);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
+  font-size: 70px;
+  margin-bottom: 20px;
+  animation: heartbeat 2s ease-in-out infinite;
+  filter: drop-shadow(0 10px 25px rgba(255, 182, 193, 0.6));
+  /* Remove these lines: */
+  /* background: linear-gradient(...); */
+  /* -webkit-background-clip: text; */
+  /* -webkit-text-fill-color: transparent; */
+  /* background-clip: text; */
+  color: #ff69b4; /* Add solid color fallback for consistency */
+}
 
         .title-anim {
           font-family: "Dancing Script", cursive;
@@ -490,22 +491,22 @@ export default function LoveLogin() {
         }
 
         .quote-anim {
-          position: absolute;
-          bottom: 35px;
-          left: 0;
-          width: 100%;
-          font-size: 15px;
-          color: rgba(255, 255, 255, 0.85);
-          text-align: center;
-          padding: 0 20px;
-          font-style: italic;
-          font-family: "Dancing Script", cursive;
-          font-weight: 400;
-          animation: fadeInUp 1.2s ease-out 1.1s both;
-          text-shadow: 0 2px 15px rgba(255, 182, 193, 0.3);
-          max-width: 90%;
-          margin: 0 auto;
-        }
+  position: absolute;
+  bottom: 20px;
+
+  left: 40px;   /* match left padding */
+  right: 40px;  /* match right padding */
+
+  text-align: center;
+
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.85);
+  font-style: italic;
+  font-family: "Dancing Script", cursive;
+  font-weight: 400;
+  animation: fadeInUp 1.2s ease-out 1.1s both;
+  text-shadow: 0 2px 15px rgba(255, 182, 193, 0.3);
+}
 
         @media (max-width: 768px) {
           .body { padding: 14px; }

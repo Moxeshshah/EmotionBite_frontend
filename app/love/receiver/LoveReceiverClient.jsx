@@ -40,9 +40,9 @@ export default function LoveReceiver() {
       .catch(() => setError("Server error"));
   }, [code]);
 
-  if (!data && !error) {
-    return <div className="state-screen">Loading your love message...</div>;
-  }
+  // if (!data && !error) {
+  //   return <div className="state-screen">Loading your love message...</div>;
+  // }
 
   if (error) {
     return <div className="state-screen">{error}</div>;
@@ -323,12 +323,18 @@ const getYouTubeEmbedUrl = (url) => {
         }
 
         .envelope-title {
-          font-size: 26px;
-          margin-bottom: 12px;
-          font-weight: 600;
-          letter-spacing: 0.5px;
-          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
+  font-family: 'Parisienne', 'Dancing Script', cursive;
+  font-size: 35px;
+  font-weight: 500;
+  margin-bottom: 60px;
+  letter-spacing: -0.2px;
+  text-align: center;
+  color: #ffffff; /* Solid white - guaranteed visibility */
+  text-shadow: 
+    0 3px 12px rgba(255, 105, 180, 0.6),  /* Pink glow */
+    0 1px 3px rgba(0, 0, 0, 0.4);          /* Depth */
+  filter: drop-shadow(0 2px 8px rgba(255, 182, 193, 0.5));
+}
 
         .envelope-hint {
           font-size: 16px;
