@@ -383,16 +383,12 @@ export default function ApologyLogin() {
         }
 
         .emoji {
-          font-size: 75px;
-          filter: drop-shadow(0 8px 20px rgba(215, 109, 119, 0.6));
-          background: linear-gradient(45deg, #d76d77, #ffaf7b, #3a1c71);
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          display: block !important;
-          line-height: 1;
-          text-shadow: none;
-        }
+  font-size: 75px;
+  filter: drop-shadow(0 8px 20px rgba(215, 109, 119, 0.6));
+  display: block !important;
+  line-height: 1;
+  text-shadow: none; /* Emojis don't need text-shadow */
+}
 
         .title-anim {
           font-family: "Playfair Display", serif;
