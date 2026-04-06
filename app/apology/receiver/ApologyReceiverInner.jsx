@@ -154,7 +154,7 @@ export default function ApologyReceiver() {
               <BrandHeader />
               <div className="peace-dove">🕊️</div>
               <h1 className="apology-title">
-                I'm So Sorry, {data.receiver} 💔
+                I'm So Sorry, {data.receiver}
               </h1>
             </div>
 
@@ -175,30 +175,32 @@ export default function ApologyReceiver() {
                 <div className="voice-note-label">
                   {data.sender} recorded a voice apology for you…
                 </div>
-                <div className="voice-player">
-                  <button onClick={toggleAudio} className="play-btn">
-                    {isPlaying ? "⏸" : "▶"}
-                  </button>
-                  <div className="wave-bar">
-                    <div
-                      className="progress"
-                      style={{
-                        width:
-                          duration > 0
-                            ? `${Math.min((currentTime / duration) * 100, 100)}%`
-                            : "0%",
-                      }}
-                    />
-                  </div>
-                  <span className="time-text">
-                    {formatTime(currentTime)} / {formatTime(duration)}
-                  </span>
-                  <audio
-                    ref={audioRef}
-                    src={data.audio}
-                    preload="auto"
-                  />
-                </div>
+               <div className="voice-player">
+  <button onClick={toggleAudio} className="play-btn">
+    {isPlaying ? "⏸" : "▶"}
+  </button>
+  <div className="wave-bar">
+    <div
+      className="progress"
+      style={{
+        width: duration > 0
+          ? `${Math.min((currentTime / duration) * 100, 100)}%`
+          : "0%",
+      }}
+    />
+  </div>
+  <span className="time-text">
+    {formatTime(currentTime)} / {formatTime(duration)}
+  </span>
+  <audio
+    ref={audioRef}
+    src={data.audio}
+    preload="metadata"
+    onLoadedMetadata={(e) => {
+      setDuration(e.target.duration || 0);
+    }}
+  />
+</div>
               </>
             )}
 
@@ -228,549 +230,366 @@ export default function ApologyReceiver() {
       </div>
 
       <style jsx>{`
-        @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap");
+  @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;700&display=swap");
 
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        :global(html), :global(body) {
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          overflow-x: hidden;
-        }
+  :global(html), :global(body) {
+    margin: 0; padding: 0; width: 100%; overflow-x: hidden;
+  }
 
-        .state-screen {
-          min-height: 100vh;
-          width: 100vw;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b, #667eea);
-          color: white;
-          font-size: 18px;
-          font-family: "Playfair Display", serif;
-          padding: 20px;
-          text-align: center;
-          letter-spacing: 1px;
-          animation: gradientShift 15s ease infinite;
-        }
+  .state-screen {
+    min-height: 100dvh; width: 100vw;
+    display: flex; justify-content: center; align-items: center;
+    background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b, #667eea);
+    color: white; font-size: 18px;
+    font-family: "Playfair Display", serif;
+    padding: 20px; text-align: center;
+    letter-spacing: 1px;
+    animation: gradientShift 15s ease infinite;
+  }
 
-        .state-screen.error {
-          animation-duration: 8s;
-        }
+  .state-screen.error { animation-duration: 8s; }
 
-        @keyframes gradientShift {
-          0%, 100% { background-position: 0% 50%; }
-          25% { background-position: 100% 50%; }
-          50% { background-position: 100% 100%; }
-          75% { background-position: 0% 100%; }
-        }
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    25% { background-position: 100% 50%; }
+    50% { background-position: 100% 100%; }
+    75% { background-position: 0% 100%; }
+  }
 
-        .apology-container {
-          min-height: 100vh;
-          width: 100vw;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: relative;
-          overflow: hidden;
-          background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b, #667eea);
-          background-size: 400% 400%;
-          animation: gradientShift 15s ease infinite;
-          padding: 20px;
-          font-family: "Poppins", sans-serif;
-        }
+  .apology-container {
+    height: 100dvh; width: 100vw;
+    display: flex; justify-content: center; align-items: stretch;
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b, #667eea);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    padding: 12px;
+    font-family: "Poppins", sans-serif;
+  }
 
-        .apology-container.open {
-          animation-duration: 20s;
-        }
+  .apology-container.open { animation-duration: 20s; }
 
-        @keyframes float {
-          0% {
-            transform: translateY(100vh) rotate(0deg);
-            opacity: 0;
-          }
-          20% {
-            opacity: 0.6;
-          }
-          80% {
-            opacity: 0.6;
-          }
-          100% {
-            transform: translateY(-30vh) rotate(360deg);
-            opacity: 0;
-          }
-        }
+  @keyframes float {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    20% { opacity: 0.6; }
+    80% { opacity: 0.6; }
+    100% { transform: translateY(-30vh) rotate(360deg); opacity: 0; }
+  }
 
-        .particle {
-          position: absolute;
-          border-radius: 50%;
-          pointer-events: none;
-          animation: float 12s infinite linear;
-          box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
-          z-index: 1;
-        }
+  .particle {
+    position: absolute; border-radius: 50%;
+    pointer-events: none; animation: float 12s infinite linear;
+    box-shadow: 0 0 15px rgba(255,255,255,0.4); z-index: 1;
+  }
+  .particle-1 { width: 8px; height: 8px; background: linear-gradient(45deg, #d76d77, #ffaf7b); }
+  .particle-2 { width: 6px; height: 6px; background: linear-gradient(45deg, #3a1c71, #667eea); animation-duration: 14s; }
+  .particle-3 { width: 10px; height: 10px; background: linear-gradient(45deg, #ffaf7b, #d76d77); animation-duration: 11s; }
+  .particle-4 { width: 7px; height: 7px; background: linear-gradient(45deg, #667eea, #3a1c71); animation-duration: 13s; }
+  .particle-5 { width: 9px; height: 9px; background: linear-gradient(45deg, #d76d77, #ffaf7b); animation-duration: 15s; }
 
-        .particle-1 {
-          width: 8px;
-          height: 8px;
-          background: linear-gradient(45deg, #d76d77, #ffaf7b);
-        }
+  .apology-box {
+    width: min(440px, 100%);
+    flex: 1;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(25px);
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 25px 60px rgba(58,28,113,0.3), inset 0 1px 0 rgba(255,255,255,0.4);
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    animation: fadeInUp 1.2s ease-out;
+  }
 
-        .particle-2 {
-          width: 6px;
-          height: 6px;
-          background: linear-gradient(45deg, #3a1c71, #667eea);
-          animation-duration: 14s;
-        }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-        .particle-3 {
-          width: 10px;
-          height: 10px;
-          background: linear-gradient(45deg, #ffaf7b, #d76d77);
-          animation-duration: 11s;
-        }
+  .apology-envelope, .apology-reveal {
+    position: relative; z-index: 2; width: 100%;
+  }
 
-        .particle-4 {
-          width: 7px;
-          height: 7px;
-          background: linear-gradient(45deg, #667eea, #3a1c71);
-          animation-duration: 13s;
-        }
+  /* ── ENVELOPE (closed state) ── */
+  .apology-envelope {
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    padding: 40px 30px 60px;
+    cursor: pointer; text-align: center;
+    transition: all 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);
+  }
 
-        .particle-5 {
-          width: 9px;
-          height: 9px;
-          background: linear-gradient(45deg, #d76d77, #ffaf7b);
-          animation-duration: 15s;
-        }
+  .apology-envelope:hover {
+    transform: scale(1.02) rotate(-1deg);
+  }
 
-        .apology-box {
-          width: min(440px, 95%);
-          min-height: 680px;
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(25px);
-          border-radius: 28px;
-          border: 1px solid rgba(255, 255, 255, 0.2);
-          box-shadow: 
-            0 25px 60px rgba(58, 28, 113, 0.3),
-            inset 0 1px 0 rgba(255, 255, 255, 0.4);
-          position: relative;
-          display: flex;
-          transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-          animation: fadeInUp 1.2s ease-out;
-        }
+  .peace-heart {
+    font-size: 75px;
+    animation: gentlePulse 3s ease-in-out infinite;
+    margin-bottom: 18px;
+    filter: drop-shadow(0 8px 20px rgba(215,109,119,0.6));
+  }
 
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
+  @keyframes gentlePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
 
-        .apology-envelope, .apology-reveal {
-          position: relative;
-          z-index: 2;
-          height: 100%;
-          width: 100%;
-        }
+  .envelope-title {
+    font-family: "Playfair Display", serif;
+    font-size: 24px; font-weight: 700;
+    letter-spacing: 2px; margin-bottom: 10px;
+    background: linear-gradient(135deg, #fff, #f8e8e8, #fff);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; background-size: 200% 100%;
+    animation: shimmer 4s infinite;
+  }
 
-        .apology-envelope {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          padding: 50px 40px 80px 40px;
-          cursor: pointer;
-          transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-          text-align: center;
-        }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
 
-        .apology-envelope:hover {
-          transform: scale(1.02) rotate(-1deg);
-          box-shadow: 0 35px 80px rgba(58, 28, 113, 0.4);
-        }
+  .envelope-subtitle {
+    font-size: 14px; opacity: 0.95; line-height: 1.5;
+    font-weight: 400; max-width: 260px; margin-bottom: 18px;
+    color: rgba(255,255,255,0.95);
+  }
 
-        .peace-heart {
-          font-size: 90px;
-          animation: gentlePulse 3s ease-in-out infinite;
-          margin-bottom: 25px;
-          filter: drop-shadow(0 8px 20px rgba(215, 109, 119, 0.6));
-          background: linear-gradient(45deg, #d76d77, #ffaf7b, #3a1c71);
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
+  .open-prompt {
+    font-size: 13px; font-weight: 600; letter-spacing: 1.5px;
+    background: linear-gradient(135deg, #d76d77, #3a1c71, #ffaf7b);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; text-transform: uppercase;
+    padding: 10px 22px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 30px; backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(215,109,119,0.4);
+  }
 
-        @keyframes gentlePulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
-        }
+  .open-prompt:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(215,109,119,0.6);
+  }
 
-        .envelope-title {
-          font-family: "Playfair Display", serif;
-          font-size: 28px;
-          font-weight: 700;
-          letter-spacing: 2px;
-          margin-bottom: 12px;
-          background: linear-gradient(135deg, #fff, #f8e8e8, #fff);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          background-size: 200% 100%;
-          animation: shimmer 4s infinite;
-        }
+  /* ── REVEAL (open state) ── */
+  .apology-reveal {
+    padding: 22px 20px 18px;
+    display: flex; flex-direction: column;
+    color: white; overflow-y: auto;
+    gap: 10px;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+  }
 
-        @keyframes shimmer {
-          0% { background-position: -200% 0; }
-          100% { background-position: 200% 0; }
-        }
+  .apology-header {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 2px; text-align: center;
+    flex-shrink: 0;
+  }
 
-        .envelope-subtitle {
-          font-size: 16px;
-          opacity: 0.95;
-          line-height: 1.6;
-          font-weight: 400;
-          max-width: 280px;
-          margin-bottom: 20px;
-          color: rgba(255, 255, 255, 0.95);
-          font-family: "Poppins", sans-serif;
-        }
+  .peace-dove {
+    font-size: 28px;
+    animation: gentlePulse 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 25px rgba(215,109,119,0.9));
+  }
 
-        .open-prompt {
-          font-size: 15px;
-          font-weight: 600;
-          letter-spacing: 1.5px;
-          background: linear-gradient(135deg, #d76d77, #3a1c71, #ffaf7b);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          text-transform: uppercase;
-          padding: 12px 24px;
-          border: 2px solid rgba(255, 255, 255, 0.3);
-          border-radius: 30px;
-          backdrop-filter: blur(10px);
-          transition: all 0.3s ease;
-          box-shadow: 0 8px 25px rgba(215, 109, 119, 0.4);
-          font-family: "Poppins", sans-serif;
-        }
+  .apology-title {
+    font-family: "Playfair Display", serif;
+    font-size: 24px; font-weight: 700;
+    letter-spacing: -0.5px; line-height: 1.1;
+    background: linear-gradient(135deg, #fff, #f8e8e8, #fff);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; background-size: 200% 100%;
+    animation: shimmer 4s infinite;
+    margin: 0; max-width: 90%;
+  }
 
-        .open-prompt:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 12px 35px rgba(215, 109, 119, 0.6);
-        }
+  /* ── LETTER ── */
+  .apology-letter {
+    flex: 1; min-height: 0;
+    background: rgba(255,255,255,0.92);
+    border-radius: 20px; padding: 18px 20px;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2), inset 0 2px 0 rgba(255,255,255,0.6);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.4);
+  }
 
-        .apology-reveal {
-          padding: 50px 35px;
-          display: flex;
-          flex-direction: column;
-          color: white;
-          overflow-y: auto;
-          gap: 25px;
-          animation: fadeInUp 0.8s ease-out 0.2s both;
-        }
+  .apology-letter::before {
+    content: '';
+    position: absolute; top: 14px; right: 14px;
+    width: 40px; height: 40px;
+    background: radial-gradient(circle, rgba(215,109,119,0.2), transparent);
+    border-radius: 50%; z-index: 0;
+  }
 
-        .apology-header {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 5px;
-          text-align: center;
-        }
+  .letter-content {
+    position: relative; z-index: 2;
+    height: 100%; display: flex; flex-direction: column;
+  }
 
-        .peace-dove {
-          font-size: 40px;
-          animation: gentlePulse 3s ease-in-out infinite;
-          filter: drop-shadow(0 0 25px rgba(215, 109, 119, 0.9));
-          background: linear-gradient(45deg, #d76d77, #ffaf7b);
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
+  .apology-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: 19px; line-height: 1.45;
+    color: #2d1b69; font-weight: 400;
+    flex: 1; margin-bottom: 12px;
+  }
 
-        .apology-title {
-          font-family: "Playfair Display", serif;
-          font-size: 36px;
-          font-weight: 700;
-          letter-spacing: -1px;
-          line-height: 1.1;
-          background: linear-gradient(135deg, #fff, #f8e8e8, #fff);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          background-size: 200% 100%;
-          animation: shimmer 4s infinite;
-          margin: 0;
-          max-width: 90%;
-        }
+  .letter-signoff {
+    margin-top: auto; text-align: right;
+    padding-top: 8px;
+    border-top: 2px dashed rgba(58,28,113,0.3);
+    flex-shrink: 0;
+  }
 
-        .apology-letter {
-          flex: 1;
-          background: rgba(255, 255, 255, 0.92);
-          border-radius: 25px;
-          padding: 35px;
-          position: relative;
-          box-shadow: 
-            0 35px 90px rgba(0, 0, 0, 0.25),
-            inset 0 2px 0 rgba(255, 255, 255, 0.6);
-          overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.4);
-        }
+  .letter-signoff span:first-child {
+    font-size: 11px; color: #d76d77; font-weight: 500;
+    letter-spacing: 1px; text-transform: uppercase;
+    opacity: 0.95; display: block; margin-bottom: 0;
+  }
 
-        .apology-letter::before {
-          content: '';
-          position: absolute;
-          top: 20px;
-          right: 20px;
-          width: 60px;
-          height: 60px;
-          background: radial-gradient(circle, rgba(215, 109, 119, 0.2), transparent);
-          border-radius: 50%;
-          z-index: 0;
-        }
+  .sender-name {
+    font-family: "Playfair Display", serif;
+    font-size: 22px;
+    background: linear-gradient(135deg, #d76d77, #3a1c71);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; font-weight: 700; letter-spacing: 1px;
+  }
 
-        .letter-content {
-          position: relative;
-          z-index: 2;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-        }
+  /* ── VOICE ── */
+  .voice-note-label {
+    font-family: 'Dancing Script', cursive;
+    font-size: 14px; text-align: center;
+    background: linear-gradient(135deg, #fff, #f8e8e8);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: fadeInUp 1s ease; letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
 
-        .apology-text {
-          font-family: 'Dancing Script', cursive;
-          font-size: 26px;
-          line-height: 1.6;
-          color: #2d1b69;
-          font-weight: 400;
-          flex: 1;
-          margin-bottom: 25px;
-          text-shadow: 0 2px 8px rgba(255, 255, 255, 0.4);
-        }
+  .voice-player {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px; border-radius: 30px;
+    background: linear-gradient(135deg, #d76d77, #3a1c71, #ffaf7b);
+    box-shadow: 0 8px 25px rgba(215,109,119,0.4);
+    flex-shrink: 0;
+  }
 
-        .letter-signoff {
-          margin-top: auto;
-          text-align: right;
-          padding-top: 10px;
-          border-top: 2px dashed rgba(58, 28, 113, 0.3);
-        }
+  .play-btn {
+    width: 28px; height: 28px; border-radius: 50%; border: none;
+    background: white; color: #3a1c71; font-size: 14px;
+    cursor: pointer; transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
 
-        .letter-signoff span:first-child {
-          font-size: 14px;
-          color: #d76d77;
-          font-weight: 500;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-          opacity: 0.95;
-          display: block;
-          margin-bottom: 1px;
-          font-family: "Poppins", sans-serif;
-        }
+  .play-btn:hover { transform: scale(1.05); }
+  .play-btn:active { transform: scale(0.95); }
 
-        .sender-name {
-          font-family: "Playfair Display", serif;
-          font-size: 28px;
-          background: linear-gradient(135deg, #d76d77, #3a1c71);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          font-weight: 700;
-          letter-spacing: 1px;
-        }
+  .wave-bar {
+    flex: 1; height: 5px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 10px; overflow: hidden;
+  }
 
-        .voice-note-label {
-          font-family: 'Dancing Script', cursive;
-          font-size: 18px;
-          text-align: center;
-          margin-bottom: 5px;
-          background: linear-gradient(135deg, #fff, #f8e8e8);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: fadeInUp 1s ease;
-          letter-spacing: 0.5px;
-        }
+  .progress {
+    height: 100%; width: 0%;
+    background: white; border-radius: 10px;
+    transition: width 0.1s ease;
+  }
 
-        .voice-player {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 14px;
-          border-radius: 30px;
-          background: linear-gradient(135deg, #d76d77, #3a1c71, #ffaf7b);
-          box-shadow: 0 10px 30px rgba(215, 109, 119, 0.4);
-        }
+  .time-text {
+    font-size: 11px; color: white; font-weight: 500;
+    min-width: 48px; text-align: right; flex-shrink: 0;
+  }
 
-        .play-btn {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          border: none;
-          background: white;
-          color: #3a1c71;
-          font-size: 16px;
-          cursor: pointer;
-          transition: transform 0.2s ease;
-        }
+  /* ── MEMORY ── */
+  .memory-vault { flex-shrink: 0; }
 
-        .play-btn:hover {
-          transform: scale(1.05);
-        }
+  .vault-label {
+    font-family: "Playfair Display", serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #fff, #f8e8e8);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
-        .play-btn:active {
-          transform: scale(0.95);
-        }
+  .vault-image {
+    position: relative; height: 55px;
+    border-radius: 16px; overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    transition: all 0.7s cubic-bezier(0.34,1.56,0.64,1);
+    border: 2px solid rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+  }
 
-        .wave-bar {
-          flex: 1;
-          height: 6px;
-          background: rgba(255,255,255,0.4);
-          border-radius: 10px;
-          overflow: hidden;
-        }
+  .vault-image:hover { transform: translateY(-4px); }
 
-        .progress {
-          height: 100%;
-          width: 0%;
-          background: white;
-          border-radius: 10px;
-          transition: width 0.1s ease;
-        }
+  .vault-image.unlocked {
+    height: 180px;
+    border-color: rgba(255,255,255,0.8);
+    box-shadow: 0 25px 60px rgba(215,109,119,0.4);
+  }
 
-        .time-text {
-          font-size: 12px;
-          color: white;
-          font-weight: 500;
-          min-width: 50px;
-          text-align: right;
-          font-family: "Poppins", sans-serif;
-        }
+  .vault-image img {
+    width: 100%; height: 180px; object-fit: cover;
+    filter: blur(20px) sepia(0.3) brightness(0.6);
+    transition: all 1s ease;
+  }
 
-        .memory-vault {
-          margin-top: 20px;
-        }
+  .vault-image.unlocked img {
+    filter: blur(0) sepia(0) brightness(1.1);
+    transform: scale(1.05);
+  }
 
-        .vault-label {
-          font-family: "Playfair Display", serif;
-          font-size: 14px;
-          font-weight: 700;
-          letter-spacing: 1.5px;
-          text-transform: uppercase;
-          margin-bottom: 15px;
-          background: linear-gradient(135deg, #fff, #f8e8e8);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
+  .vault-lock {
+    position: absolute; inset: 0;
+    display: flex; justify-content: center; align-items: center;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(8px);
+  }
 
-        .vault-image {
-          position: relative;
-          height: 85px;
-          border-radius: 22px;
-          overflow: hidden;
-          cursor: pointer;
-          box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
-          transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-          border: 2px solid rgba(255, 255, 255, 0.4);
-          background: rgba(255, 255, 255, 0.1);
-          backdrop-filter: blur(10px);
-        }
+  .vault-lock span {
+    background: linear-gradient(135deg, #d76d77, #3a1c71);
+    color: white; padding: 10px 24px;
+    border-radius: 40px; font-size: 13px;
+    font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 10px 30px rgba(215,109,119,0.5), inset 0 1px 0 rgba(255,255,255,0.4);
+  }
 
-        .vault-image:hover {
-          transform: translateY(-8px) rotate(-1deg);
-        }
+  .forgiveness-note {
+    font-size: 11px; font-weight: 500;
+    text-align: center; opacity: 0.9;
+    letter-spacing: 1px; flex-shrink: 0;
+    background: linear-gradient(135deg, #fff, #f8e8e8);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; text-transform: uppercase;
+  }
 
-        .vault-image.unlocked {
-          height: 300px;
-          border-color: rgba(255, 255, 255, 0.8);
-          box-shadow: 0 35px 80px rgba(215, 109, 119, 0.4);
-        }
+  /* ── RESPONSIVE ── */
+  @media (max-width: 390px) {
+    .apology-reveal { padding: 18px 16px 14px; gap: 8px; }
+    .apology-title { font-size: 21px; }
+    .apology-text { font-size: 17px; }
+    .peace-heart { font-size: 65px; }
+    .vault-image.unlocked { height: 150px; }
+    .vault-image img { height: 150px; }
+  }
 
-        .vault-image img {
-          width: 100%;
-          height: 300px;
-          object-fit: cover;
-          filter: blur(20px) sepia(0.3) brightness(0.6);
-          transition: all 1s ease;
-        }
-
-        .vault-image.unlocked img {
-          filter: blur(0) sepia(0) brightness(1.1);
-          transform: scale(1.05);
-        }
-
-        .vault-lock {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(8px);
-        }
-
-        .vault-lock span {
-          background: linear-gradient(135deg, #d76d77, #3a1c71);
-          color: white;
-          padding: 16px 32px;
-          border-radius: 40px;
-          font-size: 15px;
-          font-weight: 700;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-          box-shadow: 
-            0 15px 40px rgba(215, 109, 119, 0.6),
-            inset 0 1px 0 rgba(255, 255, 255, 0.4);
-          font-family: "Poppins", sans-serif;
-        }
-
-        .forgiveness-note {
-          font-family: "Playfair Display", serif;
-          font-size: 15px;
-          font-weight: 500;
-          text-align: center;
-          opacity: 0.9;
-          letter-spacing: 1px;
-          margin-top: auto;
-          background: linear-gradient(135deg, #fff, #f8e8e8);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-          text-transform: uppercase;
-          font-family: "Poppins", sans-serif;
-        }
-
-        @media (max-width: 768px) {
-          .apology-container { padding: 16px; }
-          .apology-box { 
-            width: 95%;
-            min-height: 650px;
-            border-radius: 24px;
-          }
-          .apology-reveal { padding: 40px 30px; gap: 20px; }
-          .apology-title { font-size: 32px; }
-          .apology-text { font-size: 24px; }
-        }
-
-        @media (max-width: 480px) {
-          .apology-container { padding: 12px; }
-          .apology-box { min-height: 630px; border-radius: 22px; }
-          .apology-reveal { padding: 35px 25px; gap: 18px; }
-          .apology-title { font-size: 28px; }
-          .apology-text { font-size: 22px; line-height: 1.5; }
-          .sender-name { font-size: 26px; }
-          .peace-heart { font-size: 80px; }
-        }
-      `}</style>
+  @media (min-height: 800px) {
+    .apology-reveal { gap: 14px; padding: 28px 24px 20px; }
+    .apology-title { font-size: 28px; }
+    .apology-text { font-size: 21px; }
+    .vault-image.unlocked { height: 220px; }
+    .vault-image img { height: 220px; }
+  }
+`}</style>
     </div>
   );
 }

@@ -75,11 +75,14 @@ export default function AnniversaryReceiver() {
         ) : !opened ? (
           // Show loading gift (no separate loading screen)
           <div className="closed-gift" onClick={() => setOpened(true)}>
-            <BrandHeader />
-            <div className="gift-icon">🎁</div>
-            <div className="gift-title">Anniversary Surprise ✨</div>
-            <div className="gift-hint">Tap to unwrap 💖</div>
-          </div>
+  <BrandHeader />
+  <div className="gift-icon">🎁</div>
+  <div className="gift-title">Anniversary Surprise</div>
+  <div className="gift-tagline">A moment crafted just for you</div>
+  <div className="gift-divider">✦ ✦ ✦</div>
+  <div className="gift-hint">Tap to unwrap your surprise 💖</div>
+  <div className="gift-sub">Something beautiful awaits inside...</div>
+</div>
         ) : (
           // Show opened content
           <div className="anniversary-content">
@@ -142,6 +145,60 @@ export default function AnniversaryReceiver() {
   }
 
   @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Parisienne&family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@1,400;1,600&family=Dancing+Script:wght@700&family=Poppins:wght@300;400;500&display=swap');
+
+.gift-title {
+  font-size: 32px;
+  font-weight: 700;
+  font-family: 'Great Vibes', cursive;
+  color: white;
+  text-shadow: 
+    0 2px 15px rgba(255, 100, 150, 0.8),
+    0 0 40px rgba(255, 182, 193, 0.5);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.gift-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 17px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: 1.5px;
+  margin-bottom: 18px;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+}
+
+.gift-divider {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 8px;
+  margin-bottom: 18px;
+}
+
+.gift-hint {
+  font-family: 'Dancing Script', cursive;
+  font-size: 22px;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 2px 12px rgba(232, 67, 147, 0.7);
+  animation: hintPulse 2s ease-in-out infinite;
+  margin-bottom: 10px;
+}
+
+.gift-sub {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.8px;
+  font-style: italic;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.04); }
+}
 
   .main-container {
     min-height: 100vh;

@@ -205,12 +205,11 @@ export default function ApologyLogin() {
             </button>
           )}
         </form>
-      </div>
-
-      <div className="quote-container">
-        <div className="quote quote-anim">
-          "An apology is the superglue of life. It can repair just about anything."
-        </div>
+          <div className="quote-container">
+    <div className="quote quote-anim">
+      "An apology is the superglue of life. It can repair just about anything."
+    </div>
+  </div>
       </div>
 
       <style jsx>{`
@@ -502,15 +501,10 @@ export default function ApologyLogin() {
         }
 
         .quote-container {
-          position: absolute;
-          bottom: 35px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 90%;
-          max-width: 420px;
-          z-index: 2;
-          pointer-events: none;
-        }
+  margin-top: 15px;
+  width: 100%;
+  text-align: center;
+}
 
         .quote-anim {
           font-size: 15px;

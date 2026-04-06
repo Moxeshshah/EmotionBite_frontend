@@ -281,15 +281,16 @@ export default function AnniversaryGreet() {
         }
 
         .success-icon {
-          font-size: 110px;
-          margin-bottom: 25px;
-          animation: successBounce 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-          filter: drop-shadow(0 25px 50px rgba(232, 67, 147, 0.7));
-          background: linear-gradient(135deg, #fdeaea, #e84393, #fd79a8);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
+  font-size: 110px;
+  margin-bottom: 25px;
+  animation: successBounce 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+  filter: drop-shadow(0 25px 50px rgba(232, 67, 147, 0.7));
+  /* Remove these three lines: */
+  /* background: linear-gradient(135deg, #fdeaea, #e84393, #fd79a8); */
+  /* -webkit-background-clip: text; */
+  /* -webkit-text-fill-color: transparent; */
+  /* background-clip: text; */
+}
 
         @keyframes successBounce {
           0%, 100% { transform: scale(1); }
