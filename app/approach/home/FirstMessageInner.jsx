@@ -98,14 +98,14 @@ export default function FirstMessage() {
     };
   }, [code, router]);
 
-  if (!mounted) {
-    return (
-      <div className="loading-screen">
-        <div className="loader" />
-        <h2 className="loading-title">Loading Emotion Bite...</h2>
-      </div>
-    );
-  }
+  // if (!mounted) {
+  //   return (
+  //     <div className="loading-screen">
+  //       <div className="loader" />
+  //       <h2 className="loading-title">Loading Emotion Bite...</h2>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="body">

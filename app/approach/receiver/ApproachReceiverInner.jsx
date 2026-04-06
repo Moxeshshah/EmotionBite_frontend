@@ -54,23 +54,23 @@ export default function ApproachReceiver() {
     setTimeout(() => { setTapRipple(false); setOpened(true); }, 420);
   };
 
-  if (!mounted) {
-    return (
-      <div className="loading-screen">
-        <div className="loader-ring"><div /><div /><div /><div /></div>
-        <h2 className="loading-title">Loading Emotion Bite...</h2>
-      </div>
-    );
-  }
+  // if (!mounted) {
+  //   return (
+  //     <div className="loading-screen">
+  //       <div className="loader-ring"><div /><div /><div /><div /></div>
+  //       <h2 className="loading-title">Loading Emotion Bite...</h2>
+  //     </div>
+  //   );
+  // }
 
-  if (!data) {
-    return (
-      <div className="loading-screen">
-        <div className="loader-ring"><div /><div /><div /><div /></div>
-        <h2 className="loading-title">Loading message...</h2>
-      </div>
-    );
-  }
+  // if (!data) {
+  //   return (
+  //     <div className="loading-screen">
+  //       <div className="loader-ring"><div /><div /><div /><div /></div>
+  //       <h2 className="loading-title">Loading message...</h2>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="container">
