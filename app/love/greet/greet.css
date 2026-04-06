@@ -1,60 +1,4 @@
 
-"use client";
-
-import { useRouter, useSearchParams } from "next/navigation";
-import BrandHeader from "../BrandHeader"; 
-export default function LoveGreet() {
-  const router = useRouter();
-  const params = useSearchParams();
-  const code = params.get("code");
-
-  const floatingHearts = [
-    { emoji: "❤️", top: "10%", left: "15%" },
-    { emoji: "💕", bottom: "20%", right: "10%" },
-    { emoji: "💌", top: "30%", right: "25%" },
-    { emoji: "😍", top: "50%", left: "70%" },
-    { emoji: "💖", bottom: "15%", left: "20%" },
-  ];
-
-  return (
-    <div className="body">
-      {floatingHearts.map((h, idx) => (
-        <div
-          key={idx}
-          className="heart-float"
-          style={{
-            animationDelay: `${idx * 0.7}s`,
-            top: h.top || "auto",
-            left: h.left || "auto",
-            right: h.right || "auto",
-            bottom: h.bottom || "auto",
-          }}
-        >
-          {h.emoji}
-        </div>
-      ))}
-
-      <div className="card">
-        <BrandHeader />
-        <div style={{ fontSize: "60px", marginBottom: "20px" }}>💖</div>
-
-        <h2>Love Sent Successfully! 💌</h2>
-
-        <p>
-          Your message has been delivered! Make more hearts flutter and spread the love. 😍
-        </p>
-
-        {/* <button
-          onClick={() => router.push(`/love/home?code=${code}`)}
-          className="btn"
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#ffe6ed")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#ffffff")}
-        >
-          Send Another 💕
-        </button> */}
-      </div>
-
-      {/* <style jsx>{`
         * {
           margin: 0;
           padding: 0;
@@ -62,11 +6,9 @@ export default function LoveGreet() {
           font-family: "Poppins", sans-serif;
         }
 
-        :global(html),
-        :global(body) {
-          margin: 0;
-          padding: 0;
-          width: 100%;
+        html, body {
+          margin: 0; padding: 0;
+          width: 100%; height: 100%;
           overflow-x: hidden;
         }
 
@@ -197,7 +139,4 @@ export default function LoveGreet() {
             font-size: 22px;
           }
         }
-      `}</style> */}
-    </div>
-  );
-}
+      

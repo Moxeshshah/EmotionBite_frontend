@@ -2,6 +2,7 @@
 
 import { Suspense } from "react";
 import FirstStepLoginInner from "./FirstStepLoginInner";
+import "./login.css";
 
 export default function Page() {
   return (

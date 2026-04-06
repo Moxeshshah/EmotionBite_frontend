@@ -2,6 +2,7 @@
 
 import { Suspense } from "react";
 import FirstMessageInner from "./FirstMessageInner";
+import "./home.css";
 
 export default function Page() {
   return (

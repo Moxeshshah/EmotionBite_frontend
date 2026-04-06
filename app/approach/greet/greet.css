@@ -1,58 +1,4 @@
 
-"use client";
-
-import BrandHeader from "../BrandHeader";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
-
-export default function FirstStepGreet() {
-  const router = useRouter();
-  const params = useSearchParams();
-  const code = params.get("code");
-
-  const floatingShapes = [
-    { style: { width: "100px", height: "100px", background: "#ffffff", top: "15%", left: "10%" } },
-    { style: { width: "80px", height: "80px", background: "#ffdee9", bottom: "20%", right: "15%" } },
-    { style: { width: "90px", height: "90px", background: "#fbc2eb", top: "25%", right: "25%" } },
-  ];
-
-  return (
-    <div className="body">
-      
-
-      {floatingShapes.map((shape, idx) => (
-        <div
-          key={idx}
-          className="float-shape"
-          style={{
-            ...shape.style,
-          }}
-        />
-      ))}
-
-      <div className="card">
-        <BrandHeader />
-        <div style={{ fontSize: "60px", marginBottom: "20px" }}>👋</div>
-        <h2>Your First Message is Sent! 🎉</h2>
-        <p>
-          You’ve taken the first step! Your message has been delivered. Sit back, relax, and let the conversation begin. ✨
-        </p>
-
-        {/* <button
-          onClick={() => router.push(`/approach/home?code=${code}`)}
-          className="home-btn"
-          onMouseEnter={(e) => (e.currentTarget.style.background = "#e0f7ff")}
-          onMouseLeave={(e) => (e.currentTarget.style.background = "#ffffff")}
-        >
-          Back to Home 🏡
-        </button> */}
-      </div>
-
-      <div className="toast">
-        🚀 Your first message has been successfully sent!
-      </div>
-
-      {/* <style jsx>{`
         @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@400;500;600&display=swap");
 
         * {
@@ -62,13 +8,14 @@ export default function FirstStepGreet() {
           font-family: "Poppins", sans-serif;
         }
 
-        :global(html),
-        :global(body) {
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          overflow-x: hidden;
-        }
+       html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 
         .body {
           min-height: 100vh;
@@ -228,7 +175,4 @@ export default function FirstStepGreet() {
             right: 10% !important;
           }
         }
-      `}</style> */}
-    </div>
-  );
-}
+      

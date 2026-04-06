@@ -1,174 +1,4 @@
-
-"use client";
-
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import BrandHeader from "../BrandHeader";
-
-export default function LoveReceiver() {
-  const [opened, setOpened] = useState(false);
-  const [revealMedia, setRevealMedia] = useState(false);
-  const [data, setData] = useState(null);
-  const [error, setError] = useState("");
-  const [playMusic, setPlayMusic] = useState(false);
-
-  const params = useSearchParams();
-  const code = params.get("code");
-
-  useEffect(() => {
-    if (!code) {
-      setError("Message code not found");
-      return;
-    }
-
-    fetch(`/api/messages?code=${code}`)
-      .then((res) => res.json())
-      .then((apiData) => {
-        if (!apiData) {
-          setError("No message found");
-          return;
-        }
-
-        setData({
-  receiverName: apiData.receiverName || "You",
-  sender: apiData.senderName || "Someone special",
-  message: apiData.messageText,
-  image: apiData.imageUrl,
-  audio: apiData.audioUrl, // ✅ ADD THIS
-});
-      })
-      .catch(() => setError("Server error"));
-  }, [code]);
-
-  if (!data && !error) {
-    return <div className="state-screen">Loading your love message...</div>;
-  }
-
-  if (error) {
-    return <div className="state-screen">{error}</div>;
-  }
-const getYouTubeEmbedUrl = (url) => {
-  try {
-    if (!url) return "";
-
-    // If already embed → return as it is
-    if (url.includes("/embed/")) {
-      return url;
-    }
-
-    let videoId = "";
-
-    if (url.includes("youtu.be")) {
-      videoId = url.split("/").pop();
-    } else if (url.includes("youtube.com/watch")) {
-      const params = new URL(url).searchParams;
-      videoId = params.get("v");
-    }
-
-    if (!videoId) return "";
-
-    return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-  } catch {
-    return "";
-  }
-};
-  return (
-    <div className={opened ? "main-container open" : "main-container"}>
-      {/* Floating Particles & Hearts */}
-      <div className="particle" style={{ left: "15%" }} />
-      <div className="particle" style={{ left: "35%", animationDelay: "2s" }} />
-      <div className="particle" style={{ left: "55%", animationDelay: "4s" }} />
-      <div className="particle" style={{ left: "75%", animationDelay: "1s" }} />
-      <div className="particle" style={{ left: "90%", animationDelay: "3s" }} />
-      
-      <div className="heart-float h1">💖</div>
-      <div className="heart-float h2">💕</div>
-      <div className="heart-float h3">❤️</div>
-
-      {/* Main Card Container */}
-      <div className={`letter-card ${opened ? "opened" : ""}`}>
-        {!opened ? (
-          <div className="closed-envelope" onClick={() => {
-  setOpened(true);
-  setPlayMusic(true); // 🎵 trigger music
-}}>
-            <BrandHeader />
-            <div className="envelope-icon">💌</div>
-            <div className="envelope-title">A love message awaits ✨</div>
-            <div className="envelope-hint">Tap to open your heart 💖</div>
-          </div>
-        ) : (
-          <div className="letter-content">
-            <div className="header-section">
-              <BrandHeader />
-              <div className="heart-icon">💝</div>
-              <h2 className="receiver-name">Dear, {data.receiverName}</h2>
-            </div>
-
-            {/* Completely Redesigned Message Display */}
-            <div className="love-message-container">
-              <div className="message-header">
-                <div className="ribbon">💌 Love Letter</div>
-              </div>
-              
-              <div className="message-scroll-wrapper">
-                <div className="message-content">
-                  <p className="love-message">"{data.message}"</p>
-                </div>
-              </div>
-              
-              <div className="message-footer">
-                <div className="signature">
-                  <span className="signature-line">With all my love,</span>
-                  <span className="sender-signature">{data.sender}</span>
-                </div>
-              </div>
-            </div>
-{data.audio && (
-  <div className="music-section">
-    {/* <div className="music-label">🎵 Tap to play your song</div> */}
-
-   {playMusic && (
-  <iframe
-    width="0"
-    height="0"
-    src={getYouTubeEmbedUrl(data.audio)}
-    title="audio player"
-    allow="autoplay"
-    style={{ display: "none" }}
-  />
-)}
-  </div>
-)}
-            {/* {data.image && (
-              <div className="memory-section">
-                <div className="memory-label">📸 A memory was shared</div>
-                <div
-                  className={`memory-card ${revealMedia ? "revealed" : ""}`}
-                  onClick={() => setRevealMedia(true)}
-                >
-                  <img src={data.image} alt="Shared memory" />
-                  {!revealMedia && (
-                    <div className="memory-overlay">
-                      <span className="memory-text">Tap to reveal</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )} */}
-
-            <div className="love-note">
-              💕 Some feelings are meant to be cherished, not replied to.
-            </div>
-          </div>
-        )}
-      </div>
-
-
-    </div>
-  );
-}
-      <style jsx>{`
+  
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Parisienne&family=Poppins:wght@300;400;500;600;700&display=swap');
 
         * {
@@ -177,11 +7,9 @@ const getYouTubeEmbedUrl = (url) => {
           box-sizing: border-box;
         }
 
-        :global(html),
-        :global(body) {
-          margin: 0;
-          padding: 0;
-          width: 100%;
+        html, body {
+          margin: 0; padding: 0;
+          width: 100%; height: 100%;
           overflow-x: hidden;
         }
 
@@ -696,4 +524,4 @@ const getYouTubeEmbedUrl = (url) => {
 .play-btn:active {
   transform: scale(0.95);
 }
-      `}</style>
+    
